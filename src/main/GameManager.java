@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 public class GameManager extends JPanel implements Runnable {
@@ -30,6 +31,7 @@ public class GameManager extends JPanel implements Runnable {
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(backgroundColor);
         this.setDoubleBuffered(true);
+        this.addKeyListener(KeyboardManager.getInstance());
         this.setFocusable(true);
     }
 
@@ -70,16 +72,17 @@ public class GameManager extends JPanel implements Runnable {
         }
     }
 
-    public void paintComponent(Graphics graphic) {
-        super.paintComponent(graphic);
-        renderGame((Graphics2D) graphic);
+    @Override
+    public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+        renderGame(graphics);
     }
 
     public void updateGame() {
 
     }
 
-    public void renderGame(Graphics graphic2D) {
+    public void renderGame(Graphics graphics) {
 
     }
 }

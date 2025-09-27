@@ -75,14 +75,15 @@ public class GameManager extends JPanel implements Runnable {
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        renderGame(graphics);
+        Graphics2D graphics2D = (Graphics2D) graphics;
+        renderGame(graphics2D);
     }
 
     public void updateGame() {
 
     }
 
-    public void renderGame(Graphics graphics) {
+    public void renderGame(Graphics2D graphics) {
 
     }
 }

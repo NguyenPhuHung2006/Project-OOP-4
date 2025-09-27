@@ -20,5 +20,5 @@ public abstract class GameObject {
 
     public abstract void update();
 
-    public abstract void render(java.awt.Graphics graphics);
+    public abstract void render(java.awt.Graphics2D graphics);
 }

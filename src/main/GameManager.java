@@ -2,10 +2,9 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 
 public class GameManager extends JPanel implements Runnable {
+
     private static volatile GameManager gameManager;
     private Thread gameThread;
     private final int width = 500;
@@ -83,7 +82,7 @@ public class GameManager extends JPanel implements Runnable {
 
     }
 
-    public void renderGame(Graphics2D graphics) {
+    public void renderGame(Graphics2D graphics2D) {
 
     }
 }

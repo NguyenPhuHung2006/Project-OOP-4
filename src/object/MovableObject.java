@@ -20,7 +20,7 @@ public class MovableObject extends GameObject {
     }
 
     @Override
-    public void render(Graphics graphics) {
+    public void render(Graphics2D graphics) {
 
     }
 }

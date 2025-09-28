@@ -5,12 +5,12 @@ import java.awt.image.BufferedImage;
 
 public abstract class MovableObject extends GameObject {
 
-    private int dx;
-    private int dy;
-    private int speed;
+    protected int dx;
+    protected int dy;
+    protected int speed;
 
-    MovableObject(int x, int y, int width, int height, int speed, BufferedImage texture) {
-        super(x, y, width, height, texture);
+    MovableObject(ObjectConstant objectConstant, int speed) {
+        super(objectConstant);
         this.speed = speed;
         dx = 0;
         dy = 0;

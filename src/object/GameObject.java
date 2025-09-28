@@ -11,26 +11,12 @@ public abstract class GameObject {
     protected int height;
     protected BufferedImage texture;
 
-    private static BufferedImage scaleTexture(BufferedImage originalTexture, int width, int height) {
-        if (originalTexture == null) {
-            return null;
-        }
-
-        BufferedImage scaledTexture = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics2D = scaledTexture.createGraphics();
-
-        graphics2D.drawImage(originalTexture.getScaledInstance(width, height, Image.SCALE_SMOOTH), 0, 0, null);
-        graphics2D.dispose();
-
-        return scaledTexture;
-    }
-
-    public GameObject(int x, int y, int width, int height, BufferedImage texture) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.texture = scaleTexture(texture, width, height);
+    public GameObject(ObjectConstant objectConstant) {
+        this.x = objectConstant.getX();
+        this.y = objectConstant.getY();
+        this.width = objectConstant.getWidth();
+        this.height = objectConstant.getHeight();
+        this.texture = objectConstant.getTexture();
     }
 
     public void render(Graphics2D graphics2D) {

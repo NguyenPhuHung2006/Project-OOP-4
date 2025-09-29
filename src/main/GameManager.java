@@ -4,6 +4,9 @@ import input.KeyboardManager;
 import object.Ball;
 import object.ObjectConstant;
 import object.Paddle;
+import provider.BoundProvider;
+import provider.GameContext;
+import provider.InputProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,14 +88,9 @@ public class GameManager extends JPanel implements Runnable {
         renderGame(graphics2D);
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
+    private final InputProvider inputProvider = new InputProvider(KeyboardManager.getInstance());
+    private final BoundProvider gameBounds = new BoundProvider(width, height);
+    private final GameContext context = new GameContext(inputProvider, gameBounds);
 
     Paddle paddle = new Paddle(ObjectConstant.PADDLE, 10);
     Ball ball = new Ball(ObjectConstant.BALL, 10);
@@ -102,8 +100,8 @@ public class GameManager extends JPanel implements Runnable {
     }
 
     public void updateGame() {
-        paddle.update();
-        ball.update();
+        paddle.update(context);
+        ball.update(context);
     }
 
     public void renderGame(Graphics2D graphics2D) {

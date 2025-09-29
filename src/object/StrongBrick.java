@@ -1,9 +1,5 @@
 package object;
 
-import provider.GameContext;
-
-import java.awt.image.BufferedImage;
-
 public class StrongBrick extends Brick{
 
     public StrongBrick(ObjectConstant objectConstant) {
@@ -11,7 +7,7 @@ public class StrongBrick extends Brick{
     }
 
     @Override
-    public void update(GameContext gameContext) {
+    public void update() {
 
     }
 }

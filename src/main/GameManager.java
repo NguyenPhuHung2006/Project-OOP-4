@@ -4,7 +4,6 @@ import input.KeyboardManager;
 import object.Ball;
 import object.ObjectConstant;
 import object.Paddle;
-import provider.GameContext;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,6 +44,7 @@ public class GameManager extends JPanel implements Runnable {
             running = true;
             gameThread = new Thread(this);
             gameThread.start();
+            initGame();
         }
     }
 
@@ -83,19 +83,22 @@ public class GameManager extends JPanel implements Runnable {
         Graphics2D graphics2D = (Graphics2D) graphics;
         renderGame(graphics2D);
     }
-
+    
+    GameContext gameContext = GameContext.getInstance();
     Paddle paddle = new Paddle(ObjectConstant.PADDLE, 10);
     Ball ball = new Ball(ObjectConstant.BALL, 10);
-
-    private final GameContext context = new GameContext(width, height, KeyboardManager.getInstance(), paddle, ball);
-
+    
     public void initGame() {
-
+        
+        gameContext.setWindowWidth(width);
+        gameContext.setWindowHeight(height);
+        gameContext.setPaddle(paddle);
+        gameContext.setBall(ball);
     }
 
     public void updateGame() {
-        paddle.update(context);
-        ball.update(context);
+        paddle.update();
+        ball.update();
     }
 
     public void renderGame(Graphics2D graphics2D) {

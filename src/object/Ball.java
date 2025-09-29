@@ -1,9 +1,9 @@
 package object;
 
 import main.GameManager;
-import provider.GameContext;
+import utils.IntersectUtils;
 
-import java.awt.image.BufferedImage;
+import main.GameContext;
 
 public class Ball extends MovableObject {
 
@@ -13,18 +13,27 @@ public class Ball extends MovableObject {
     }
 
     @Override
-    public void move(GameContext gameContext) {
-        int windowWidth = gameContext.getBounds().getWidth();
-        int windowHeight = gameContext.getBounds().getHeight();
+    public void move() {
+        GameContext gameContext = GameContext.getInstance();
+        int windowWidth = gameContext.getWindowWidth();
+        int windowHeight = gameContext.getWindowHeight();
+        Paddle paddle = gameContext.getPaddle();
+
+        int lastX = x;
+        int lastY = y;
 
         x += dx * speed;
+        if(IntersectUtils.intersect(this, paddle)) {
+            dx *= -1;
+        }
+
         y += dy * speed;
+        if(IntersectUtils.intersect(this, paddle)) {
+            dy *= -1;
+        }
 
-        int radius = width / 2;
-        int centerX = x + radius;
-        int centerY = y + radius;
-
-
+        x = lastX + dx * speed;
+        y = lastY + dy * speed;
 
         if (x < 0) {
             x = 0;
@@ -38,11 +47,11 @@ public class Ball extends MovableObject {
         if (y + height > windowHeight) {
             GameManager.getInstance().stopGame();
         }
-
     }
 
     @Override
-    public void update(GameContext gameContext) {
-        move(gameContext);
+    public void update() {
+
+        move();
     }
 }

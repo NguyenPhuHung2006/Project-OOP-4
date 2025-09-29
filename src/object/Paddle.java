@@ -1,6 +1,7 @@
 package object;
 
-import provider.GameContext;
+import input.KeyboardManager;
+import main.GameContext;
 
 import java.awt.event.KeyEvent;
 
@@ -10,9 +11,12 @@ public class Paddle extends MovableObject {
     }
 
     @Override
-    public void move(GameContext gameContext) {
-        boolean leftKeyPressed = gameContext.getKeyboardManager().isKeyPressed(KeyEvent.VK_LEFT);
-        boolean rightKeyPressed = gameContext.getKeyboardManager().isKeyPressed(KeyEvent.VK_RIGHT);
+    public void move() {
+        GameContext gameContext = GameContext.getInstance();
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+
+        boolean leftKeyPressed = keyboardManager.isKeyPressed(KeyEvent.VK_LEFT);
+        boolean rightKeyPressed = keyboardManager.isKeyPressed(KeyEvent.VK_RIGHT);
         int windowWidth = gameContext.getWindowWidth();
 
         // if both left and right key pressed or none of them is pressed, don't move
@@ -37,7 +41,8 @@ public class Paddle extends MovableObject {
     }
 
     @Override
-    public void update(GameContext gameContext) {
-        move(gameContext);
+    public void update() {
+
+        move();
     }
 }

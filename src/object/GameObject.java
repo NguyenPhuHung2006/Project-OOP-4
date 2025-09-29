@@ -1,9 +1,9 @@
 package object;
 
-import provider.GameContext;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import main.GameContext;
 
 public abstract class GameObject {
 
@@ -33,7 +33,7 @@ public abstract class GameObject {
         }
     }
 
-    public abstract void update(GameContext gameContext);
+    public abstract void update();
 
     public int getX() {
         return x;

@@ -1,4 +1,4 @@
-package main;
+package audio;
 
 public enum SoundEffect {
 

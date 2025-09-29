@@ -7,9 +7,12 @@ import java.io.IOException;
 
 public enum ObjectConstant {
 
+    BALL("/assets/ball.png",
+            0, 0, 24, 24,
+            100, 100, 20, 20),
     PADDLE("/assets/paddle.png",
             0, 0, 96, 24,
-            100, 100, 200, 50);
+            210, 400, 80, 20);
 
     private final String path;
     private final int textureX;

@@ -27,14 +27,16 @@ public class Paddle extends MovableObject {
             dx = 1;
         }
 
-        x += dx * speed;
+        int newX = x + dx * speed;
 
-        if (x < 0) {
-            x = 0;
+        if (newX < 0) {
+            newX = 0;
         }
-        if (x + width > windowWidth) {
-            x = windowWidth - width;
+        if (newX + width > windowWidth) {
+            newX = windowWidth - width;
         }
+
+        x = newX;
     }
 
     @Override

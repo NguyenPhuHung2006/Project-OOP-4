@@ -1,9 +1,8 @@
 package object;
 
 import main.GameManager;
-import main.KeyboardManager;
-
 import java.awt.event.KeyEvent;
+import input.KeyboardManager;
 
 public class Paddle extends MovableObject {
     public Paddle(ObjectConstant objectConstant, int speed) {
@@ -26,10 +25,12 @@ public class Paddle extends MovableObject {
             dx = 1;
         }
         x += dx * speed;
-        if (x < 0)
+        if (x < 0) {
             x = 0;
-        if (x + width > windowWidth)
+        }
+        if (x + width > windowWidth) {
             x = windowWidth - width;
+        }
     }
 
     @Override

@@ -1,7 +1,14 @@
 package main;
 
+import input.KeyboardManager;
+import object.Ball;
+import object.ObjectConstant;
+import object.Paddle;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 public class GameManager extends JPanel implements Runnable {
 
@@ -78,11 +85,29 @@ public class GameManager extends JPanel implements Runnable {
         renderGame(graphics2D);
     }
 
-    public void updateGame() {
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+
+    Paddle paddle = new Paddle(ObjectConstant.PADDLE, 10);
+    Ball ball = new Ball(ObjectConstant.BALL, 10);
+
+    public void initGame() {
 
     }
 
-    public void renderGame(Graphics2D graphics2D) {
+    public void updateGame() {
+        paddle.update();
+        ball.update();
+    }
 
+    public void renderGame(Graphics2D graphics2D) {
+        paddle.render(graphics2D);
+        ball.render(graphics2D);
     }
 }

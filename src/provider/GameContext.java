@@ -1,30 +1,42 @@
 package provider;
 
+import input.KeyboardManager;
 import object.Ball;
 import object.Paddle;
 
 public class GameContext {
-    private final InputProvider input;
-    private final BoundProvider bound;
+    private final int windowWidth;
+    private final int windowHeight;
+    private final KeyboardManager keyboardManager;
     private final Paddle paddle;
     private final Ball ball;
 
-    public GameContext(InputProvider input, BoundProvider bound, Paddle paddle, Ball ball) {
-        this.input = input;
-        this.bound = bound;
+    public GameContext(int windowWidth, int windowHeight, KeyboardManager keyboardManager,
+                       Paddle paddle, Ball ball) {
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
+        this.keyboardManager = keyboardManager;
         this.paddle = paddle;
         this.ball = ball;
     }
 
-    public InputProvider getInput() {
-        return input;
+    public int getWindowWidth() {
+        return windowWidth;
     }
 
-    public BoundProvider getBounds() {
-        return bound;
+    public int getWindowHeight() {
+        return windowHeight;
     }
 
-    public Paddle getPaddle() { return paddle; }
+    public KeyboardManager getKeyboardManager() {
+        return keyboardManager;
+    }
 
-    public Ball getBall() { return ball; }
+    public Paddle getPaddle() {
+        return paddle;
+    }
+
+    public Ball getBall() {
+        return ball;
+    }
 }

@@ -88,12 +88,12 @@ public class GameManager extends JPanel implements Runnable {
         renderGame(graphics2D);
     }
 
-    private final InputProvider inputProvider = new InputProvider(KeyboardManager.getInstance());
-    private final BoundProvider gameBounds = new BoundProvider(width, height);
-    private final GameContext context = new GameContext(inputProvider, gameBounds);
-
     Paddle paddle = new Paddle(ObjectConstant.PADDLE, 10);
     Ball ball = new Ball(ObjectConstant.BALL, 10);
+
+    private final InputProvider inputProvider = new InputProvider(KeyboardManager.getInstance());
+    private final BoundProvider boundProvider = new BoundProvider(width, height);
+    private final GameContext context = new GameContext(inputProvider, boundProvider, paddle, ball);
 
     public void initGame() {
 

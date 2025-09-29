@@ -34,4 +34,24 @@ public abstract class GameObject {
     }
 
     public abstract void update(GameContext gameContext);
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public BufferedImage getTexture() {
+        return texture;
+    }
 }

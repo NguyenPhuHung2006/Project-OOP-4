@@ -4,14 +4,10 @@ import input.KeyboardManager;
 import object.Ball;
 import object.ObjectConstant;
 import object.Paddle;
-import provider.BoundProvider;
 import provider.GameContext;
-import provider.InputProvider;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 
 public class GameManager extends JPanel implements Runnable {
 
@@ -91,9 +87,7 @@ public class GameManager extends JPanel implements Runnable {
     Paddle paddle = new Paddle(ObjectConstant.PADDLE, 10);
     Ball ball = new Ball(ObjectConstant.BALL, 10);
 
-    private final InputProvider inputProvider = new InputProvider(KeyboardManager.getInstance());
-    private final BoundProvider boundProvider = new BoundProvider(width, height);
-    private final GameContext context = new GameContext(inputProvider, boundProvider, paddle, ball);
+    private final GameContext context = new GameContext(width, height, KeyboardManager.getInstance(), paddle, ball);
 
     public void initGame() {
 

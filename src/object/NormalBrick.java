@@ -1,5 +1,7 @@
 package object;
 
+import provider.GameContext;
+
 import java.awt.image.BufferedImage;
 
 public class NormalBrick extends Brick {
@@ -9,7 +11,7 @@ public class NormalBrick extends Brick {
     }
 
     @Override
-    public void update() {
+    public void update(GameContext gameContext) {
 
     }
 }

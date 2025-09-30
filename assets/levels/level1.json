@@ -1,0 +1,15 @@
+{
+  "paddle": {
+    "textureX": 0, "textureY": 0, "textureWidth": 96, "textureHeight": 24,
+    "texturePath": "/paddle.png",
+    "x": 210, "y": 400, "width": 80, "height": 20,
+    "speed": 3
+  },
+
+  "ball":   {
+    "textureX": 0, "textureY": 0, "textureWidth": 24, "textureHeight": 24,
+    "texturePath": "/ball.png",
+    "x": 100, "y": 400, "width": 20, "height": 20,
+    "speed": 1
+  }
+}

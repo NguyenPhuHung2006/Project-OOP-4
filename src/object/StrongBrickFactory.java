@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class StrongBrickFactory extends BrickFactory {
 
     @Override
-    public Brick createBrick(ObjectConstant objectConstant) {
-        return new StrongBrick(objectConstant);
+    public Brick createBrick(Brick brick) {
+        return new StrongBrick(brick);
     }
 }

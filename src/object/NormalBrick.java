@@ -2,8 +2,8 @@ package object;
 
 public class NormalBrick extends Brick {
 
-    public NormalBrick(ObjectConstant objectConstant) {
-        super(objectConstant);
+    public NormalBrick(Brick brick) {
+        super(brick);
     }
 
     @Override

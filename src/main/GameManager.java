@@ -2,8 +2,9 @@ package main;
 
 import input.KeyboardManager;
 import object.Ball;
-import object.ObjectConstant;
+import object.LevelData;
 import object.Paddle;
+import utils.LevelLoaderUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,13 +84,16 @@ public class GameManager extends JPanel implements Runnable {
         Graphics2D graphics2D = (Graphics2D) graphics;
         renderGame(graphics2D);
     }
-    
+
+
     GameContext gameContext = GameContext.getInstance();
-    Paddle paddle = new Paddle(ObjectConstant.PADDLE, 10);
-    Ball ball = new Ball(ObjectConstant.BALL, 10);
-    
+
+    LevelData level = LevelLoaderUtils.load("assets/levels/level1.json");
+    Paddle paddle = new Paddle(level.paddle);
+    Ball ball = new Ball(level.ball);
+
     public void initGame() {
-        
+
         gameContext.setWindowWidth(width);
         gameContext.setWindowHeight(height);
         gameContext.setPaddle(paddle);

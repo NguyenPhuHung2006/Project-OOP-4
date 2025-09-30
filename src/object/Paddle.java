@@ -6,8 +6,9 @@ import main.GameContext;
 import java.awt.event.KeyEvent;
 
 public class Paddle extends MovableObject {
-    public Paddle(ObjectConstant objectConstant, int speed) {
-        super(objectConstant, speed);
+
+    public Paddle(Paddle paddle) {
+        super(paddle);
     }
 
     @Override
@@ -28,16 +29,14 @@ public class Paddle extends MovableObject {
             dx = 1;
         }
 
-        int newX = x + dx * speed;
+        x += dx * speed;
 
-        if (newX < 0) {
-            newX = 0;
+        if (x < 0) {
+            x = 0;
         }
-        if (newX + width > windowWidth) {
-            newX = windowWidth - width;
+        if (x + width > windowWidth) {
+            x = windowWidth - width;
         }
-
-        x = newX;
     }
 
     @Override

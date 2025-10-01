@@ -2,9 +2,13 @@ package object;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 import java.io.IOException;
+import java.util.Objects;
 
-import main.GameContext;
+import exception.ExceptionHandler;
+import exception.GameException;
+import exception.ResourceLoadException;
 
 import javax.imageio.ImageIO;
 
@@ -23,6 +27,7 @@ public abstract class GameObject {
     protected int height;
 
     public GameObject(GameObject gameObject) {
+
         this.textureX = gameObject.textureX;
         this.textureY = gameObject.textureY;
         this.textureWidth = gameObject.textureWidth;
@@ -49,24 +54,25 @@ public abstract class GameObject {
         }
     }
 
-    private BufferedImage loadTexture() {
+    private BufferedImage loadTexture() throws ResourceLoadException {
         try {
-            BufferedImage fullImage = ImageIO.read(GameObject.class.getResource(texturePath));
-            if (fullImage == null) {
-                return null;
-            }
+            BufferedImage fullImage = ImageIO.read(Objects.requireNonNull(GameObject.class.getResource(texturePath)));
+
             return fullImage.getSubimage(textureX, textureY, textureWidth, textureHeight);
 
-        } catch (IOException | IllegalArgumentException e) {
-            e.printStackTrace();
-            return null;
+        } catch (IOException | NullPointerException | RasterFormatException e) {
+            throw new ResourceLoadException(texturePath, e);
         }
     }
 
     private BufferedImage scaleTexture() {
 
-        BufferedImage originalTexture = loadTexture();
-        if (originalTexture == null) {
+        BufferedImage originalTexture;
+
+        try {
+            originalTexture = loadTexture();
+        } catch (ResourceLoadException e) {
+            ExceptionHandler.handle(e);
             return null;
         }
 

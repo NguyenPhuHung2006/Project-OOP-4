@@ -1,5 +1,7 @@
 package main;
 
+import exception.ExceptionHandler;
+import exception.ResourceLoadException;
 import input.KeyboardManager;
 import object.Ball;
 import object.LevelData;
@@ -10,7 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameManager extends JPanel implements Runnable {
-
     private static volatile GameManager gameManager;
     private Thread gameThread;
     private final int width = 500;
@@ -38,6 +39,7 @@ public class GameManager extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(KeyboardManager.getInstance());
         this.setFocusable(true);
+        initGame();
     }
 
     public void startGame() {
@@ -45,7 +47,6 @@ public class GameManager extends JPanel implements Runnable {
             running = true;
             gameThread = new Thread(this);
             gameThread.start();
-            initGame();
         }
     }
 
@@ -72,7 +73,7 @@ public class GameManager extends JPanel implements Runnable {
                     // convert sleepTime from millisecond to nanosecond
                     Thread.sleep(sleepTime / 1_000_000, (int) (sleepTime % 1_000_000));
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    ExceptionHandler.handle(e);
                 }
             }
         }
@@ -88,11 +89,20 @@ public class GameManager extends JPanel implements Runnable {
 
     GameContext gameContext = GameContext.getInstance();
 
-    LevelData level = LevelLoaderUtils.load("assets/levels/level1.json");
-    Paddle paddle = new Paddle(level.paddle);
-    Ball ball = new Ball(level.ball);
+    LevelData level;
+    Paddle paddle;
+    Ball ball;
 
     public void initGame() {
+
+        try {
+            level = LevelLoaderUtils.load("assets/levels/level1.json");
+        } catch (ResourceLoadException e) {
+            ExceptionHandler.handle(e);
+        }
+
+        paddle = new Paddle(level.paddle);
+        ball = new Ball(level.ball);
 
         gameContext.setWindowWidth(width);
         gameContext.setWindowHeight(height);

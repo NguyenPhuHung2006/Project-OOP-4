@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class LevelLoaderUtils {
-    public static LevelData load(String path) throws ResourceLoadException {
+    public static LevelData loadFromJson(String path) throws ResourceLoadException {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader(path)) {
             return gson.fromJson(reader, LevelData.class);

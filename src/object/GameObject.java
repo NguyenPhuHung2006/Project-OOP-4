@@ -2,23 +2,15 @@ package object;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.RasterFormatException;
-import java.io.IOException;
-import java.util.Objects;
-
-import exception.ExceptionHandler;
-import exception.GameException;
-import exception.ResourceLoadException;
-
-import javax.imageio.ImageIO;
+import utils.TextureLoaderUtils;
 
 public abstract class GameObject {
 
-    private String texturePath;
-    private int textureX;
-    private int textureY;
-    private int textureWidth;
-    private int textureHeight;
+    protected String texturePath;
+    protected int textureX;
+    protected int textureY;
+    protected int textureWidth;
+    protected int textureHeight;
     protected transient BufferedImage texture;
 
     protected int x;
@@ -28,18 +20,17 @@ public abstract class GameObject {
 
     public GameObject(GameObject gameObject) {
 
-        this.textureX = gameObject.textureX;
-        this.textureY = gameObject.textureY;
-        this.textureWidth = gameObject.textureWidth;
-        this.textureHeight = gameObject.textureHeight;
-        this.texturePath = gameObject.texturePath;
-
         this.x = gameObject.x;
         this.y = gameObject.y;
         this.width = gameObject.width;
         this.height = gameObject.height;
 
-        this.texture = scaleTexture();
+        this.textureX = gameObject.textureX;
+        this.textureY = gameObject.textureY;
+        this.textureWidth = gameObject.textureWidth;
+        this.textureHeight = gameObject.textureHeight;
+        this.texturePath = gameObject.texturePath;
+        this.texture = TextureLoaderUtils.scaleTexture(textureX, textureY, textureWidth, textureHeight, texturePath, width, height);
     }
 
     public void render(Graphics2D graphics2D) {
@@ -52,37 +43,6 @@ public abstract class GameObject {
         if (texture != null && graphics2D != null) {
             graphics2D.drawImage(texture, x, y, scaledWidth, scaledHeight, null);
         }
-    }
-
-    private BufferedImage loadTexture() throws ResourceLoadException {
-        try {
-            BufferedImage fullImage = ImageIO.read(Objects.requireNonNull(GameObject.class.getResource(texturePath)));
-
-            return fullImage.getSubimage(textureX, textureY, textureWidth, textureHeight);
-
-        } catch (IOException | NullPointerException | RasterFormatException e) {
-            throw new ResourceLoadException(texturePath, e);
-        }
-    }
-
-    private BufferedImage scaleTexture() {
-
-        BufferedImage originalTexture;
-
-        try {
-            originalTexture = loadTexture();
-        } catch (ResourceLoadException e) {
-            ExceptionHandler.handle(e);
-            return null;
-        }
-
-        BufferedImage scaledTexture = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics2D = scaledTexture.createGraphics();
-
-        graphics2D.drawImage(originalTexture.getScaledInstance(width, height, Image.SCALE_SMOOTH), 0, 0, null);
-        graphics2D.dispose();
-
-        return scaledTexture;
     }
 
     public abstract void update();

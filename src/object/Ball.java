@@ -1,68 +1,58 @@
 package object;
 
-import main.GameManager;
+import input.KeyboardManager;
 import utils.IntersectUtils;
 
 import main.GameContext;
+import utils.RandomUtils;
+
+import java.awt.event.KeyEvent;
 
 public class Ball extends MovableObject {
 
+    boolean isMoving;
+
     public Ball(Ball ball) {
         super(ball);
-    }
-
-    @Override
-    public void move() {
-
-        GameContext gameContext = GameContext.getInstance();
-        int windowWidth = gameContext.getWindowWidth();
-        int windowHeight = gameContext.getWindowHeight();
-        Paddle paddle = gameContext.getPaddle();
-
-        x += dx * speed;
-
-        if (IntersectUtils.intersect(this, paddle)) {
-            if (dx > 0) {
-                x = paddle.getX() - width;
-            } else {
-                x = paddle.getX() + paddle.getWidth();
-            }
-            dx *= -1;
-        }
-
-        y += dy * speed;
-
-        if (IntersectUtils.intersect(this, paddle)) {
-            if (dy > 0) {
-                y = paddle.getY() - height;
-            } else {
-                y = paddle.getY() + paddle.getHeight();
-            }
-            dy *= -1;
-        }
-
-        if (x < 0 || x + width > windowWidth) {
-            if (x < 0) {
-                x = 0;
-            } else {
-                x = windowWidth - width;
-            }
-            dx *= -1;
-        }
-        if (y < 0 || y + height > windowHeight) {
-            if(y < 0) {
-                y = 0;
-            } else {
-                y = windowHeight - height;
-            }
-            dy *= -1;
-        }
-
+        isMoving = false;
     }
 
     @Override
     public void update() {
 
-        move();
+        GameContext gameContext = GameContext.getInstance();
+        Paddle paddle = gameContext.getPaddle();
+
+        if (!isMoving) {
+            handleInitialMovement(paddle);
+        }
+
+        followPaddleIfAttached(paddle);
+
+        moveAndCollideWithObject(paddle);
+
+        handleWindowCollision();
+    }
+
+    private void handleInitialMovement(Paddle paddle) {
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        if (keyboardManager.isKeyPressed(KeyEvent.VK_UP)) {
+            isMoving = true;
+            dy = -1;
+            dx = (RandomUtils.nextBoolean() ? 1 : -1);
+        } else {
+            x += paddle.getDx() * paddle.getSpeed();
+            y += paddle.getDy() * paddle.getSpeed();
+        }
+    }
+
+    private void followPaddleIfAttached(Paddle paddle) {
+        if (IntersectUtils.intersect(this, paddle)) {
+            if (paddle.getDx() == 1) {
+                x = paddle.getX() + paddle.getWidth();
+            } else {
+                x = paddle.getX() - width;
+            }
+        }
     }
 }

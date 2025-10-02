@@ -2,6 +2,11 @@ package object;
 
 import java.awt.image.BufferedImage;
 
-public abstract class BrickFactory {
-    public abstract Brick createBrick(Brick brick);
+public class BrickFactory {
+    public static NormalBrick createNormalBrick(NormalBrick normalBrick) {
+        return new NormalBrick(normalBrick);
+    }
+    public static StrongBrick createStrongBrick(StrongBrick strongBrick) {
+        return new StrongBrick(strongBrick);
+    }
 }

@@ -16,6 +16,11 @@ public abstract class MovableObject extends GameObject {
         dy = 0;
     }
 
+    @Override
+    public MovableObject clone() {
+        return (MovableObject) super.clone();
+    }
+
     public int getSpeed() {
         return speed;
     }

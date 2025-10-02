@@ -10,17 +10,18 @@ import exception.InvalidGameStateException;
 import utils.RendererUtils;
 import utils.TextureLoaderUtils;
 
-public abstract class GameObject {
+public abstract class GameObject implements Cloneable {
 
     private final String texturePath;
-    private final int textureX;
-    private final int textureY;
+    private int textureX;
+    private int textureY;
     private final int textureWidth;
     private final int textureHeight;
+    private transient BufferedImage currentTexture;
 
     private final int numberOfFrames;
     private transient List<BufferedImage> frames;
-    private final int endFrameOffset;
+    private int endFrameOffset;
 
     protected int x;
     protected int y;
@@ -43,33 +44,44 @@ public abstract class GameObject {
         this.numberOfFrames = gameObject.numberOfFrames;
         this.endFrameOffset = gameObject.endFrameOffset;
 
-        loadFrames();
+        try {
+            loadFrames();
+        } catch (InvalidGameStateException e) {
+            ExceptionHandler.handle(e);
+        }
     }
 
-    private void loadFrames() {
+    private void loadFrames() throws InvalidGameStateException {
 
         frames = new ArrayList<>();
         for(int i = numberOfFrames - 1; i >= 0; i--) {
             frames.add(TextureLoaderUtils.scaleTexture(textureX + i * textureWidth, textureY, textureWidth, textureHeight,
                     texturePath, width, height));
         }
+        if(frames.isEmpty()) {
+            throw new InvalidGameStateException("The number of frames is not valid", null);
+        }
+        currentTexture = frames.getLast();
     }
 
-    public void render(Graphics2D graphics2D) throws InvalidGameStateException {
-        if(frames.isEmpty()) {
-            throw new InvalidGameStateException("Tried to render with no frames loaded", null);
-        }
-        RendererUtils.render(frames.getLast(), x, y, graphics2D);
+    public void render(Graphics2D graphics2D) {
+        RendererUtils.render(currentTexture, x, y, graphics2D);
     }
 
-    public void render(Graphics2D graphics2D, int scaledWidth, int scaledHeight) throws InvalidGameStateException {
-        if(frames.isEmpty()) {
-            throw new InvalidGameStateException("Tried to render with no frames loaded", null);
-        }
-        RendererUtils.render(frames.getLast(), x, y, scaledWidth, scaledHeight, graphics2D);
+    public void render(Graphics2D graphics2D, int scaledWidth, int scaledHeight) {
+        RendererUtils.render(currentTexture, x, y, scaledWidth, scaledHeight, graphics2D);
     }
 
     public abstract void update();
+
+    @Override
+    public GameObject clone() {
+        try {
+            return (GameObject) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
     
     public int getTextureX() {
         return textureX;
@@ -104,10 +116,39 @@ public abstract class GameObject {
     }
 
     public BufferedImage getTexture() {
-        return frames.getLast();
+        return currentTexture;
     }
 
     public String getTexturePath() {
         return texturePath;
     }
+
+    public void setTextureX(int textureX) {
+        this.textureX = textureX;
+    }
+
+    public void setTextureY(int textureY) {
+        this.textureY = textureY;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setTexture(BufferedImage texture) {
+        this.currentTexture = texture;
+    }
+
 }

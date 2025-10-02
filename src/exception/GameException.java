@@ -20,7 +20,7 @@ public class GameException extends Exception {
     public enum ErrorCode {
         RESOURCE_NOT_FOUND,
         INVALID_INPUT,
-        NETWORK_ERROR,
+        INVALID_GAME_STATE,
         UNKNOWN
     }
 }

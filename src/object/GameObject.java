@@ -1,17 +1,26 @@
 package object;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.image.BufferedImage;
+
+import exception.ExceptionHandler;
+import exception.InvalidGameStateException;
+import utils.RendererUtils;
 import utils.TextureLoaderUtils;
 
 public abstract class GameObject {
 
-    protected String texturePath;
-    protected int textureX;
-    protected int textureY;
-    protected int textureWidth;
-    protected int textureHeight;
-    protected transient BufferedImage texture;
+    private final String texturePath;
+    private final int textureX;
+    private final int textureY;
+    private final int textureWidth;
+    private final int textureHeight;
+
+    private final int numberOfFrames;
+    private transient List<BufferedImage> frames;
+    private final int endFrameOffset;
 
     protected int x;
     protected int y;
@@ -30,19 +39,34 @@ public abstract class GameObject {
         this.textureWidth = gameObject.textureWidth;
         this.textureHeight = gameObject.textureHeight;
         this.texturePath = gameObject.texturePath;
-        this.texture = TextureLoaderUtils.scaleTexture(textureX, textureY, textureWidth, textureHeight, texturePath, width, height);
+
+        this.numberOfFrames = gameObject.numberOfFrames;
+        this.endFrameOffset = gameObject.endFrameOffset;
+
+        loadFrames();
     }
 
-    public void render(Graphics2D graphics2D) {
-        if (texture != null && graphics2D != null) {
-            graphics2D.drawImage(texture, x, y, null);
+    private void loadFrames() {
+
+        frames = new ArrayList<>();
+        for(int i = numberOfFrames - 1; i >= 0; i--) {
+            frames.add(TextureLoaderUtils.scaleTexture(textureX + i * textureWidth, textureY, textureWidth, textureHeight,
+                    texturePath, width, height));
         }
     }
 
-    public void render(Graphics2D graphics2D, int scaledWidth, int scaledHeight) {
-        if (texture != null && graphics2D != null) {
-            graphics2D.drawImage(texture, x, y, scaledWidth, scaledHeight, null);
+    public void render(Graphics2D graphics2D) throws InvalidGameStateException {
+        if(frames.isEmpty()) {
+            throw new InvalidGameStateException("Tried to render with no frames loaded", null);
         }
+        RendererUtils.render(frames.getLast(), x, y, graphics2D);
+    }
+
+    public void render(Graphics2D graphics2D, int scaledWidth, int scaledHeight) throws InvalidGameStateException {
+        if(frames.isEmpty()) {
+            throw new InvalidGameStateException("Tried to render with no frames loaded", null);
+        }
+        RendererUtils.render(frames.getLast(), x, y, scaledWidth, scaledHeight, graphics2D);
     }
 
     public abstract void update();
@@ -80,7 +104,7 @@ public abstract class GameObject {
     }
 
     public BufferedImage getTexture() {
-        return texture;
+        return frames.getLast();
     }
 
     public String getTexturePath() {

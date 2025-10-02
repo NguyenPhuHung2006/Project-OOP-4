@@ -1,6 +1,7 @@
 package main;
 
 import exception.ExceptionHandler;
+import exception.InvalidGameStateException;
 import exception.ResourceLoadException;
 import input.KeyboardManager;
 import object.Ball;
@@ -90,8 +91,6 @@ public class GameManager extends JPanel implements Runnable {
     GameContext gameContext = GameContext.getInstance();
 
     LevelData level;
-    Paddle paddle;
-    Ball ball;
 
     public void initGame() {
 
@@ -99,24 +98,33 @@ public class GameManager extends JPanel implements Runnable {
             level = LevelLoaderUtils.loadFromJson("assets/levels/level1.json");
         } catch (ResourceLoadException e) {
             ExceptionHandler.handle(e);
+            stopGame();
         }
 
-        paddle = new Paddle(level.paddle);
-        ball = new Ball(level.ball);
+        Paddle paddle = new Paddle(level.paddle);
+        Ball ball = new Ball(level.ball);
+
+        // Brick[][] bricks = LevelLoaderUtils.loadMap(level);
 
         gameContext.setWindowWidth(width);
         gameContext.setWindowHeight(height);
         gameContext.setPaddle(paddle);
         gameContext.setBall(ball);
+        // gameContext.setBricks(bricks);
     }
 
     public void updateGame() {
-        paddle.update();
-        ball.update();
+        gameContext.getPaddle().update();
+        gameContext.getBall().update();
     }
 
     public void renderGame(Graphics2D graphics2D) {
-        paddle.render(graphics2D);
-        ball.render(graphics2D);
+        try {
+            gameContext.getPaddle().render(graphics2D);
+            gameContext.getBall().render(graphics2D);
+        } catch (InvalidGameStateException e) {
+            ExceptionHandler.handle(e);
+            stopGame();
+        }
     }
 }

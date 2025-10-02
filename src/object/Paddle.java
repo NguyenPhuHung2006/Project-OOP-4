@@ -19,6 +19,11 @@ public class Paddle extends MovableObject {
         handleWindowCollision();
     }
 
+    @Override
+    public Paddle clone() {
+        return (Paddle)super.clone();
+    }
+
     private void handleInput() {
         KeyboardManager keyboardManager = KeyboardManager.getInstance();
 

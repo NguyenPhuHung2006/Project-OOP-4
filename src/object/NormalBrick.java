@@ -10,4 +10,9 @@ public class NormalBrick extends Brick {
     public void update() {
 
     }
+
+    @Override
+    public NormalBrick clone() {
+        return (NormalBrick) super.clone();
+    }
 }

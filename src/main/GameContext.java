@@ -2,6 +2,7 @@ package main;
 
 import input.KeyboardManager;
 import object.Ball;
+import object.Brick;
 import object.Paddle;
 
 public class GameContext {
@@ -10,12 +11,19 @@ public class GameContext {
     private int windowHeight;
     private Paddle paddle;
     private Ball ball;
+    private Brick[][] bricks;
+    private int normalBrickTypeId;
+    private int strongBrickTypeId;
 
     public static GameContext getInstance() {
         if (instance == null) {
             instance = new GameContext();
         }
         return instance;
+    }
+
+    public void setBricks(Brick[][] bricks) {
+        this.bricks = bricks;
     }
 
     public void setWindowWidth(int windowWidth) {
@@ -34,6 +42,14 @@ public class GameContext {
         this.ball = ball;
     }
 
+    public void setNormalBrickTypeId(int normalBrickTypeId) { this.normalBrickTypeId = normalBrickTypeId; }
+
+    public void setStrongBrickTypeId(int strongBrickTypeId) { this.strongBrickTypeId = strongBrickTypeId; }
+
+    public Brick[][] getBricks() {
+        return bricks;
+    }
+
     public int getWindowWidth() {
         return windowWidth;
     }
@@ -48,5 +64,13 @@ public class GameContext {
 
     public Ball getBall() {
         return ball;
+    }
+
+    public int getNormalBrickTypeId() {
+        return normalBrickTypeId;
+    }
+
+    public int getStrongBrickTypeId() {
+        return strongBrickTypeId;
     }
 }

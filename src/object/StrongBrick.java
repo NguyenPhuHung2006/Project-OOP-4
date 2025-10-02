@@ -10,4 +10,9 @@ public class StrongBrick extends Brick{
     public void update() {
 
     }
+
+    @Override
+    public StrongBrick clone() {
+        return (StrongBrick) super.clone();
+    }
 }

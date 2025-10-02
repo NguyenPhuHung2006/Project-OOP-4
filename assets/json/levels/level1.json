@@ -1,0 +1,69 @@
+{
+  "paddle": {
+    "textureX": 0, "textureY": 0, "textureWidth": 96, "textureHeight": 24,
+    "texturePath": "/textures/paddle.png",
+    "x": 210, "y": 400, "width": 80, "height": 20,
+    "speed": 10,
+    "numberOfFrames": 1, "endFrameOffset": -1
+  },
+
+  "ball":   {
+    "textureX": 0, "textureY": 0, "textureWidth": 24, "textureHeight": 24,
+    "texturePath": "/textures/ball.png",
+    "x": 240, "y": 380, "width": 20, "height": 20,
+    "speed": 5,
+    "numberOfFrames": 4, "endFrameOffset": -1
+  },
+
+  "normalBrick": {
+    "textureX": -1, "textureY": -1, "textureWidth": 32, "textureHeight": 16,
+    "texturePath": "/textures/brick.png",
+    "x": -1, "y": -1, "width": -1, "height": -1,
+    "numberOfFrames": 11, "endFrameOffset": 6,
+    "brickTypeId": 0
+  },
+
+  "strongBrick": {
+    "textureX": -1, "textureY": -1, "textureWidth": 32, "textureHeight": 16,
+    "texturePath": "/textures/brick.png",
+    "x": -1, "y": -1, "width": -1, "height": -1,
+    "numberOfFrames": 1, "endFrameOffset": -1,
+    "brickTypeId": 1
+  },
+
+  "normalBrickTypeId": 0,
+  "strongBrickTypeId": 1,
+
+  "normalBrickStartIndex": 0,
+  "strongBrickStartIndex": 6,
+
+  "normalBrickCount": 6,
+  "strongBrickCount": 4,
+
+  "framePerRow": 11,
+
+  "brickLayout": [
+    [0, 0, -1, -1, -1, -1, -1, -1, -1, -1],
+    [11, 11, -1, -1, -1, -1, -1, -1, 88, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, 44, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, 55, -1, -1, 55, 88, 55, -1],
+    [-1, 44, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, 55, -1, 55, -1, 88, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, 88, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+  ]
+
+
+}

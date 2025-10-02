@@ -18,6 +18,12 @@ public class Ball extends MovableObject {
     }
 
     @Override
+    public Ball clone() {
+
+        return (Ball) super.clone();
+    }
+
+    @Override
     public void update() {
 
         GameContext gameContext = GameContext.getInstance();

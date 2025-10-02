@@ -96,7 +96,7 @@ public class GameManager extends JPanel implements Runnable {
     public void initGame() {
 
         try {
-            level = LevelLoaderUtils.load("assets/levels/level1.json");
+            level = LevelLoaderUtils.loadFromJson("assets/levels/level1.json");
         } catch (ResourceLoadException e) {
             ExceptionHandler.handle(e);
         }

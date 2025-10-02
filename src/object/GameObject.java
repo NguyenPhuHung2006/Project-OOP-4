@@ -1,25 +1,26 @@
 package object;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.image.BufferedImage;
-import java.awt.image.RasterFormatException;
-import java.io.IOException;
-import java.util.Objects;
 
 import exception.ExceptionHandler;
-import exception.GameException;
-import exception.ResourceLoadException;
-
-import javax.imageio.ImageIO;
+import exception.InvalidGameStateException;
+import utils.RendererUtils;
+import utils.TextureLoaderUtils;
 
 public abstract class GameObject {
 
-    private String texturePath;
-    private int textureX;
-    private int textureY;
-    private int textureWidth;
-    private int textureHeight;
-    protected transient BufferedImage texture;
+    private final String texturePath;
+    private final int textureX;
+    private final int textureY;
+    private final int textureWidth;
+    private final int textureHeight;
+
+    private final int numberOfFrames;
+    private transient List<BufferedImage> frames;
+    private final int endFrameOffset;
 
     protected int x;
     protected int y;
@@ -28,61 +29,44 @@ public abstract class GameObject {
 
     public GameObject(GameObject gameObject) {
 
+        this.x = gameObject.x;
+        this.y = gameObject.y;
+        this.width = gameObject.width;
+        this.height = gameObject.height;
+
         this.textureX = gameObject.textureX;
         this.textureY = gameObject.textureY;
         this.textureWidth = gameObject.textureWidth;
         this.textureHeight = gameObject.textureHeight;
         this.texturePath = gameObject.texturePath;
 
-        this.x = gameObject.x;
-        this.y = gameObject.y;
-        this.width = gameObject.width;
-        this.height = gameObject.height;
+        this.numberOfFrames = gameObject.numberOfFrames;
+        this.endFrameOffset = gameObject.endFrameOffset;
 
-        this.texture = scaleTexture();
+        loadFrames();
     }
 
-    public void render(Graphics2D graphics2D) {
-        if (texture != null && graphics2D != null) {
-            graphics2D.drawImage(texture, x, y, null);
+    private void loadFrames() {
+
+        frames = new ArrayList<>();
+        for(int i = numberOfFrames - 1; i >= 0; i--) {
+            frames.add(TextureLoaderUtils.scaleTexture(textureX + i * textureWidth, textureY, textureWidth, textureHeight,
+                    texturePath, width, height));
         }
     }
 
-    public void render(Graphics2D graphics2D, int scaledWidth, int scaledHeight) {
-        if (texture != null && graphics2D != null) {
-            graphics2D.drawImage(texture, x, y, scaledWidth, scaledHeight, null);
+    public void render(Graphics2D graphics2D) throws InvalidGameStateException {
+        if(frames.isEmpty()) {
+            throw new InvalidGameStateException("Tried to render with no frames loaded", null);
         }
+        RendererUtils.render(frames.getLast(), x, y, graphics2D);
     }
 
-    private BufferedImage loadTexture() throws ResourceLoadException {
-        try {
-            BufferedImage fullImage = ImageIO.read(Objects.requireNonNull(GameObject.class.getResource(texturePath)));
-
-            return fullImage.getSubimage(textureX, textureY, textureWidth, textureHeight);
-
-        } catch (IOException | NullPointerException | RasterFormatException e) {
-            throw new ResourceLoadException(texturePath, e);
+    public void render(Graphics2D graphics2D, int scaledWidth, int scaledHeight) throws InvalidGameStateException {
+        if(frames.isEmpty()) {
+            throw new InvalidGameStateException("Tried to render with no frames loaded", null);
         }
-    }
-
-    private BufferedImage scaleTexture() {
-
-        BufferedImage originalTexture;
-
-        try {
-            originalTexture = loadTexture();
-        } catch (ResourceLoadException e) {
-            ExceptionHandler.handle(e);
-            return null;
-        }
-
-        BufferedImage scaledTexture = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics2D = scaledTexture.createGraphics();
-
-        graphics2D.drawImage(originalTexture.getScaledInstance(width, height, Image.SCALE_SMOOTH), 0, 0, null);
-        graphics2D.dispose();
-
-        return scaledTexture;
+        RendererUtils.render(frames.getLast(), x, y, scaledWidth, scaledHeight, graphics2D);
     }
 
     public abstract void update();
@@ -120,7 +104,7 @@ public abstract class GameObject {
     }
 
     public BufferedImage getTexture() {
-        return texture;
+        return frames.getLast();
     }
 
     public String getTexturePath() {

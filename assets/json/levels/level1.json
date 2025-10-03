@@ -4,22 +4,22 @@
     "texturePath": "/textures/paddle.png",
     "x": 210, "y": 400, "width": 80, "height": 20,
     "speed": 20,
-    "numberOfFrames": 1, "endFrameOffset": -1
+    "numberOfFrames": 1
   },
 
   "ball":   {
     "textureX": 0, "textureY": 0, "textureWidth": 24, "textureHeight": 24,
     "texturePath": "/textures/ball.png",
     "x": 240, "y": 380, "width": 20, "height": 20,
-    "speed": 5,
-    "numberOfFrames": 4, "endFrameOffset": -1
+    "speed": 2,
+    "numberOfFrames": 4
   },
 
   "normalBrick": {
     "textureX": -1, "textureY": -1, "textureWidth": 32, "textureHeight": 16,
     "texturePath": "/textures/brick.png",
     "x": -1, "y": -1, "width": -1, "height": -1,
-    "numberOfFrames": 11, "endFrameOffset": 6,
+    "numberOfFrames": 6,
     "brickTypeId": 0
   },
 
@@ -27,7 +27,7 @@
     "textureX": -1, "textureY": -1, "textureWidth": 32, "textureHeight": 16,
     "texturePath": "/textures/brick.png",
     "x": -1, "y": -1, "width": -1, "height": -1,
-    "numberOfFrames": 1, "endFrameOffset": -1,
+    "numberOfFrames": 1,
     "brickTypeId": 1
   },
 

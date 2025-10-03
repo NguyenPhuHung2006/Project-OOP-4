@@ -17,16 +17,21 @@ public abstract class GameObject implements Cloneable {
     private int textureY;
     private final int textureWidth;
     private final int textureHeight;
-    private transient BufferedImage currentTexture;
+    protected transient BufferedImage currentTexture;
 
-    private final int numberOfFrames;
-    private transient List<BufferedImage> frames;
-    private int endFrameOffset;
+    protected final int numberOfFrames;
+    protected transient List<BufferedImage> frames;
+
+    public List<BufferedImage> getFrames() {
+        return frames;
+    }
 
     protected int x;
     protected int y;
     protected int width;
     protected int height;
+
+    public abstract void update();
 
     public GameObject(GameObject gameObject) {
 
@@ -42,7 +47,6 @@ public abstract class GameObject implements Cloneable {
         this.texturePath = gameObject.texturePath;
 
         this.numberOfFrames = gameObject.numberOfFrames;
-        this.endFrameOffset = gameObject.endFrameOffset;
 
         try {
             loadFrames();
@@ -54,11 +58,11 @@ public abstract class GameObject implements Cloneable {
     private void loadFrames() throws InvalidGameStateException {
 
         frames = new ArrayList<>();
-        for(int i = numberOfFrames - 1; i >= 0; i--) {
+        for (int i = numberOfFrames - 1; i >= 0; i--) {
             frames.add(TextureLoaderUtils.scaleTexture(textureX + i * textureWidth, textureY, textureWidth, textureHeight,
                     texturePath, width, height));
         }
-        if(frames.isEmpty()) {
+        if (frames.isEmpty()) {
             throw new InvalidGameStateException("The number of frames is not valid", null);
         }
         currentTexture = frames.getLast();
@@ -72,8 +76,6 @@ public abstract class GameObject implements Cloneable {
         RendererUtils.render(currentTexture, x, y, scaledWidth, scaledHeight, graphics2D);
     }
 
-    public abstract void update();
-
     @Override
     public GameObject clone() {
         try {
@@ -82,19 +84,19 @@ public abstract class GameObject implements Cloneable {
             throw new AssertionError();
         }
     }
-    
+
     public int getTextureX() {
         return textureX;
     }
-    
+
     public int getTextureY() {
         return textureY;
     }
-    
+
     public int getTextureWidth() {
         return textureWidth;
     }
-    
+
     public int getTextureHeight() {
         return textureHeight;
     }

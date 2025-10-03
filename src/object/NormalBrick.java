@@ -7,7 +7,22 @@ public class NormalBrick extends Brick {
     }
 
     @Override
+    protected void handleHit() {
+
+        if (!frames.isEmpty()) {
+            frames.removeLast();
+            currentTexture = frames.isEmpty() ? null : frames.getLast();
+        }
+
+        if (frames.isEmpty()) {
+            destroyed = true;
+        }
+    }
+
+    @Override
     public void update() {
+
+        hit = false;
 
     }
 

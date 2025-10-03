@@ -3,10 +3,7 @@ package main;
 import exception.ExceptionHandler;
 import exception.ResourceLoadException;
 import input.KeyboardManager;
-import object.Ball;
-import object.Brick;
-import object.LevelData;
-import object.Paddle;
+import object.*;
 import utils.LevelLoaderUtils;
 import utils.RendererUtils;
 
@@ -90,6 +87,7 @@ public class GameManager extends JPanel implements Runnable {
 
 
     GameContext gameContext = GameContext.getInstance();
+    BrickManager brickManager = BrickManager.getInstance();
 
     LevelData levelData;
 
@@ -110,20 +108,20 @@ public class GameManager extends JPanel implements Runnable {
         gameContext.setPaddle(paddle);
         gameContext.setBall(ball);
 
-        gameContext.setNormalBrickTypeId(levelData.normalBrickTypeId);
-        gameContext.setStrongBrickTypeId(levelData.strongBrickTypeId);
-        Brick[][] bricks = LevelLoaderUtils.loadBricks(levelData);
-        gameContext.setBricks(bricks);
+        brickManager.setNormalBrickTypeId(levelData.normalBrickTypeId);
+        brickManager.setStrongBrickTypeId(levelData.strongBrickTypeId);
+        brickManager.initBricks(levelData);
     }
 
     public void updateGame() {
         gameContext.getPaddle().update();
         gameContext.getBall().update();
+        brickManager.updateBricks();
     }
 
     public void renderGame(Graphics2D graphics2D) {
+        brickManager.renderBricks(graphics2D);
         gameContext.getPaddle().render(graphics2D);
         gameContext.getBall().render(graphics2D);
-        RendererUtils.renderBricks(graphics2D, gameContext.getBricks());
     }
 }

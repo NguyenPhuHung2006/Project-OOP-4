@@ -11,22 +11,12 @@ public class GameContext {
     private int windowHeight;
     private Paddle paddle;
     private Ball ball;
-    private Brick[][] bricks;
-    private int normalBrickTypeId;
-    private int strongBrickTypeId;
-
-    private int tileWidth;
-    private int tileHeight;
 
     public static GameContext getInstance() {
         if (instance == null) {
             instance = new GameContext();
         }
         return instance;
-    }
-
-    public void setBricks(Brick[][] bricks) {
-        this.bricks = bricks;
     }
 
     public void setWindowWidth(int windowWidth) {
@@ -45,22 +35,6 @@ public class GameContext {
         this.ball = ball;
     }
 
-    public void setNormalBrickTypeId(int normalBrickTypeId) { this.normalBrickTypeId = normalBrickTypeId; }
-
-    public void setStrongBrickTypeId(int strongBrickTypeId) { this.strongBrickTypeId = strongBrickTypeId; }
-
-    public Brick[][] getBricks() {
-        return bricks;
-    }
-
-    public void setTileWidth(int tileWidth) {
-        this.tileWidth = tileWidth;
-    }
-
-    public void setTileHeight(int tileHeight) {
-        this.tileHeight = tileHeight;
-    }
-
     public int getWindowWidth() {
         return windowWidth;
     }
@@ -77,19 +51,4 @@ public class GameContext {
         return ball;
     }
 
-    public int getNormalBrickTypeId() {
-        return normalBrickTypeId;
-    }
-
-    public int getStrongBrickTypeId() {
-        return strongBrickTypeId;
-    }
-
-    public int getTileWidth() {
-        return tileWidth;
-    }
-
-    public int getTileHeight() {
-        return tileHeight;
-    }
 }

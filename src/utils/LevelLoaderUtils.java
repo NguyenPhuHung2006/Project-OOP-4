@@ -37,6 +37,9 @@ public class LevelLoaderUtils {
         int brickWidth = windowWidth / tileCountX;
         int brickHeight = windowHeight / tileCountY;
 
+        gameContext.setTileWidth(brickWidth);
+        gameContext.setTileHeight(brickHeight);
+
         for (int y = 0; y < tileCountY; y++) {
             for (int x = 0; x < tileCountX; x++) {
 

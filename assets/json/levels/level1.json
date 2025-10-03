@@ -3,7 +3,7 @@
     "textureX": 0, "textureY": 0, "textureWidth": 96, "textureHeight": 24,
     "texturePath": "/textures/paddle.png",
     "x": 210, "y": 400, "width": 80, "height": 20,
-    "speed": 10,
+    "speed": 20,
     "numberOfFrames": 1, "endFrameOffset": -1
   },
 

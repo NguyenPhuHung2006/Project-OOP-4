@@ -28,6 +28,7 @@ public class Ball extends MovableObject {
 
         GameContext gameContext = GameContext.getInstance();
         Paddle paddle = gameContext.getPaddle();
+        Brick[][] bricks = gameContext.getBricks();
 
         if (!isMoving) {
             handleInitialMovement(paddle);
@@ -35,7 +36,7 @@ public class Ball extends MovableObject {
 
         followPaddleIfAttached(paddle);
 
-        moveAndCollideWithObject(paddle);
+        moveAndCollide();
 
         handleWindowCollision();
     }
@@ -61,4 +62,70 @@ public class Ball extends MovableObject {
             }
         }
     }
+
+    @Override
+    public void moveAndCollide() {
+
+        GameContext gameContext = GameContext.getInstance();
+
+        Paddle paddle = gameContext.getPaddle();
+        Brick[][] bricks = gameContext.getBricks();
+        int tileWidth = gameContext.getTileWidth();
+        int tileHeight = gameContext.getTileHeight();
+
+        moveX();
+        handleObjectCollisionX(paddle);
+        handleBricksCollisionX(bricks, tileWidth, tileHeight);
+        moveY();
+        handleObjectCollisionY(paddle);
+        handleBricksCollisionY(bricks, tileWidth, tileHeight);
+    }
+
+    private boolean validBrickPosition(int tileX, int tileY, int tileBoundX, int tileBoundY) {
+        return tileX >= 0 && tileY >= 0 && tileX < tileBoundX && tileY < tileBoundY;
+    }
+
+    private void handleBricksCollision(Brick[][] bricks, int tileWidth, int tileHeight, boolean checkX) {
+        int topLeftTileX = x / tileWidth;
+        int topLeftTileY = y / tileHeight;
+
+        int bottomRightTileX = (x + width) / tileWidth;
+        int bottomRightTileY = (y + height) / tileHeight;
+
+        int tileBoundX = bricks[0].length;
+        int tileBoundY = bricks.length;
+
+        int[][] corners = {
+                { topLeftTileX, topLeftTileY },
+                { bottomRightTileX, topLeftTileY },
+                { topLeftTileX, bottomRightTileY },
+                { bottomRightTileX, bottomRightTileY }
+        };
+
+        for (int[] corner : corners) {
+            int tileX = corner[0];
+            int tileY = corner[1];
+
+            if (validBrickPosition(tileX, tileY, tileBoundX, tileBoundY)) {
+                Brick brick = bricks[tileY][tileX];
+                if (brick != null) {
+                    if (checkX) {
+                        handleObjectCollisionX(brick);
+                    } else {
+                        handleObjectCollisionY(brick);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    private void handleBricksCollisionX(Brick[][] bricks, int tileWidth, int tileHeight) {
+        handleBricksCollision(bricks, tileWidth, tileHeight, true);
+    }
+
+    private void handleBricksCollisionY(Brick[][] bricks, int tileWidth, int tileHeight) {
+        handleBricksCollision(bricks, tileWidth, tileHeight, false);
+    }
+
 }

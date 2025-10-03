@@ -27,8 +27,8 @@ public class Ball extends MovableObject {
     public void update() {
 
         GameContext gameContext = GameContext.getInstance();
+
         Paddle paddle = gameContext.getPaddle();
-        Brick[][] bricks = gameContext.getBricks();
 
         if (!isMoving) {
             handleInitialMovement(paddle);
@@ -67,11 +67,12 @@ public class Ball extends MovableObject {
     public void moveAndCollide() {
 
         GameContext gameContext = GameContext.getInstance();
+        BrickManager brickManager = BrickManager.getInstance();
 
         Paddle paddle = gameContext.getPaddle();
-        Brick[][] bricks = gameContext.getBricks();
-        int tileWidth = gameContext.getTileWidth();
-        int tileHeight = gameContext.getTileHeight();
+        Brick[][] bricks = brickManager.getBricks();
+        int tileWidth = brickManager.getBrickWidth();
+        int tileHeight = brickManager.getBrickHeight();
 
         moveX();
         handleObjectCollisionX(paddle);
@@ -109,11 +110,22 @@ public class Ball extends MovableObject {
             if (validBrickPosition(tileX, tileY, tileBoundX, tileBoundY)) {
                 Brick brick = bricks[tileY][tileX];
                 if (brick != null) {
+
                     if (checkX) {
                         handleObjectCollisionX(brick);
                     } else {
                         handleObjectCollisionY(brick);
                     }
+
+                    if(!brick.isHit()) {
+                        brick.takeHit();
+                        brick.handleHit();
+                    }
+
+                    if(brick.isDestroyed()) {
+                        bricks[tileY][tileX] = null;
+                    }
+
                     break;
                 }
             }

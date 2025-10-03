@@ -7,6 +7,11 @@ public class StrongBrick extends Brick{
     }
 
     @Override
+    protected void handleHit() {
+
+    }
+
+    @Override
     public void update() {
 
     }

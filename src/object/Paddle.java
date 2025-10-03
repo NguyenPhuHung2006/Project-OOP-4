@@ -15,13 +15,19 @@ public class Paddle extends MovableObject {
     public void update() {
 
         handleInput();
-        moveX();
-        handleWindowCollision();
+        moveAndCollide();
     }
 
     @Override
     public Paddle clone() {
         return (Paddle)super.clone();
+    }
+
+    @Override
+    protected void moveAndCollide() {
+
+        moveX();
+        handleWindowCollision();
     }
 
     private void handleInput() {

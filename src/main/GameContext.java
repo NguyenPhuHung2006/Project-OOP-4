@@ -15,6 +15,9 @@ public class GameContext {
     private int normalBrickTypeId;
     private int strongBrickTypeId;
 
+    private int tileWidth;
+    private int tileHeight;
+
     public static GameContext getInstance() {
         if (instance == null) {
             instance = new GameContext();
@@ -50,6 +53,14 @@ public class GameContext {
         return bricks;
     }
 
+    public void setTileWidth(int tileWidth) {
+        this.tileWidth = tileWidth;
+    }
+
+    public void setTileHeight(int tileHeight) {
+        this.tileHeight = tileHeight;
+    }
+
     public int getWindowWidth() {
         return windowWidth;
     }
@@ -72,5 +83,13 @@ public class GameContext {
 
     public int getStrongBrickTypeId() {
         return strongBrickTypeId;
+    }
+
+    public int getTileWidth() {
+        return tileWidth;
+    }
+
+    public int getTileHeight() {
+        return tileHeight;
     }
 }

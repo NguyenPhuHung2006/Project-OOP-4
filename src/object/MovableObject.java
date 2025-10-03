@@ -36,13 +36,8 @@ public abstract class MovableObject extends GameObject {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-    
-    protected void moveAndCollideWithObject(GameObject gameObject) {
-        moveX();
-        handleObjectCollisionX(gameObject);
-        moveY();
-        handleObjectCollisionY(gameObject);
-    }
+
+    protected abstract void moveAndCollide();
 
     protected void moveX() {
         x += dx * speed;

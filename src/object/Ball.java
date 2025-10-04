@@ -109,7 +109,7 @@ public class Ball extends MovableObject {
 
             if (validBrickPosition(tileX, tileY, tileBoundX, tileBoundY)) {
                 Brick brick = bricks[tileY][tileX];
-                if (brick != null) {
+                if (brick != null && IntersectUtils.intersect(this, brick)) {
 
                     if (checkX) {
                         handleObjectCollisionX(brick);
@@ -123,7 +123,7 @@ public class Ball extends MovableObject {
                     }
 
                     if(brick.isDestroyed()) {
-                        bricks[tileY][tileX] = null;
+                        bricks[y][x] = null;
                     }
 
                     break;

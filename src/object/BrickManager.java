@@ -130,58 +130,25 @@ public class BrickManager {
 
         for(int y = 0; y < brickCountY; y++) {
             for(int x = 0; x < brickCountX; x++) {
-                if(bricks[y][x] != null) {
-                    Brick currentBrick = bricks[y][x];
+                Brick currentBrick = bricks[y][x];
+                if(currentBrick != null) {
                     currentBrick.update();
                 }
             }
         }
     }
 
-//    public void renderBricks(Graphics2D graphics2D) {
-//
-//        for(int y = 0; y < brickCountY; y++) {
-//            for(int x = 0; x < brickCountX; x++) {
-//                if(bricks[y][x] != null) {
-//                    Brick currentBrick = bricks[y][x];
-//                    currentBrick.render(graphics2D);
-//                }
-//            }
-//        }
-//    }
-
     public void renderBricks(Graphics2D graphics2D) {
-        for (int y = 0; y < brickCountY; y++) {
-            for (int x = 0; x < brickCountX; x++) {
-                if (bricks[y][x] != null) {
+
+        for(int y = 0; y < brickCountY; y++) {
+            for(int x = 0; x < brickCountX; x++) {
+                if(bricks[y][x] != null) {
                     Brick currentBrick = bricks[y][x];
                     currentBrick.render(graphics2D);
-
-                    if (currentBrick instanceof NormalBrick normalBrick) {
-                        graphics2D.setColor(Color.RED);
-                        graphics2D.setFont(new Font("Consolas", Font.PLAIN, 12));
-
-                        // show frames left
-                        graphics2D.drawString(
-                                "Frames: " + normalBrick.getFrames().size(),
-                                normalBrick.getX(),
-                                normalBrick.getY() - 5
-                        );
-
-                        // show destroyed flag
-                        if (normalBrick.isDestroyed()) {
-                            graphics2D.drawString(
-                                    "X",
-                                    normalBrick.getX() + normalBrick.getWidth() / 2,
-                                    normalBrick.getY() + normalBrick.getHeight() / 2
-                            );
-                        }
-                    }
                 }
             }
         }
     }
-
 
     public int getBrickWidth() {
         return brickWidth;

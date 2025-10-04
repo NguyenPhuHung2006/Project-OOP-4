@@ -123,7 +123,7 @@ public class Ball extends MovableObject {
                     }
 
                     if(brick.isDestroyed()) {
-                        bricks[y][x] = null;
+                        bricks[tileY][tileX] = null;
                     }
 
                     break;

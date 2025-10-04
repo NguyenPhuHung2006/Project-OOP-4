@@ -14,6 +14,7 @@ public class StrongBrick extends Brick{
     @Override
     public void update() {
 
+        hit = false;
     }
 
     @Override

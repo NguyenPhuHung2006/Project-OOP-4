@@ -2,10 +2,8 @@ package audio;
 
 public enum SoundEffect {
 
-    // these are only used to test by Hung, we can change this once we get further
-    BOUNCE("/assets/bounce.wav"),
-    BRICK("/assets/brick.wav"),
-    MUSIC("/asset/chest_open.wav");
+    NORMAL_BRICK("/sounds/normalBrick.wav"),
+    STRONG_BRICK("/sounds/strongBrick.wav");
 
     private final String path;
 

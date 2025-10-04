@@ -26,8 +26,8 @@ public abstract class GameObject implements Cloneable {
         return frames;
     }
 
-    protected int x;
-    protected int y;
+    protected float x;
+    protected float y;
     protected int width;
     protected int height;
 
@@ -101,11 +101,11 @@ public abstract class GameObject implements Cloneable {
         return textureHeight;
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 

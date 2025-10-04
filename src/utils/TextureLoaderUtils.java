@@ -13,6 +13,8 @@ import java.util.Objects;
 
 public class TextureLoaderUtils {
 
+    private TextureLoaderUtils() {}
+
     public static BufferedImage loadTexture(int textureX, int textureY, int textureWidth, int textureHeight,
                                         String texturePath) throws ResourceLoadException {
         try {

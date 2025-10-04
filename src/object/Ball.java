@@ -4,6 +4,7 @@ import input.KeyboardManager;
 import utils.IntersectUtils;
 
 import main.GameContext;
+import utils.PhysicsUtils;
 import utils.RandomUtils;
 
 import java.awt.event.KeyEvent;
@@ -75,10 +76,17 @@ public class Ball extends MovableObject {
         int tileHeight = brickManager.getBrickHeight();
 
         moveX();
-        handleObjectCollisionX(paddle);
+        if(IntersectUtils.intersect(this, paddle)) {
+            handleObjectCollisionX(paddle);
+            PhysicsUtils.bounceOffPaddle(this, paddle);
+        }
         handleBricksCollisionX(bricks, tileWidth, tileHeight);
+
         moveY();
-        handleObjectCollisionY(paddle);
+        if(IntersectUtils.intersect(this, paddle)) {
+            handleObjectCollisionY(paddle);
+            PhysicsUtils.bounceOffPaddle(this, paddle);
+        }
         handleBricksCollisionY(bricks, tileWidth, tileHeight);
     }
 
@@ -87,11 +95,11 @@ public class Ball extends MovableObject {
     }
 
     private void handleBricksCollision(Brick[][] bricks, int tileWidth, int tileHeight, boolean checkX) {
-        int topLeftTileX = x / tileWidth;
-        int topLeftTileY = y / tileHeight;
+        int topLeftTileX = (int)x / tileWidth;
+        int topLeftTileY = (int)y / tileHeight;
 
-        int bottomRightTileX = (x + width) / tileWidth;
-        int bottomRightTileY = (y + height) / tileHeight;
+        int bottomRightTileX = ((int)x + width) / tileWidth;
+        int bottomRightTileY = ((int)y + height) / tileHeight;
 
         int tileBoundX = bricks[0].length;
         int tileBoundY = bricks.length;

@@ -9,6 +9,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class LevelLoaderUtils {
+
+    private LevelLoaderUtils() {}
+
     public static LevelData loadLevelFromJson(String path) throws ResourceLoadException {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader(path)) {

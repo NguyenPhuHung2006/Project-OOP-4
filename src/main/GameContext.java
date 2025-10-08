@@ -4,6 +4,7 @@ import input.KeyboardManager;
 import object.Ball;
 import object.Brick;
 import object.Paddle;
+import main.GameManager;
 
 public class GameContext {
     private static GameContext instance;
@@ -11,6 +12,8 @@ public class GameContext {
     private int windowHeight;
     private Paddle paddle;
     private Ball ball;
+
+    private GameContext() {}
 
     public static GameContext getInstance() {
         if (instance == null) {
@@ -50,5 +53,4 @@ public class GameContext {
     public Ball getBall() {
         return ball;
     }
-
 }

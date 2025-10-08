@@ -9,6 +9,7 @@ import utils.RendererUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class GameManager extends JPanel implements Runnable {
     private static volatile GameManager gameManager;
@@ -16,6 +17,9 @@ public class GameManager extends JPanel implements Runnable {
     private final int width = 500;
     private final int height = 500;
     private final int FPS = 60;
+    private int destroyedBricksCount = 0; // đếm số gạch bị phá
+    private boolean gameOver = false;
+    private boolean gameWin = false;
     private boolean running;
 
     // the minimum nanosecond at each frame
@@ -72,7 +76,8 @@ public class GameManager extends JPanel implements Runnable {
                     // convert sleepTime from millisecond to nanosecond
                     Thread.sleep(sleepTime / 1_000_000, (int) (sleepTime % 1_000_000));
                 } catch (InterruptedException e) {
-                    ExceptionHandler.handle(e);
+                    ExceptionHandler.handle(e
+                    );
                 }
             }
         }
@@ -108,20 +113,149 @@ public class GameManager extends JPanel implements Runnable {
         gameContext.setPaddle(paddle);
         gameContext.setBall(ball);
 
+<<<<<<< Updated upstream
         brickManager.setNormalBrickTypeId(levelData.normalBrickTypeId);
         brickManager.setStrongBrickTypeId(levelData.strongBrickTypeId);
         brickManager.initBricks(levelData);
+=======
+        gameContext.setNormalBrickTypeId(levelData.normalBrickTypeId);
+        gameContext.setStrongBrickTypeId(levelData.strongBrickTypeId);
+        Brick[][] bricks = LevelLoaderUtils.loadBricks(levelData);
+        gameContext.setBricks(bricks);
+        gameContext.setGameManager(this);
+
+>>>>>>> Stashed changes
     }
 
     public void updateGame() {
+        // Khi Game Over hoặc You Win
+        if (gameOver || gameWin) {
+            KeyboardManager keyboard = KeyboardManager.getInstance();
+
+            // Nhấn ENTER để chơi lại
+            if (keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+                resetGame();
+            }
+
+            // Nhấn ESC để thoát game
+            if (keyboard.isKeyPressed(KeyEvent.VK_ESCAPE)) {
+                System.exit(0);
+            }
+
+            return;
+        }
         gameContext.getPaddle().update();
         gameContext.getBall().update();
+<<<<<<< Updated upstream
         brickManager.updateBricks();
+=======
+
+        checkWinCondition();
+>>>>>>> Stashed changes
     }
 
+    private void checkWinCondition() {
+        Brick[][] bricks = gameContext.getBricks();
+        for (Brick[] row : bricks) {
+            for (Brick brick : row) {
+                if (brick != null && !brick.isDestroyed()) {
+                    return; // vẫn còn gạch → chưa thắng
+                }
+            }
+        }
+        gameWin = true;
+        // Dừng bóng ngay lập tức
+        gameContext.getBall().setDx(0);
+        gameContext.getBall().setDy(0);
+    }
+
+    public void resetGame() {
+        destroyedBricksCount = 0;
+        gameOver = false;
+        gameWin = false;
+
+        GameContext gameContext = GameContext.getInstance();
+
+        // Tải lại level từ file JSON
+        try {
+            levelData = LevelLoaderUtils.loadLevelFromJson("assets/json/levels/level1.json");
+        } catch (ResourceLoadException e) {
+            ExceptionHandler.handle(e);
+            stopGame();
+        }
+
+        Paddle paddle = new Paddle(levelData.paddle);
+        Ball ball = new Ball(levelData.ball);
+
+        gameContext.setPaddle(paddle);
+        gameContext.setBall(ball);
+        Brick[][] bricks = LevelLoaderUtils.loadBricks(levelData);
+        gameContext.setBricks(bricks);
+    }
+
+
     public void renderGame(Graphics2D graphics2D) {
+<<<<<<< Updated upstream
         brickManager.renderBricks(graphics2D);
         gameContext.getPaddle().render(graphics2D);
         gameContext.getBall().render(graphics2D);
+=======
+        // Vẽ paddle, bóng và gạch
+        gameContext.getPaddle().render(graphics2D);
+        gameContext.getBall().render(graphics2D);
+        RendererUtils.renderBricks(graphics2D, gameContext.getBricks());
+
+        // Hiển thị số lượng gạch đã phá ở góc trên bên phải
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.setFont(new Font("Arial", Font.BOLD, 18));
+        graphics2D.drawString("Bricks destroyed: " + destroyedBricksCount, width - 200, 25);
+
+        // Nếu game kết thúc (thắng hoặc thua)
+        if (gameOver || gameWin) {
+            String message = gameOver ? "GAME OVER" : "YOU WIN!";
+            Color messageColor = gameOver ? Color.RED : Color.GREEN;
+
+            graphics2D.setFont(new Font("Arial", Font.BOLD, 40));
+            FontMetrics fm = graphics2D.getFontMetrics();
+            int textWidth = fm.stringWidth(message);
+            int textHeight = fm.getHeight();
+
+            // Vẽ dòng chữ chính giữa
+            graphics2D.setColor(messageColor);
+            graphics2D.drawString(
+                    message,
+                    (width - textWidth) / 2,
+                    (height + textHeight) / 2
+            );
+
+            // Hiển thị hướng dẫn
+            graphics2D.setFont(new Font("Arial", Font.PLAIN, 20));
+            graphics2D.setColor(Color.BLACK);
+            String hintRestart = "Press ENTER to restart";
+            String hintExit = "Press ESC to exit";
+            int hintRestartWidth = graphics2D.getFontMetrics().stringWidth(hintRestart);
+            int hintExitWidth = graphics2D.getFontMetrics().stringWidth(hintExit);
+
+            graphics2D.drawString(hintRestart, (width - hintRestartWidth) / 2, (height + textHeight) / 2 + 40);
+            graphics2D.drawString(hintExit, (width - hintExitWidth) / 2, (height + textHeight) / 2 + 70);
+        }
+>>>>>>> Stashed changes
     }
+
+    public void incrementDestroyedBricks() {
+        destroyedBricksCount++;
+    }
+
+    public int getDestroyedBricksCount() {
+        return destroyedBricksCount;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
 }

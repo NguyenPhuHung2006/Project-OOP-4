@@ -4,6 +4,7 @@ import input.KeyboardManager;
 import object.Ball;
 import object.Brick;
 import object.Paddle;
+import main.GameManager;
 
 public class GameContext {
     private static GameContext instance;
@@ -11,6 +12,9 @@ public class GameContext {
     private int windowHeight;
     private Paddle paddle;
     private Ball ball;
+
+    private GameManager gameManager;
+    private GameContext() {}
 
     public static GameContext getInstance() {
         if (instance == null) {
@@ -35,6 +39,21 @@ public class GameContext {
         this.ball = ball;
     }
 
+<<<<<<< Updated upstream
+=======
+    public void setNormalBrickTypeId(int normalBrickTypeId) { this.normalBrickTypeId = normalBrickTypeId; }
+
+    public void setStrongBrickTypeId(int strongBrickTypeId) { this.strongBrickTypeId = strongBrickTypeId; }
+
+    public void setGameManager(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
+
+    public Brick[][] getBricks() {
+        return bricks;
+    }
+
+>>>>>>> Stashed changes
     public int getWindowWidth() {
         return windowWidth;
     }
@@ -51,4 +70,18 @@ public class GameContext {
         return ball;
     }
 
+<<<<<<< Updated upstream
+=======
+    public int getNormalBrickTypeId() {
+        return normalBrickTypeId;
+    }
+
+    public int getStrongBrickTypeId() {
+        return strongBrickTypeId;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+>>>>>>> Stashed changes
 }

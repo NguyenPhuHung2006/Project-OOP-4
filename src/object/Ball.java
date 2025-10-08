@@ -1,6 +1,7 @@
 package object;
 
 import input.KeyboardManager;
+import main.GameManager;
 import utils.IntersectUtils;
 
 import main.GameContext;
@@ -29,6 +30,13 @@ public class Ball extends MovableObject {
         GameContext gameContext = GameContext.getInstance();
 
         Paddle paddle = gameContext.getPaddle();
+        GameManager gameManager = gameContext.getGameManager();
+
+        if (y + height >= gameContext.getWindowHeight()) {
+            if (gameManager != null) {
+                gameManager.setGameOver(true);
+            }
+        }
 
         if (!isMoving) {
             handleInitialMovement(paddle);
@@ -39,6 +47,8 @@ public class Ball extends MovableObject {
         moveAndCollide();
 
         handleWindowCollision();
+        //Thêm dòng này để xử lý va chạm bóng – gạch
+        handleBricksCollision();
     }
 
     private void handleInitialMovement(Paddle paddle) {
@@ -63,6 +73,7 @@ public class Ball extends MovableObject {
         }
     }
 
+<<<<<<< Updated upstream
     @Override
     public void moveAndCollide() {
 
@@ -127,11 +138,63 @@ public class Ball extends MovableObject {
                     }
 
                     break;
+=======
+    /**
+     * Xử lý va chạm giữa bóng (Ball) và gạch (Brick).
+     * - Nếu bóng chạm gạch → phá gạch, tăng bộ đếm số gạch bị phá, đổi hướng di chuyển.
+     * - Nếu có gạch rơi xuống dưới paddle → kết thúc game (Game Over).
+     */
+    private void handleBricksCollision() {
+        GameContext gameContext = GameContext.getInstance();
+        Paddle paddle = gameContext.getPaddle();
+        Brick[][] bricks = gameContext.getBricks();
+
+        if (bricks == null || paddle == null) return;
+
+        for (Brick[] row : bricks) {
+            for (Brick brick : row) {
+                if (brick == null || brick.isDestroyed()) continue;
+
+                // Nếu gạch đã rơi xuống dưới paddle => Game Over
+                if (brick.getY() + brick.getHeight() > paddle.getY()) {
+                    if (gameContext.getGameManager() != null) {
+                        gameContext.getGameManager().setGameOver(true);
+                    }
+                    return;
+                }
+
+                // Kiểm tra va chạm bóng <-> gạch
+                if (IntersectUtils.intersect(this, brick)) {
+
+                    // Đánh dấu gạch bị phá
+                    brick.setDestroyed(true);
+
+                    // Báo cho GameManager tăng bộ đếm
+                    if (gameContext.getGameManager() != null) {
+                        gameContext.getGameManager().incrementDestroyedBricks();
+                    }
+
+                    // Đổi hướng bóng
+                    dy = -dy;
+
+                    // Đặt lại vị trí bóng để tránh bị kẹt trong gạch
+                    if (dy > 0) {
+                        // Bóng đi xuống -> đặt bóng dưới gạch
+                        y = brick.getY() + brick.getHeight();
+                    } else {
+                        // Bóng đi lên -> đặt bóng trên gạch
+                        y = brick.getY() - height;
+                    }
+
+                    // Sau khi va chạm với 1 gạch thì dừng lại (tránh xử lý nhiều gạch cùng lúc)
+                    return;
+>>>>>>> Stashed changes
                 }
             }
         }
     }
 
+<<<<<<< Updated upstream
     private void handleBricksCollisionX(Brick[][] bricks, int tileWidth, int tileHeight) {
         handleBricksCollision(bricks, tileWidth, tileHeight, true);
     }
@@ -141,3 +204,6 @@ public class Ball extends MovableObject {
     }
 
 }
+=======
+}
+>>>>>>> Stashed changes

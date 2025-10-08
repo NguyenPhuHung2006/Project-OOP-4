@@ -13,7 +13,6 @@ public class GameContext {
     private Paddle paddle;
     private Ball ball;
 
-    private GameManager gameManager;
     private GameContext() {}
 
     public static GameContext getInstance() {
@@ -39,21 +38,6 @@ public class GameContext {
         this.ball = ball;
     }
 
-<<<<<<< Updated upstream
-=======
-    public void setNormalBrickTypeId(int normalBrickTypeId) { this.normalBrickTypeId = normalBrickTypeId; }
-
-    public void setStrongBrickTypeId(int strongBrickTypeId) { this.strongBrickTypeId = strongBrickTypeId; }
-
-    public void setGameManager(GameManager gameManager) {
-        this.gameManager = gameManager;
-    }
-
-    public Brick[][] getBricks() {
-        return bricks;
-    }
-
->>>>>>> Stashed changes
     public int getWindowWidth() {
         return windowWidth;
     }
@@ -69,19 +53,4 @@ public class GameContext {
     public Ball getBall() {
         return ball;
     }
-
-<<<<<<< Updated upstream
-=======
-    public int getNormalBrickTypeId() {
-        return normalBrickTypeId;
-    }
-
-    public int getStrongBrickTypeId() {
-        return strongBrickTypeId;
-    }
-
-    public GameManager getGameManager() {
-        return gameManager;
-    }
->>>>>>> Stashed changes
 }

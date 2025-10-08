@@ -5,12 +5,8 @@ import java.awt.image.BufferedImage;
 public abstract class Brick extends GameObject {
 
     private int brickTypeId;
-<<<<<<< Updated upstream
     protected boolean destroyed;
     protected boolean hit;
-=======
-    private boolean destroyed = false;
->>>>>>> Stashed changes
 
     public Brick(Brick brick) {
 
@@ -42,15 +38,9 @@ public abstract class Brick extends GameObject {
         this.brickTypeId = brickTypeId;
     }
 
-<<<<<<< Updated upstream
     public void takeHit() { hit = true; }
-=======
-    public boolean isDestroyed() {
-        return destroyed;
-    }
 
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
     }
->>>>>>> Stashed changes
 }

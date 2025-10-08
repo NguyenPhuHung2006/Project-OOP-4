@@ -113,18 +113,9 @@ public class GameManager extends JPanel implements Runnable {
         gameContext.setPaddle(paddle);
         gameContext.setBall(ball);
 
-<<<<<<< Updated upstream
         brickManager.setNormalBrickTypeId(levelData.normalBrickTypeId);
         brickManager.setStrongBrickTypeId(levelData.strongBrickTypeId);
         brickManager.initBricks(levelData);
-=======
-        gameContext.setNormalBrickTypeId(levelData.normalBrickTypeId);
-        gameContext.setStrongBrickTypeId(levelData.strongBrickTypeId);
-        Brick[][] bricks = LevelLoaderUtils.loadBricks(levelData);
-        gameContext.setBricks(bricks);
-        gameContext.setGameManager(this);
-
->>>>>>> Stashed changes
     }
 
     public void updateGame() {
@@ -146,16 +137,13 @@ public class GameManager extends JPanel implements Runnable {
         }
         gameContext.getPaddle().update();
         gameContext.getBall().update();
-<<<<<<< Updated upstream
         brickManager.updateBricks();
-=======
 
         checkWinCondition();
->>>>>>> Stashed changes
     }
 
     private void checkWinCondition() {
-        Brick[][] bricks = gameContext.getBricks();
+        Brick[][] bricks = BrickManager.getInstance().getBricks();
         for (Brick[] row : bricks) {
             for (Brick brick : row) {
                 if (brick != null && !brick.isDestroyed()) {
@@ -189,23 +177,17 @@ public class GameManager extends JPanel implements Runnable {
 
         gameContext.setPaddle(paddle);
         gameContext.setBall(ball);
-        Brick[][] bricks = LevelLoaderUtils.loadBricks(levelData);
-        gameContext.setBricks(bricks);
+        brickManager.initBricks(levelData);
     }
 
 
     public void renderGame(Graphics2D graphics2D) {
-<<<<<<< Updated upstream
         brickManager.renderBricks(graphics2D);
         gameContext.getPaddle().render(graphics2D);
         gameContext.getBall().render(graphics2D);
-=======
-        // Vẽ paddle, bóng và gạch
-        gameContext.getPaddle().render(graphics2D);
-        gameContext.getBall().render(graphics2D);
-        RendererUtils.renderBricks(graphics2D, gameContext.getBricks());
 
-        // Hiển thị số lượng gạch đã phá ở góc trên bên phải
+        brickManager.renderBricks(graphics2D);
+
         graphics2D.setColor(Color.BLACK);
         graphics2D.setFont(new Font("Arial", Font.BOLD, 18));
         graphics2D.drawString("Bricks destroyed: " + destroyedBricksCount, width - 200, 25);
@@ -228,7 +210,6 @@ public class GameManager extends JPanel implements Runnable {
                     (height + textHeight) / 2
             );
 
-            // Hiển thị hướng dẫn
             graphics2D.setFont(new Font("Arial", Font.PLAIN, 20));
             graphics2D.setColor(Color.BLACK);
             String hintRestart = "Press ENTER to restart";
@@ -239,7 +220,6 @@ public class GameManager extends JPanel implements Runnable {
             graphics2D.drawString(hintRestart, (width - hintRestartWidth) / 2, (height + textHeight) / 2 + 40);
             graphics2D.drawString(hintExit, (width - hintExitWidth) / 2, (height + textHeight) / 2 + 70);
         }
->>>>>>> Stashed changes
     }
 
     public void incrementDestroyedBricks() {

@@ -1,20 +1,24 @@
 package main;
 
-import exception.ExceptionHandler;
-import exception.ResourceLoadException;
 import input.KeyboardManager;
-import object.*;
+import object.Ball;
+import object.LevelData;
+import object.Paddle;
 import utils.LevelLoaderUtils;
 import utils.RendererUtils;
+import audio.SoundManager;
+import audio.SoundEffect;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GameManager extends JPanel implements Runnable {
+
     private static volatile GameManager gameManager;
     private Thread gameThread;
     private final int width = 500;
     private final int height = 500;
+    private final Color backgroundColor = Color.white;
     private final int FPS = 60;
     private boolean running;
 
@@ -33,12 +37,10 @@ public class GameManager extends JPanel implements Runnable {
 
     private GameManager() {
         this.setPreferredSize(new Dimension(width, height));
-        Color backgroundColor = Color.white;
         this.setBackground(backgroundColor);
         this.setDoubleBuffered(true);
         this.addKeyListener(KeyboardManager.getInstance());
         this.setFocusable(true);
-        initGame();
     }
 
     public void startGame() {
@@ -46,6 +48,7 @@ public class GameManager extends JPanel implements Runnable {
             running = true;
             gameThread = new Thread(this);
             gameThread.start();
+            initGame();
         }
     }
 
@@ -72,7 +75,7 @@ public class GameManager extends JPanel implements Runnable {
                     // convert sleepTime from millisecond to nanosecond
                     Thread.sleep(sleepTime / 1_000_000, (int) (sleepTime % 1_000_000));
                 } catch (InterruptedException e) {
-                    ExceptionHandler.handle(e);
+                    e.printStackTrace();
                 }
             }
         }
@@ -87,21 +90,12 @@ public class GameManager extends JPanel implements Runnable {
 
 
     GameContext gameContext = GameContext.getInstance();
-    BrickManager brickManager = BrickManager.getInstance();
 
-    LevelData levelData;
+    LevelData level = LevelLoaderUtils.load("assets/levels/level1.json");
+    Paddle paddle = new Paddle(level.paddle);
+    Ball ball = new Ball(level.ball);
 
     public void initGame() {
-
-        try {
-            levelData = LevelLoaderUtils.loadLevelFromJson("assets/json/levels/level1.json");
-        } catch (ResourceLoadException e) {
-            ExceptionHandler.handle(e);
-            stopGame();
-        }
-
-        Paddle paddle = new Paddle(levelData.paddle);
-        Ball ball = new Ball(levelData.ball);
 
         gameContext.setWindowWidth(width);
         gameContext.setWindowHeight(height);
@@ -111,17 +105,20 @@ public class GameManager extends JPanel implements Runnable {
         brickManager.setNormalBrickTypeId(levelData.normalBrickTypeId);
         brickManager.setStrongBrickTypeId(levelData.strongBrickTypeId);
         brickManager.initBricks(levelData);
+
+        SoundManager soundManager = SoundManager.getInstance();
+        soundManager.loadSound(SoundEffect.NORMAL_BRICK);
+        soundManager.loadSound(SoundEffect.STRONG_BRICK);
+        soundManager.setGlobalVolume(0.6f);
     }
 
     public void updateGame() {
-        gameContext.getPaddle().update();
-        gameContext.getBall().update();
-        brickManager.updateBricks();
+        paddle.update();
+        ball.update();
     }
 
     public void renderGame(Graphics2D graphics2D) {
-        brickManager.renderBricks(graphics2D);
-        gameContext.getPaddle().render(graphics2D);
-        gameContext.getBall().render(graphics2D);
+        paddle.render(graphics2D);
+        ball.render(graphics2D);
     }
 }

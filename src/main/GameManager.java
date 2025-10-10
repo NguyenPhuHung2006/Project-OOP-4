@@ -5,11 +5,12 @@ import exception.ResourceLoadException;
 import input.KeyboardManager;
 import object.*;
 import utils.LevelLoaderUtils;
-import utils.RendererUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+
+// code này không ổn
 
 public class GameManager extends JPanel implements Runnable {
     private static volatile GameManager gameManager;
@@ -21,6 +22,7 @@ public class GameManager extends JPanel implements Runnable {
     private boolean gameOver = false;
     private boolean gameWin = false;
     private boolean running;
+    private GameObject background;
 
     // the minimum nanosecond at each frame
     private final double frameTime = 1_000_000_000.0 / FPS;
@@ -182,6 +184,7 @@ public class GameManager extends JPanel implements Runnable {
 
 
     public void renderGame(Graphics2D graphics2D) {
+
         brickManager.renderBricks(graphics2D);
         gameContext.getPaddle().render(graphics2D);
         gameContext.getBall().render(graphics2D);

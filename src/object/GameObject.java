@@ -1,14 +1,14 @@
 package object;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.image.BufferedImage;
-
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
 import utils.RendererUtils;
 import utils.TextureLoaderUtils;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class GameObject implements Cloneable {
 

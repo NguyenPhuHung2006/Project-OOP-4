@@ -1,5 +1,8 @@
 package object;
 
+import audio.SoundEffect;
+import audio.SoundManager;
+
 public class StrongBrick extends Brick{
 
     public StrongBrick(Brick brick) {

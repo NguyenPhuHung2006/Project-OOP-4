@@ -1,13 +1,15 @@
 package main;
 
+import audio.SoundEffect;
+import audio.SoundManager;
+import exception.ExceptionHandler;
+import exception.ResourceLoadException;
 import input.KeyboardManager;
 import object.Ball;
+import object.BrickManager;
 import object.LevelData;
 import object.Paddle;
 import utils.LevelLoaderUtils;
-import utils.RendererUtils;
-import audio.SoundManager;
-import audio.SoundEffect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -90,12 +92,21 @@ public class GameManager extends JPanel implements Runnable {
 
 
     GameContext gameContext = GameContext.getInstance();
+    BrickManager brickManager = BrickManager.getInstance();
 
-    LevelData level = LevelLoaderUtils.load("assets/levels/level1.json");
-    Paddle paddle = new Paddle(level.paddle);
-    Ball ball = new Ball(level.ball);
+
+    LevelData levelData;
 
     public void initGame() {
+        try {
+            levelData = LevelLoaderUtils.loadLevelFromJson("assets/json/levels/level1.json");
+        } catch (ResourceLoadException e) {
+            ExceptionHandler.handle(e);
+            stopGame();
+        }
+
+        Paddle paddle = new Paddle(levelData.paddle);
+        Ball ball = new Ball(levelData.ball);
 
         gameContext.setWindowWidth(width);
         gameContext.setWindowHeight(height);
@@ -113,12 +124,18 @@ public class GameManager extends JPanel implements Runnable {
     }
 
     public void updateGame() {
-        paddle.update();
-        ball.update();
+        if(gameContext.getPaddle() != null) {
+            gameContext.getPaddle().update();
+            gameContext.getBall().update();
+            brickManager.updateBricks();
+        }
     }
 
     public void renderGame(Graphics2D graphics2D) {
-        paddle.render(graphics2D);
-        ball.render(graphics2D);
+        if(gameContext.getPaddle() != null) {
+            gameContext.getPaddle().render(graphics2D);
+            gameContext.getBall().render(graphics2D);
+            brickManager.renderBricks(graphics2D);
+        }
     }
 }

@@ -1,5 +1,8 @@
 package object;
 
+import audio.SoundEffect;
+import audio.SoundManager;
+
 public class NormalBrick extends Brick {
 
     public NormalBrick(Brick brick) {

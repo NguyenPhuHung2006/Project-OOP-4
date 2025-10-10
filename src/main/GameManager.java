@@ -39,6 +39,8 @@ public class GameManager extends JPanel implements Runnable {
 
     private GameManager() {
         this.setPreferredSize(new Dimension(width, height));
+        // Load background
+        background = new Background("assets/textures/background.png", width, height);
         Color backgroundColor = Color.white;
         this.setBackground(backgroundColor);
         this.setDoubleBuffered(true);
@@ -99,6 +101,13 @@ public class GameManager extends JPanel implements Runnable {
     LevelData levelData;
 
     public void initGame() {
+        // Khởi tạo background tĩnh (file đã có trong assets/textures/)
+        try {
+            background = new Background("assets/textures/background.png", width, height);
+        } catch (Exception e) {
+            ExceptionHandler.handle(e); // giữ consistent với project
+            background = null;
+        }
 
         try {
             levelData = LevelLoaderUtils.loadLevelFromJson("assets/json/levels/level1.json");
@@ -184,6 +193,9 @@ public class GameManager extends JPanel implements Runnable {
 
 
     public void renderGame(Graphics2D graphics2D) {
+        if (background != null) {
+            background.render(graphics2D);
+        }
 
         brickManager.renderBricks(graphics2D);
         gameContext.getPaddle().render(graphics2D);

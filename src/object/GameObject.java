@@ -54,6 +54,47 @@ public abstract class GameObject implements Cloneable {
             ExceptionHandler.handle(e);
         }
     }
+    /**
+     * Full constructor: cung cấp đầy đủ tham số vùng texture (textureX/Y, textureWidth/Height),
+     * vị trí/size hiển thị (x, y, width, height) và số frame (numberOfFrames).
+     */
+    public GameObject(String texturePath,
+                      int textureX, int textureY,
+                      int textureWidth, int textureHeight,
+                      int x, int y, int width, int height,
+                      int numberOfFrames) {
+
+        // final fields must be initialized here
+        this.texturePath = texturePath;
+        this.textureX = textureX;
+        this.textureY = textureY;
+        this.textureWidth = textureWidth;
+        this.textureHeight = textureHeight;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.numberOfFrames = numberOfFrames;
+
+        try {
+            loadFrames();
+        } catch (InvalidGameStateException e) {
+            ExceptionHandler.handle(e);
+        }
+    }
+
+    /**
+     * Tiện lợi: khi texture là 1 ảnh duy nhất (vẽ toàn bộ ảnh scaled vào width/height),
+     * textureX/textureY = 0, numberOfFrames = 1, textureWidth/textureHeight = width/height (tạm).
+     * (Nếu ảnh gốc có kích thước khác, vẫn được scale bởi TextureLoaderUtils.scaleTexture).
+     */
+    public GameObject(String texturePath, int x, int y, int width, int height) {
+        this(texturePath,
+                0, 0,
+                width, height,
+                x, y, width, height,
+                1);
+    }
 
     private void loadFrames() throws InvalidGameStateException {
 

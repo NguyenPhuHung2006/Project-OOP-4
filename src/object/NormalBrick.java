@@ -24,6 +24,6 @@ public class NormalBrick extends Brick {
 
     @Override
     public void update() {
-
+        hit = false;
     }
 }

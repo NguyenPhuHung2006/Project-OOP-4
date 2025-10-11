@@ -14,13 +14,13 @@ public final class RandomUtils {
         return random.nextInt((max - min) + 1) + min;
     }
 
-    public static double nextDouble(double min, double max) {
+    public static float nextFloat(float min, float max) {
         if (min > max) {
             throw new IllegalArgumentException("min must be <= max");
         }
-        return min + (max - min) * random.nextDouble();
+        return min + (max - min) * random.nextFloat();
     }
-
+    
     public static boolean nextBoolean() {
         return random.nextBoolean();
     }

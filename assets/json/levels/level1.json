@@ -3,7 +3,7 @@
     "textureX": 0, "textureY": 0, "textureWidth": 96, "textureHeight": 24,
     "texturePath": "/textures/paddle.png",
     "x": 210, "y": 400, "width": 80, "height": 20,
-    "speed": 20,
+    "speed": 10,
     "numberOfFrames": 1
   },
 
@@ -11,7 +11,7 @@
     "textureX": 0, "textureY": 0, "textureWidth": 24, "textureHeight": 24,
     "texturePath": "/textures/ball.png",
     "x": 240, "y": 380, "width": 20, "height": 20,
-    "speed": 2,
+    "speed": 3,
     "numberOfFrames": 4
   },
 
@@ -27,7 +27,7 @@
     "texturePath": "/textures/brick.png",
     "x": -1, "y": -1, "width": -1, "height": -1,
     "numberOfFrames": 6,
-    "brickTypeId": 0
+    "normalBrickTypeId": 0
   },
 
   "strongBrick": {
@@ -35,17 +35,14 @@
     "texturePath": "/textures/brick.png",
     "x": -1, "y": -1, "width": -1, "height": -1,
     "numberOfFrames": 1,
-    "brickTypeId": 1
+    "strongBrickTypeId": 1
   },
+
+  "normalBrickTextureIndices": [0, 1, 2, 3, 4, 5],
+  "strongBrickTextureIndices": [6, 7, 8, 9],
 
   "normalBrickTypeId": 0,
   "strongBrickTypeId": 1,
-
-  "normalBrickStartIndex": 0,
-  "strongBrickStartIndex": 6,
-
-  "normalBrickCount": 6,
-  "strongBrickCount": 4,
 
   "framePerRow": 11,
 

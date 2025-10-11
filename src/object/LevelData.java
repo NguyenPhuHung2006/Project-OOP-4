@@ -10,14 +10,11 @@ public class LevelData {
     public NormalBrick normalBrick;
     public StrongBrick strongBrick;
 
-    public int normalBrickStartIndex;
-    public int strongBrickStartIndex;
-
-    public int normalBrickCount;
-    public int strongBrickCount;
-
     public int normalBrickTypeId;
     public int strongBrickTypeId;
+
+    public int[] normalBrickTextureIndices;
+    public int[] strongBrickTextureIndices;
 
     public int framePerRow;
 }

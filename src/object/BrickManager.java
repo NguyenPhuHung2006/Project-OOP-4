@@ -1,28 +1,31 @@
 package object;
 
+import exception.ExceptionHandler;
+import exception.GameException;
+import exception.InvalidGameStateException;
+import exception.ResourceLoadException;
 import main.GameContext;
+import main.GameManager;
 
 import java.awt.*;
+import java.util.HashSet;
 
 public class BrickManager {
 
     private static BrickManager instance;
     Brick[][] bricks;
-
-    private int normalBrickTypeId;
-    private int strongBrickTypeId;
-
-    private int normalBrickStartIndex;
-    private int strongBrickStartIndex;
-
-    private int normalBrickCount;
-    private int strongBrickCount;
     
     private int brickWidth;
     private int brickHeight;
     
     private int brickCountX;
     private int brickCountY;
+
+    private HashSet<Integer> normalBrickTextureSet;
+    private HashSet<Integer> strongBrickTextureSet;
+
+    private int normalBrickTypeId;
+    private int strongBrickTypeId;
 
     private int framePerRow;
 
@@ -44,11 +47,19 @@ public class BrickManager {
 
         framePerRow = levelData.framePerRow;
 
-        normalBrickStartIndex = levelData.normalBrickStartIndex;
-        strongBrickStartIndex = levelData.strongBrickStartIndex;
+        normalBrickTypeId = levelData.normalBrickTypeId;
+        strongBrickTypeId = levelData.strongBrickTypeId;
 
-        normalBrickCount = levelData.normalBrickCount;
-        strongBrickCount = levelData.strongBrickCount;
+        normalBrickTextureSet = new HashSet<>();
+        strongBrickTextureSet = new HashSet<>();
+
+        for(int normalBrickTextureIndex : levelData.normalBrickTextureIndices) {
+            normalBrickTextureSet.add(normalBrickTextureIndex);
+        }
+
+        for(int strongBrickTextureIndex : levelData.strongBrickTextureIndices) {
+            strongBrickTextureSet.add(strongBrickTextureIndex);
+        }
 
         brickCountX = levelData.brickLayout[0].length;
         brickCountY = levelData.brickLayout.length;
@@ -77,9 +88,17 @@ public class BrickManager {
                 if (brickLayout[y][x] < 0)
                     continue;
 
-                int tileIndex = brickLayout[y][x] / framePerRow;
+                int brickTextureIndex = brickLayout[y][x] / framePerRow;
 
-                int currentBrickType = getBrickType(tileIndex);
+                int currentBrickType;
+
+                try {
+                    currentBrickType = getBrickTextureType(brickTextureIndex);
+                } catch (InvalidGameStateException gameStateException) {
+                    ExceptionHandler.handle(gameStateException);
+                    GameManager.getInstance().stopGame();
+                    return;
+                }
 
                 Brick currentBrick;
 
@@ -96,34 +115,46 @@ public class BrickManager {
 
                 currentBrick.setBrickTypeId(currentBrickType);
                 currentBrick.setTextureX(0);
-                currentBrick.setTextureY(tileIndex * currentBrick.getTextureHeight());
+                currentBrick.setTextureY(brickTextureIndex * currentBrick.getTextureHeight());
 
-                if(currentBrickType == normalBrickTypeId) {
+                if(isNormalBrick(currentBrick)) {
                     currentBrick = createNormalBrick((NormalBrick) currentBrick);
-                } else {
+                } else if(isStrongBrick(currentBrick)) {
                     currentBrick = createStrongBrick((StrongBrick) currentBrick);
+                } else {
+                    ExceptionHandler.handle(new InvalidGameStateException("the current brick type is not found", null));
+                    GameManager.getInstance().stopGame();
+                    return;
                 }
                 bricks[y][x] = currentBrick;
             }
         }
     }
 
-    private boolean isNormalBrickIndex(int tileIndex) {
-        return tileIndex >= normalBrickStartIndex
-                && tileIndex < normalBrickStartIndex + normalBrickCount;
+    private boolean isNormalBrick(Brick brick) {
+        return brick.getBrickTypeId() == normalBrickTypeId;
     }
 
-    private boolean isStrongBrickIndex(int tileIndex) {
-        return tileIndex >= strongBrickStartIndex
-                && tileIndex < strongBrickStartIndex + strongBrickCount;
+    private boolean isStrongBrick(Brick brick) {
+        return brick.getBrickTypeId() == strongBrickTypeId;
     }
 
-    private int getBrickType(int tileIndex) {
+    private boolean isNormalBrickTextureIndex(int brickTextureIndex) {
+        return normalBrickTextureSet.contains(brickTextureIndex);
+    }
 
-        if(isNormalBrickIndex(tileIndex)) {
+    private boolean isStrongBrickTextureIndex(int brickTextureIndex) {
+        return strongBrickTextureSet.contains(brickTextureIndex);
+    }
+
+    private int getBrickTextureType(int tileIndex) throws InvalidGameStateException {
+
+        if(isNormalBrickTextureIndex(tileIndex)) {
             return normalBrickTypeId;
+        } else if(isStrongBrickTextureIndex(tileIndex)) {
+            return strongBrickTypeId;
         }
-        return strongBrickTypeId;
+        throw new InvalidGameStateException("index" + tileIndex + "is not valid when getting brick type", null);
     }
 
     public void updateBricks() {

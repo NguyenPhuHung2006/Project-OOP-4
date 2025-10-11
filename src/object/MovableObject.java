@@ -5,8 +5,8 @@ import utils.IntersectUtils;
 
 public abstract class MovableObject extends GameObject {
 
-    protected int dx;
-    protected int dy;
+    protected float dx;
+    protected float dy;
     protected int speed;
 
     public void setDx(int dx) {
@@ -33,11 +33,9 @@ public abstract class MovableObject extends GameObject {
         return speed;
     }
 
-    public int getDx() {
-        return dx;
-    }
+    public float getDx() { return dx; }
 
-    public int getDy() {
+    public float getDy() {
         return dy;
     }
 
@@ -45,18 +43,26 @@ public abstract class MovableObject extends GameObject {
         this.speed = speed;
     }
 
+    public void setDx(float dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(float dy) {
+        this.dy = dy;
+    }
+
     protected abstract void moveAndCollide();
 
     protected void moveX() {
         x += dx * speed;
     }
-    
+
     protected void moveY() {
         y += dy * speed;
     }
-    
+
     protected void handleObjectCollisionX(GameObject gameObject) {
-        
+
         if (IntersectUtils.intersect(this, gameObject)) {
             if (dx > 0) {
                 x = gameObject.getX() - width;
@@ -66,9 +72,9 @@ public abstract class MovableObject extends GameObject {
             dx *= -1;
         }
     }
-    
+
     protected void handleObjectCollisionY(GameObject gameObject) {
-        
+
         if (IntersectUtils.intersect(this, gameObject)) {
             if (dy > 0) {
                 y = gameObject.getY() - height;

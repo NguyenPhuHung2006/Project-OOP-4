@@ -7,15 +7,17 @@ import java.awt.image.BufferedImage;
 
 public class RendererUtils {
 
-    public static void render(BufferedImage texture, int x, int y, Graphics2D graphics2D) {
+    private RendererUtils() {}
+
+    public static void render(BufferedImage texture, float x, float y, Graphics2D graphics2D) {
         if (texture != null && graphics2D != null) {
-            graphics2D.drawImage(texture, x, y, null);
+            graphics2D.drawImage(texture, (int)x, (int)y, null);
         }
     }
 
-    public static void render(BufferedImage texture, int x, int y, int scaledWidth, int scaledHeight, Graphics2D graphics2D) {
+    public static void render(BufferedImage texture, float x, float y, int scaledWidth, int scaledHeight, Graphics2D graphics2D) {
         if (texture != null && graphics2D != null) {
-            graphics2D.drawImage(texture, x, y, scaledWidth, scaledHeight, null);
+            graphics2D.drawImage(texture, (int)x, (int)y, scaledWidth, scaledHeight, null);
         }
     }
 }

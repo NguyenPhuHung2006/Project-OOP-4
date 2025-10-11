@@ -5,6 +5,7 @@ import main.GameManager;
 import utils.IntersectUtils;
 
 import main.GameContext;
+import utils.PhysicsUtils;
 import utils.RandomUtils;
 
 import java.awt.event.KeyEvent;
@@ -42,8 +43,6 @@ public class Ball extends MovableObject {
             handleInitialMovement(paddle);
         }
 
-        followPaddleIfAttached(paddle);
-
         moveAndCollide();
 
         handleWindowCollision();
@@ -56,18 +55,7 @@ public class Ball extends MovableObject {
             dy = -1;
             dx = (RandomUtils.nextBoolean() ? 1 : -1);
         } else {
-            x += paddle.getDx() * paddle.getSpeed();
-            y += paddle.getDy() * paddle.getSpeed();
-        }
-    }
-
-    private void followPaddleIfAttached(Paddle paddle) {
-        if (IntersectUtils.intersect(this, paddle)) {
-            if (paddle.getDx() == 1) {
-                x = paddle.getX() + paddle.getWidth();
-            } else {
-                x = paddle.getX() - width;
-            }
+            x = paddle.getX() + (paddle.getWidth() - width) / 2.0f;
         }
     }
 
@@ -83,10 +71,17 @@ public class Ball extends MovableObject {
         int tileHeight = brickManager.getBrickHeight();
 
         moveX();
-        handleObjectCollisionX(paddle);
+        if(IntersectUtils.intersect(this, paddle)) {
+            handleObjectCollisionX(paddle);
+            PhysicsUtils.bounceOffPaddle(this, paddle);
+        }
         handleBricksCollisionX(bricks, tileWidth, tileHeight);
+
         moveY();
-        handleObjectCollisionY(paddle);
+        if(IntersectUtils.intersect(this, paddle)) {
+            handleObjectCollisionY(paddle);
+            PhysicsUtils.bounceOffPaddle(this, paddle);
+        }
         handleBricksCollisionY(bricks, tileWidth, tileHeight);
     }
 
@@ -95,11 +90,11 @@ public class Ball extends MovableObject {
     }
 
     private void handleBricksCollision(Brick[][] bricks, int tileWidth, int tileHeight, boolean checkX) {
-        int topLeftTileX = x / tileWidth;
-        int topLeftTileY = y / tileHeight;
+        int topLeftTileX = (int)x / tileWidth;
+        int topLeftTileY = (int)y / tileHeight;
 
-        int bottomRightTileX = (x + width) / tileWidth;
-        int bottomRightTileY = (y + height) / tileHeight;
+        int bottomRightTileX = ((int)x + width) / tileWidth;
+        int bottomRightTileY = ((int)y + height) / tileHeight;
 
         int tileBoundX = bricks[0].length;
         int tileBoundY = bricks.length;

@@ -1,11 +1,12 @@
 package main;
 
+import audio.SoundEffect;
+import audio.SoundManager;
 import exception.ExceptionHandler;
 import exception.ResourceLoadException;
 import input.KeyboardManager;
 import object.*;
 import utils.LevelLoaderUtils;
-import utils.RendererUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,8 +77,7 @@ public class GameManager extends JPanel implements Runnable {
                     // convert sleepTime from millisecond to nanosecond
                     Thread.sleep(sleepTime / 1_000_000, (int) (sleepTime % 1_000_000));
                 } catch (InterruptedException e) {
-                    ExceptionHandler.handle(e
-                    );
+                    ExceptionHandler.handle(e);
                 }
             }
         }
@@ -116,6 +116,11 @@ public class GameManager extends JPanel implements Runnable {
         brickManager.setNormalBrickTypeId(levelData.normalBrickTypeId);
         brickManager.setStrongBrickTypeId(levelData.strongBrickTypeId);
         brickManager.initBricks(levelData);
+
+        SoundManager soundManager = SoundManager.getInstance();
+        soundManager.loadSound(SoundEffect.NORMAL_BRICK);
+        soundManager.loadSound(SoundEffect.STRONG_BRICK);
+        soundManager.setGlobalVolume(0.6f);
     }
 
     public void updateGame() {

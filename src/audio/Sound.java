@@ -8,6 +8,7 @@ import java.net.URL;
 
 public class Sound {
     private Clip clip;
+    private FloatControl volumeControl;
 
     public Sound(String path) {
         try {
@@ -18,6 +19,10 @@ public class Sound {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(url);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
+
+            if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            }
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             ExceptionHandler.handle(e);
         }
@@ -46,5 +51,15 @@ public class Sound {
             return;
         }
         clip.stop();
+    }
+
+    public void setVolume(float level) {
+        if (volumeControl == null) return;
+        level = Math.max(0f, Math.min(level, 1f)); // giới hạn 0–1
+
+        float min = volumeControl.getMinimum(); // thường khoảng -80 dB
+        float max = volumeControl.getMaximum(); // thường khoảng 6 dB
+        float gain = (max - min) * level + min; // nội suy
+        volumeControl.setValue(gain);
     }
 }

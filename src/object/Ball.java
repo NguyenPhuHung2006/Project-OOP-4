@@ -35,8 +35,6 @@ public class Ball extends MovableObject {
             handleInitialMovement(paddle);
         }
 
-        followPaddleIfAttached(paddle);
-
         moveAndCollide();
 
         handleWindowCollision();
@@ -49,18 +47,7 @@ public class Ball extends MovableObject {
             dy = -1;
             dx = (RandomUtils.nextBoolean() ? 1 : -1);
         } else {
-            x += paddle.getDx() * paddle.getSpeed();
-            y += paddle.getDy() * paddle.getSpeed();
-        }
-    }
-
-    private void followPaddleIfAttached(Paddle paddle) {
-        if (IntersectUtils.intersect(this, paddle)) {
-            if (paddle.getDx() == 1) {
-                x = paddle.getX() + paddle.getWidth();
-            } else {
-                x = paddle.getX() - width;
-            }
+            x = paddle.getX() + (paddle.getWidth() - width) / 2.0f;
         }
     }
 

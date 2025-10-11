@@ -12,8 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-// code này không ổn
-
 public class GameManager extends JPanel implements Runnable {
     private static volatile GameManager gameManager;
     private Thread gameThread;
@@ -24,7 +22,7 @@ public class GameManager extends JPanel implements Runnable {
     private boolean gameOver = false;
     private boolean gameWin = false;
     private boolean running;
-    private GameObject background;
+    private Background background;
 
     // the minimum nanosecond at each frame
     private final double frameTime = 1_000_000_000.0 / FPS;
@@ -42,7 +40,6 @@ public class GameManager extends JPanel implements Runnable {
     private GameManager() {
         this.setPreferredSize(new Dimension(width, height));
         // Load background
-        background = new Background("assets/textures/background.png", width, height);
         Color backgroundColor = Color.white;
         this.setBackground(backgroundColor);
         this.setDoubleBuffered(true);
@@ -102,13 +99,6 @@ public class GameManager extends JPanel implements Runnable {
     LevelData levelData;
 
     public void initGame() {
-        // Khởi tạo background tĩnh (file đã có trong assets/textures/)
-        try {
-            background = new Background("assets/textures/background.png", width, height);
-        } catch (Exception e) {
-            ExceptionHandler.handle(e); // giữ consistent với project
-            background = null;
-        }
 
         try {
             levelData = LevelLoaderUtils.loadLevelFromJson("assets/json/levels/level1.json");
@@ -119,6 +109,12 @@ public class GameManager extends JPanel implements Runnable {
 
         Paddle paddle = new Paddle(levelData.paddle);
         Ball ball = new Ball(levelData.ball);
+        background = new Background(levelData.background);
+
+        background.setX(0);
+        background.setY(0);
+        background.setWidth(width);
+        background.setHeight(height);
 
         gameContext.setWindowWidth(width);
         gameContext.setWindowHeight(height);
@@ -199,10 +195,8 @@ public class GameManager extends JPanel implements Runnable {
 
 
     public void renderGame(Graphics2D graphics2D) {
-        if (background != null) {
-            background.render(graphics2D);
-        }
 
+        background.render(graphics2D);
         brickManager.renderBricks(graphics2D);
         gameContext.getPaddle().render(graphics2D);
         gameContext.getBall().render(graphics2D);

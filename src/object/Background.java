@@ -7,10 +7,10 @@ public class Background extends GameObject {
      * texturePath: đường dẫn tới file ảnh (ví dụ "assets/textures/background.png")
      * screenWidth/screenHeight: kích thước canvas / window.
      */
-    public Background(String texturePath, int screenWidth, int screenHeight) {
+    public Background(Background background) {
         // Sử dụng constructor tiện lợi: sẽ lấy textureX=0,textureY=0,numberOfFrames=1
         // và scale ảnh vào width=screenWidth, height=screenHeight
-        super(texturePath, 0, 0, screenWidth, screenHeight, 0, 0, screenWidth, screenHeight, 1);
+        super(background);
     }
 
     @Override

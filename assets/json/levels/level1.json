@@ -15,6 +15,13 @@
     "numberOfFrames": 4
   },
 
+  "background": {
+    "textureX": 0, "textureY": 0, "textureWidth": 1000, "textureHeight": 1000,
+    "texturePath": "/textures/background.png",
+    "x": 0, "y": 0, "width": 500, "height": 500,
+    "numberOfFrames": 1
+  },
+
   "normalBrick": {
     "textureX": -1, "textureY": -1, "textureWidth": 32, "textureHeight": 16,
     "texturePath": "/textures/brick.png",

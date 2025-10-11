@@ -5,6 +5,7 @@ public class LevelData {
     public Paddle paddle;
     public Ball ball;
     public int[][] brickLayout;
+    public Background background;
 
     public NormalBrick normalBrick;
     public StrongBrick strongBrick;

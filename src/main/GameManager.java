@@ -1,11 +1,12 @@
 package main;
 
+import audio.SoundEffect;
+import audio.SoundManager;
 import exception.ExceptionHandler;
 import exception.ResourceLoadException;
 import input.KeyboardManager;
 import object.*;
 import utils.LevelLoaderUtils;
-import utils.RendererUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +22,7 @@ public class GameManager extends JPanel implements Runnable {
     private boolean gameOver = false;
     private boolean gameWin = false;
     private boolean running;
+    private Background background;
 
     // the minimum nanosecond at each frame
     private final double frameTime = 1_000_000_000.0 / FPS;
@@ -37,6 +39,7 @@ public class GameManager extends JPanel implements Runnable {
 
     private GameManager() {
         this.setPreferredSize(new Dimension(width, height));
+        // Load background
         Color backgroundColor = Color.white;
         this.setBackground(backgroundColor);
         this.setDoubleBuffered(true);
@@ -76,8 +79,7 @@ public class GameManager extends JPanel implements Runnable {
                     // convert sleepTime from millisecond to nanosecond
                     Thread.sleep(sleepTime / 1_000_000, (int) (sleepTime % 1_000_000));
                 } catch (InterruptedException e) {
-                    ExceptionHandler.handle(e
-                    );
+                    ExceptionHandler.handle(e);
                 }
             }
         }
@@ -107,6 +109,12 @@ public class GameManager extends JPanel implements Runnable {
 
         Paddle paddle = new Paddle(levelData.paddle);
         Ball ball = new Ball(levelData.ball);
+        background = new Background(levelData.background);
+
+        background.setX(0);
+        background.setY(0);
+        background.setWidth(width);
+        background.setHeight(height);
 
         gameContext.setWindowWidth(width);
         gameContext.setWindowHeight(height);
@@ -116,6 +124,11 @@ public class GameManager extends JPanel implements Runnable {
         brickManager.setNormalBrickTypeId(levelData.normalBrickTypeId);
         brickManager.setStrongBrickTypeId(levelData.strongBrickTypeId);
         brickManager.initBricks(levelData);
+
+        SoundManager soundManager = SoundManager.getInstance();
+        soundManager.loadSound(SoundEffect.NORMAL_BRICK);
+        soundManager.loadSound(SoundEffect.STRONG_BRICK);
+        soundManager.setGlobalVolume(0.6f);
     }
 
     public void updateGame() {
@@ -182,6 +195,8 @@ public class GameManager extends JPanel implements Runnable {
 
 
     public void renderGame(Graphics2D graphics2D) {
+
+        background.render(graphics2D);
         brickManager.renderBricks(graphics2D);
         gameContext.getPaddle().render(graphics2D);
         gameContext.getBall().render(graphics2D);

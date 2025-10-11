@@ -41,4 +41,21 @@ public class SoundManager {
             sound.stop();
         }
     }
+
+    public Sound getSound(SoundEffect effect) {
+        return sounds.get(effect);
+    }
+
+    public void setVolume(SoundEffect effect, float level) {
+        Sound sound = sounds.get(effect);
+        if (sound != null) {
+            sound.setVolume(level);
+        }
+    }
+
+    public void setGlobalVolume(float level) {
+        for (Sound sound : sounds.values()) {
+            sound.setVolume(level);
+        }
+    }
 }

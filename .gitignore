@@ -1,3 +1,57 @@
-.idea
-out
-Arkanoid_Project.iml
+# ==========================
+# IntelliJ IDEA (team setup)
+# ==========================
+
+# Ignore personal / local configs
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/shelf/
+.idea/httpRequests/
+.idea/dataSources/
+.idea/usage.statistics.xml
+.idea/gradle.xml
+.idea/libraries/
+.idea/compiler.xml
+.idea/vcs.xml
+.idea/sonarlint/
+.idea/uiDesigner.xml
+
+# Keep only shared project config (important)
+#!.idea/misc.xml
+#!.idea/modules.xml
+#!.idea/codeStyles/
+#!.idea/inspectionProfiles/
+
+# Keep .iml files (safe for team using IntelliJ)
+# (So do NOT ignore them)
+
+# ==========================
+# Build / Output
+# ==========================
+out/
+build/
+target/
+bin/
+
+# ==========================
+# Logs & temporary files
+# ==========================
+*.log
+*.tmp
+*.swp
+*.swo
+
+# ==========================
+# OS-specific files
+# ==========================
+.DS_Store
+Thumbs.db
+
+# ==========================
+# Other common ignores
+# ==========================
+*.class
+*.jar
+*.war
+*.ear

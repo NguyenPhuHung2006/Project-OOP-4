@@ -9,6 +9,14 @@ public abstract class MovableObject extends GameObject {
     protected float dy;
     protected int speed;
 
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(int dy) {
+        this.dy = dy;
+    }
+
     MovableObject(MovableObject movableObject) {
         super(movableObject);
         this.speed = movableObject.speed;

@@ -1,6 +1,7 @@
 package object;
 
 import input.KeyboardManager;
+import main.GameManager;
 import utils.IntersectUtils;
 
 import main.GameContext;
@@ -30,6 +31,13 @@ public class Ball extends MovableObject {
         GameContext gameContext = GameContext.getInstance();
 
         Paddle paddle = gameContext.getPaddle();
+        GameManager gameManager = GameManager.getInstance();
+
+        if (y + height >= gameContext.getWindowHeight()) {
+            if (gameManager != null) {
+                gameManager.setGameOver(true);
+            }
+        }
 
         if (!isMoving) {
             handleInitialMovement(paddle);

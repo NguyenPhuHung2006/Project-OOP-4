@@ -1,5 +1,8 @@
 package object;
 
+import audio.SoundEffect;
+import audio.SoundManager;
+
 public class StrongBrick extends Brick{
 
     public StrongBrick(Brick brick) {
@@ -8,17 +11,11 @@ public class StrongBrick extends Brick{
 
     @Override
     protected void handleHit() {
-
+        SoundManager.getInstance().play(SoundEffect.STRONG_BRICK);
     }
 
     @Override
     public void update() {
 
-        hit = false;
-    }
-
-    @Override
-    public StrongBrick clone() {
-        return (StrongBrick) super.clone();
     }
 }

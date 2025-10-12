@@ -1,9 +1,11 @@
 package object;
 
+import UI.Text.TextType;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
 import input.KeyboardManager;
 import main.GameManager;
+import org.w3c.dom.Text;
 import utils.IntersectUtils;
 
 import main.GameContext;
@@ -130,7 +132,8 @@ public class Ball extends MovableObject {
                     if (brick.isDestroyed()) {
                         bricks[tileY][tileX] = null;
                         brick = null;
-                        brickManager.incrementDestroyedBricks();
+                        int newDestroyedBrickCount = brickManager.incrementDestroyedBricks();
+                        textManager.getText(TextType.SCORE).setContent(String.valueOf(newDestroyedBrickCount));
                     }
 
                     if (checkX) {

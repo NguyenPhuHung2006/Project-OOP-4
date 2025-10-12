@@ -1,5 +1,6 @@
 package object;
 
+import UI.Text.TextManager;
 import audio.SoundManager;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
@@ -27,6 +28,7 @@ public abstract class GameObject implements Cloneable {
     protected transient KeyboardManager keyboardManager = KeyboardManager.getInstance();
     protected transient BrickManager brickManager = BrickManager.getInstance();
     protected transient SoundManager soundManager = SoundManager.getInstance();
+    protected transient TextManager textManager = TextManager.getInstance();
 
     protected final int numberOfFrames;
     protected transient List<BufferedImage> frames;

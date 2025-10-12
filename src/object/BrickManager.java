@@ -1,5 +1,8 @@
 package object;
 
+import UI.Text.TextManager;
+import UI.Text.TextType;
+import config.LevelData;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
 import main.GameContext;
@@ -44,6 +47,12 @@ public class BrickManager {
         return new StrongBrick(strongBrick);
     }
 
+    public void loadFromLevel(LevelData levelData) {
+        brickManager.setNormalBrickTypeId(levelData.normalBrickTypeId);
+        brickManager.setStrongBrickTypeId(levelData.strongBrickTypeId);
+        brickManager.initBricks(levelData);
+    }
+
     public void initBricks(LevelData levelData) {
 
         framePerRow = levelData.framePerRow;
@@ -79,6 +88,7 @@ public class BrickManager {
     private void loadBricks(LevelData levelData) {
 
         destroyedBricksCount = 0;
+        TextManager.getInstance().getText(TextType.SCORE).setContent(String.valueOf(destroyedBricksCount));
         totalBricksCount = 0;
 
         int[][] brickLayout = levelData.brickLayout;
@@ -206,8 +216,8 @@ public class BrickManager {
         return bricks;
     }
 
-    public void incrementDestroyedBricks() {
-        destroyedBricksCount++;
+    public int incrementDestroyedBricks() {
+        return ++destroyedBricksCount;
     }
 
     public int getDestroyedBricksCount() {

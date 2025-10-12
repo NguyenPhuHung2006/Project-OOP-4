@@ -44,7 +44,36 @@
   "normalBrickSoundPath": "/sounds/normalBrick.wav",
   "strongBrickSoundPath": "/sounds/strongBrick.wav",
 
-
+  "brickDestroyedText": {
+    "content": "Brick Destroyed: ",
+    "colorData": {"r":255,"g":255,"b":255,"a":255},
+    "fontData": {"name":"Arial","style":"PLAIN","size":24}
+  },
+  "scoreText": {
+    "content": "0",
+    "colorData": {"r":255,"g":255,"b":0,"a":255},
+    "fontData": {"name":"Arial","style":"PLAIN","size":24}
+  },
+  "loseText": {
+    "content": "Game Over",
+    "colorData": {"r":255,"g":0,"b":0,"a":255},
+    "fontData": {"name":"Arial","style":"BOLD","size":48}
+  },
+  "winText": {
+    "content": "You Win!",
+    "colorData": {"r":0,"g":255,"b":0,"a":255},
+    "fontData": {"name":"Arial","style":"BOLD","size":48}
+  },
+  "pressEnterText": {
+    "content": "Press ENTER to restart",
+    "colorData": {"r":255,"g":255,"b":255,"a":255},
+    "fontData": {"name":"Arial","style":"PLAIN","size":24}
+  },
+  "pressExitText": {
+    "content": "Press ESC to exit",
+    "colorData": {"r":255,"g":255,"b":255,"a":255},
+    "fontData": {"name":"Arial","style":"PLAIN","size":24}
+  },
 
   "brickLayout": [
     [0, 0, -1, -1, -1, -1, -1, -1, -1, -1],
@@ -68,6 +97,5 @@
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
   ]
-
 
 }

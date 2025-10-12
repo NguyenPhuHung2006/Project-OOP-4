@@ -1,5 +1,7 @@
 package main;
 
+import config.GameConfig;
+import config.LevelData;
 import object.Background;
 import object.Ball;
 import object.Paddle;
@@ -20,6 +22,21 @@ public class GameContext {
             gameContext = new GameContext();
         }
         return gameContext;
+    }
+
+    public void loadFromLevel(LevelData levelData, GameConfig gameConfig) {
+
+        gameContext.setWindowWidth(gameConfig.windowWidth);
+        gameContext.setWindowHeight(gameConfig.windowHeight);
+
+        Paddle paddle = new Paddle(levelData.paddle);
+        gameContext.setPaddle(paddle);
+
+        Ball ball = new Ball(levelData.ball);
+        gameContext.setBall(ball);
+
+        Background background = new Background(levelData.background);
+        gameContext.setBackground(background);
     }
 
     public void setWindowWidth(int windowWidth) {
@@ -57,8 +74,6 @@ public class GameContext {
     public Ball getBall() {
         return ball;
     }
-
-
 
     public Background getBackground() {
         return background;

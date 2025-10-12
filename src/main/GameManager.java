@@ -1,14 +1,16 @@
 package main;
 
-import UI.Text.GameText;
 import UI.Text.TextManager;
 import UI.Text.TextType;
 import audio.SoundEffect;
 import audio.SoundManager;
+import config.GameConfig;
+import config.LevelData;
 import exception.ExceptionHandler;
+import exception.InvalidGameStateException;
 import input.KeyboardManager;
 import object.*;
-import utils.LevelLoaderUtils;
+import utils.JsonLoaderUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,8 +19,8 @@ import java.awt.event.KeyEvent;
 public class GameManager extends JPanel implements Runnable {
     private static volatile GameManager gameManager;
     private Thread gameThread;
-    private final int width = 600;
-    private final int height = 600;
+    private final int width;
+    private final int height;
     private final int FPS = 60;
     private boolean gameOver = false;
     private boolean gameWin = false;
@@ -38,9 +40,18 @@ public class GameManager extends JPanel implements Runnable {
         return gameManager;
     }
 
+    GameConfig gameConfig = JsonLoaderUtils.loadConfigFromJson("assets/json/GameConfig.json");
+
     private GameManager() {
+        width = gameConfig.windowWidth;
+        height = gameConfig.windowHeight;
+
+        if(width <= 100 || height <= 100) {
+            ExceptionHandler.handle(new InvalidGameStateException("window size is too small", null));
+        }
+
         this.setPreferredSize(new Dimension(width, height));
-        // Load background
+
         Color backgroundColor = Color.white;
         this.setBackground(backgroundColor);
         this.setDoubleBuffered(true);
@@ -142,29 +153,15 @@ public class GameManager extends JPanel implements Runnable {
 
     public void initGame() {
 
-        levelData = LevelLoaderUtils.loadLevelFromJson("assets/json/levels/level1.json");
+        levelData = JsonLoaderUtils.loadLevelFromJson("assets/json/levels/Level1.json");
 
-        gameContext.setWindowWidth(width);
-        gameContext.setWindowHeight(height);
+        gameContext.loadFromLevel(levelData, gameConfig);
 
-        Paddle paddle = new Paddle(levelData.paddle);
-        gameContext.setPaddle(paddle);
+        textManager.loadFromLevel(levelData);
 
-        Ball ball = new Ball(levelData.ball);
-        gameContext.setBall(ball);
+        brickManager.loadFromLevel(levelData);
 
-        Background background = new Background(levelData.background);
-        gameContext.setBackground(background);
-
-        brickManager.setNormalBrickTypeId(levelData.normalBrickTypeId);
-        brickManager.setStrongBrickTypeId(levelData.strongBrickTypeId);
-        brickManager.initBricks(levelData);
-
-        soundManager.loadSound(SoundEffect.NORMAL_BRICK, levelData.normalBrickSoundPath);
-        soundManager.loadSound(SoundEffect.STRONG_BRICK, levelData.strongBrickSoundPath);
-        soundManager.setGlobalVolume(0.6f);
-
-
+        soundManager.loadFromLevel(levelData);
 
         initialized = true;
     }
@@ -196,37 +193,19 @@ public class GameManager extends JPanel implements Runnable {
         gameContext.getPaddle().render(graphics2D);
         gameContext.getBall().render(graphics2D);
 
+        textManager.getText(TextType.BRICK_DESTROYED).render(graphics2D);
+        textManager.getText(TextType.SCORE).render(graphics2D);
+
         brickManager.renderBricks(graphics2D);
 
-        graphics2D.setColor(Color.BLACK);
-        graphics2D.setFont(new Font("Arial", Font.BOLD, 18));
-        graphics2D.drawString("Bricks destroyed: " + brickManager.getDestroyedBricksCount(), width - 200, 25);
-
-        if (gameOver || gameWin) {
-            String message = gameOver ? "GAME OVER" : "YOU WIN!";
-            Color messageColor = gameOver ? Color.RED : Color.GREEN;
-
-            graphics2D.setFont(new Font("Arial", Font.BOLD, 40));
-            FontMetrics fm = graphics2D.getFontMetrics();
-            int textWidth = fm.stringWidth(message);
-            int textHeight = fm.getHeight();
-
-            graphics2D.setColor(messageColor);
-            graphics2D.drawString(
-                    message,
-                    (width - textWidth) / 2,
-                    (height + textHeight) / 2
-            );
-
-            graphics2D.setFont(new Font("Arial", Font.PLAIN, 20));
-            graphics2D.setColor(Color.BLACK);
-            String hintRestart = "Press ENTER to restart";
-            String hintExit = "Press ESC to exit";
-            int hintRestartWidth = graphics2D.getFontMetrics().stringWidth(hintRestart);
-            int hintExitWidth = graphics2D.getFontMetrics().stringWidth(hintExit);
-
-            graphics2D.drawString(hintRestart, (width - hintRestartWidth) / 2, (height + textHeight) / 2 + 40);
-            graphics2D.drawString(hintExit, (width - hintExitWidth) / 2, (height + textHeight) / 2 + 70);
+        if(gameOver || gameWin) {
+            if(gameOver) {
+                textManager.getText(TextType.GAME_OVER).render(graphics2D);
+            } else if(gameWin) {
+                textManager.getText(TextType.GAME_WIN).render(graphics2D);
+            }
+            textManager.getText(TextType.PRESS_ENTER).render(graphics2D);
+            textManager.getText(TextType.PRESS_ESC).render(graphics2D);
         }
     }
 }

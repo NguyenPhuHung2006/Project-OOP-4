@@ -1,11 +1,14 @@
-package object;
+package config;
+
+import UI.Text.TextData;
+import object.*;
 
 public class LevelData {
-
     public Paddle paddle;
     public Ball ball;
-    public int[][] brickLayout;
     public Background background;
+
+    public int[][] brickLayout;
 
     public NormalBrick normalBrick;
     public StrongBrick strongBrick;
@@ -20,4 +23,12 @@ public class LevelData {
     public String strongBrickSoundPath;
 
     public int framePerRow;
+
+    public TextData brickDestroyedText;
+    public TextData loseText;
+    public TextData winText;
+    public TextData pressEnterText;
+    public TextData pressExitText;
+    public TextData scoreText;
+
 }

@@ -21,8 +21,9 @@ public class Paddle extends MovableObject {
     @Override
     protected void initScreenBounds(GameObject gameObject) {
 
-        width = gameObject.getTextureWidth();
-        height = gameObject.getTextureHeight();
+        width = gameContext.getWindowWidth() / 5.0f;
+        height = width * (1.0f * gameObject.getTextureHeight() / gameObject.getTextureWidth());
+
         y = gameContext.getWindowHeight() * 20.0f / 25;
 
         x = (gameContext.getWindowWidth() - width) / 2;

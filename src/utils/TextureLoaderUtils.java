@@ -13,37 +13,38 @@ import java.util.Objects;
 
 public class TextureLoaderUtils {
 
-    private TextureLoaderUtils() {}
+    private TextureLoaderUtils() {
+    }
 
     public static BufferedImage loadTexture(int textureX, int textureY, int textureWidth, int textureHeight,
-                                        String texturePath) throws ResourceLoadException {
+                                            String texturePath) {
         try {
             BufferedImage fullImage = ImageIO.read(Objects.requireNonNull(GameObject.class.getResource(texturePath)));
 
             return fullImage.getSubimage(textureX, textureY, textureWidth, textureHeight);
 
         } catch (IOException | NullPointerException | RasterFormatException e) {
-            throw new ResourceLoadException(texturePath, e);
+            ExceptionHandler.handle(new ResourceLoadException(texturePath, e));
+            return null;
         }
     }
 
     public static BufferedImage scaleTexture(int textureX, int textureY, int textureWidth, int textureHeight,
-                                         String texturePath,
-                                         int scaledWidth, int scaledHeight) {
+                                             String texturePath,
+                                             float scaledWidth, float scaledHeight) {
 
         BufferedImage originalTexture;
 
-        try {
-            originalTexture = loadTexture(textureX, textureY, textureWidth, textureHeight, texturePath);
-        } catch (ResourceLoadException e) {
-            ExceptionHandler.handle(e);
-            return null;
-        }
+        originalTexture = loadTexture(textureX, textureY, textureWidth, textureHeight, texturePath);
 
-        BufferedImage scaledTexture = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage scaledTexture = new BufferedImage((int)scaledWidth, (int)scaledHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics2D = scaledTexture.createGraphics();
 
-        graphics2D.drawImage(originalTexture.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH), 0, 0, null);
+        try {
+            graphics2D.drawImage(originalTexture.getScaledInstance((int)scaledWidth, (int)scaledHeight, Image.SCALE_SMOOTH), 0, 0, null);
+        } catch (NullPointerException e) {
+            ExceptionHandler.handle(e);
+        }
         graphics2D.dispose();
 
         return scaledTexture;

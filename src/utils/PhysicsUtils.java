@@ -5,7 +5,8 @@ import object.Paddle;
 
 public class PhysicsUtils {
 
-    private PhysicsUtils() {}
+    private PhysicsUtils() {
+    }
 
     public static void bounceOffPaddle(Ball ball, Paddle paddle) {
 

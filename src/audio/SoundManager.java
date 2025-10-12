@@ -1,5 +1,7 @@
 package audio;
 
+import config.LevelData;
+
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -10,8 +12,8 @@ public class SoundManager {
     private SoundManager() {
     }
 
-    public void loadSound(SoundEffect effect) {
-        sounds.put(effect, new Sound(effect.getPath()));
+    public void loadSound(SoundEffect effect, String path) {
+        sounds.put(effect, new Sound(path));
     }
 
     public static SoundManager getInstance() {
@@ -19,6 +21,12 @@ public class SoundManager {
             soundManager = new SoundManager();
         }
         return soundManager;
+    }
+
+    public void loadFromLevel(LevelData levelData) {
+        soundManager.loadSound(SoundEffect.NORMAL_BRICK, levelData.normalBrickSoundPath);
+        soundManager.loadSound(SoundEffect.STRONG_BRICK, levelData.strongBrickSoundPath);
+        soundManager.setGlobalVolume(0.6f);
     }
 
     public void play(SoundEffect effect) {

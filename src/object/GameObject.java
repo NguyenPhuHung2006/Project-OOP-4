@@ -1,7 +1,12 @@
 package object;
 
+import UI.Text.TextManager;
+import audio.SoundManager;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
+import input.KeyboardManager;
+import main.GameContext;
+import main.GameManager;
 import utils.RendererUtils;
 import utils.TextureLoaderUtils;
 
@@ -19,6 +24,12 @@ public abstract class GameObject implements Cloneable {
     private final int textureHeight;
     protected transient BufferedImage currentTexture;
 
+    protected transient GameContext gameContext = GameContext.getInstance();
+    protected transient KeyboardManager keyboardManager = KeyboardManager.getInstance();
+    protected transient BrickManager brickManager = BrickManager.getInstance();
+    protected transient SoundManager soundManager = SoundManager.getInstance();
+    protected transient TextManager textManager = TextManager.getInstance();
+
     protected final int numberOfFrames;
     protected transient List<BufferedImage> frames;
 
@@ -26,19 +37,16 @@ public abstract class GameObject implements Cloneable {
         return frames;
     }
 
-    protected float x;
-    protected float y;
-    protected int width;
-    protected int height;
+    protected transient float x;
+    protected transient float y;
+    protected transient float width;
+    protected transient float height;
 
     public abstract void update();
 
-    public GameObject(GameObject gameObject) {
+    protected abstract void initScreenBounds(GameObject gameObject);
 
-        this.x = gameObject.x;
-        this.y = gameObject.y;
-        this.width = gameObject.width;
-        this.height = gameObject.height;
+    public GameObject(GameObject gameObject) {
 
         this.textureX = gameObject.textureX;
         this.textureY = gameObject.textureY;
@@ -48,14 +56,12 @@ public abstract class GameObject implements Cloneable {
 
         this.numberOfFrames = gameObject.numberOfFrames;
 
-        try {
-            loadFrames();
-        } catch (InvalidGameStateException e) {
-            ExceptionHandler.handle(e);
-        }
+        initScreenBounds(gameObject);
+
+        loadFrames();
     }
 
-    private void loadFrames() throws InvalidGameStateException {
+    private void loadFrames() {
 
         frames = new ArrayList<>();
         for (int i = numberOfFrames - 1; i >= 0; i--) {
@@ -63,7 +69,7 @@ public abstract class GameObject implements Cloneable {
                     texturePath, width, height));
         }
         if (frames.isEmpty()) {
-            throw new InvalidGameStateException("The number of frames is not valid", null);
+            ExceptionHandler.handle(new InvalidGameStateException("The number of frames is not valid", null));
         }
         currentTexture = frames.getLast();
     }
@@ -109,11 +115,11 @@ public abstract class GameObject implements Cloneable {
         return y;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 

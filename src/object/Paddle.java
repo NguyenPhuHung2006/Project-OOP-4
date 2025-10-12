@@ -19,6 +19,17 @@ public class Paddle extends MovableObject {
     }
 
     @Override
+    protected void initScreenBounds(GameObject gameObject) {
+
+        width = gameContext.getWindowWidth() / 5.0f;
+        height = width * (1.0f * gameObject.getTextureHeight() / gameObject.getTextureWidth());
+
+        y = gameContext.getWindowHeight() * 20.0f / 25;
+
+        x = (gameContext.getWindowWidth() - width) / 2;
+    }
+
+    @Override
     public Paddle clone() {
         return (Paddle)super.clone();
     }
@@ -31,7 +42,6 @@ public class Paddle extends MovableObject {
     }
 
     private void handleInput() {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
 
         boolean leftKeyPressed = keyboardManager.isKeyPressed(KeyEvent.VK_LEFT);
         boolean rightKeyPressed = keyboardManager.isKeyPressed(KeyEvent.VK_RIGHT);

@@ -1,5 +1,6 @@
 package exception;
 
+import main.GameManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +13,7 @@ public class ExceptionHandler {
         } else {
             logger.error("Unexpected exception: {}", e.getMessage(), e);
         }
+        GameManager.getInstance().stopGame();
     }
 }
 

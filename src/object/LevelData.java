@@ -16,5 +16,8 @@ public class LevelData {
     public int[] normalBrickTextureIndices;
     public int[] strongBrickTextureIndices;
 
+    public String normalBrickSoundPath;
+    public String strongBrickSoundPath;
+
     public int framePerRow;
 }

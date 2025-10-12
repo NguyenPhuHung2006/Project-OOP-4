@@ -1,5 +1,7 @@
 package object;
 
+import exception.ExceptionHandler;
+import exception.InvalidGameStateException;
 import input.KeyboardManager;
 import main.GameManager;
 import utils.IntersectUtils;
@@ -28,8 +30,6 @@ public class Ball extends MovableObject {
     @Override
     public void update() {
 
-        GameContext gameContext = GameContext.getInstance();
-
         Paddle paddle = gameContext.getPaddle();
         GameManager gameManager = GameManager.getInstance();
 
@@ -48,8 +48,19 @@ public class Ball extends MovableObject {
         handleWindowCollision();
     }
 
+    @Override
+    protected void initScreenBounds(GameObject gameObject) {
+        if(gameContext.getPaddle() == null) {
+            ExceptionHandler.handle(new InvalidGameStateException("the paddle should be initialized before the ball", null));
+        }
+        Paddle paddle = gameContext.getPaddle();
+        width = paddle.getHeight();
+        height = paddle.getHeight();
+        x = paddle.getX() + (paddle.getWidth() - width) / 2;
+        y = paddle.getY() - height;
+    }
+
     private void handleInitialMovement(Paddle paddle) {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
         if (keyboardManager.isKeyPressed(KeyEvent.VK_UP)) {
             isMoving = true;
             dy = -1;
@@ -62,23 +73,20 @@ public class Ball extends MovableObject {
     @Override
     public void moveAndCollide() {
 
-        GameContext gameContext = GameContext.getInstance();
-        BrickManager brickManager = BrickManager.getInstance();
-
         Paddle paddle = gameContext.getPaddle();
         Brick[][] bricks = brickManager.getBricks();
         int tileWidth = brickManager.getBrickWidth();
         int tileHeight = brickManager.getBrickHeight();
 
         moveX();
-        if(IntersectUtils.intersect(this, paddle)) {
+        if (IntersectUtils.intersect(this, paddle)) {
             handleObjectCollisionX(paddle);
             PhysicsUtils.bounceOffPaddle(this, paddle);
         }
         handleBricksCollisionX(bricks, tileWidth, tileHeight);
 
         moveY();
-        if(IntersectUtils.intersect(this, paddle)) {
+        if (IntersectUtils.intersect(this, paddle)) {
             handleObjectCollisionY(paddle);
             PhysicsUtils.bounceOffPaddle(this, paddle);
         }
@@ -90,20 +98,20 @@ public class Ball extends MovableObject {
     }
 
     private void handleBricksCollision(Brick[][] bricks, int tileWidth, int tileHeight, boolean checkX) {
-        int topLeftTileX = (int)x / tileWidth;
-        int topLeftTileY = (int)y / tileHeight;
+        int topLeftTileX = (int) x / tileWidth;
+        int topLeftTileY = (int) y / tileHeight;
 
-        int bottomRightTileX = ((int)x + width) / tileWidth;
-        int bottomRightTileY = ((int)y + height) / tileHeight;
+        int bottomRightTileX = (int)(x + width) / tileWidth;
+        int bottomRightTileY = (int)(y + height) / tileHeight;
 
         int tileBoundX = bricks[0].length;
         int tileBoundY = bricks.length;
 
         int[][] corners = {
-                { topLeftTileX, topLeftTileY },
-                { bottomRightTileX, topLeftTileY },
-                { topLeftTileX, bottomRightTileY },
-                { bottomRightTileX, bottomRightTileY }
+                {topLeftTileX, topLeftTileY},
+                {bottomRightTileX, topLeftTileY},
+                {topLeftTileX, bottomRightTileY},
+                {bottomRightTileX, bottomRightTileY}
         };
 
         for (int[] corner : corners) {
@@ -114,19 +122,21 @@ public class Ball extends MovableObject {
                 Brick brick = bricks[tileY][tileX];
                 if (brick != null && IntersectUtils.intersect(this, brick)) {
 
-                    if (checkX) {
-                        handleObjectCollisionX(brick);
-                    } else {
-                        handleObjectCollisionY(brick);
-                    }
-
-                    if(!brick.isHit()) {
+                    if (!brick.isHit()) {
                         brick.takeHit();
                         brick.handleHit();
                     }
 
-                    if(brick.isDestroyed()) {
+                    if (brick.isDestroyed()) {
                         bricks[tileY][tileX] = null;
+                        brick = null;
+                        brickManager.incrementDestroyedBricks();
+                    }
+
+                    if (checkX) {
+                        handleObjectCollisionX(brick);
+                    } else {
+                        handleObjectCollisionY(brick);
                     }
 
                     break;
@@ -143,4 +153,8 @@ public class Ball extends MovableObject {
         handleBricksCollision(bricks, tileWidth, tileHeight, false);
     }
 
+    public void stop() {
+        dx = 0;
+        dy = 0;
+    }
 }

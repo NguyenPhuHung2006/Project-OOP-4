@@ -63,6 +63,10 @@ public abstract class MovableObject extends GameObject {
 
     protected void handleObjectCollisionX(GameObject gameObject) {
 
+        if(gameObject == null) {
+            return;
+        }
+
         if (IntersectUtils.intersect(this, gameObject)) {
             if (dx > 0) {
                 x = gameObject.getX() - width;
@@ -74,6 +78,10 @@ public abstract class MovableObject extends GameObject {
     }
 
     protected void handleObjectCollisionY(GameObject gameObject) {
+
+        if(gameObject == null) {
+            return;
+        }
 
         if (IntersectUtils.intersect(this, gameObject)) {
             if (dy > 0) {
@@ -87,7 +95,6 @@ public abstract class MovableObject extends GameObject {
 
     protected void handleWindowCollision() {
 
-        GameContext gameContext = GameContext.getInstance();
         int windowWidth = gameContext.getWindowWidth();
         int windowHeight = gameContext.getWindowHeight();
 

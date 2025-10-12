@@ -5,7 +5,8 @@ import java.util.Random;
 public final class RandomUtils {
     private static final Random random = new Random();
 
-    private RandomUtils() {}
+    private RandomUtils() {
+    }
 
     public static int nextInt(int min, int max) {
         if (min > max) {
@@ -20,7 +21,7 @@ public final class RandomUtils {
         }
         return min + (max - min) * random.nextFloat();
     }
-    
+
     public static boolean nextBoolean() {
         return random.nextBoolean();
     }

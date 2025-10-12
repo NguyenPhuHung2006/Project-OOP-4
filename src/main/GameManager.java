@@ -1,9 +1,11 @@
 package main;
 
+import UI.Text.GameText;
+import UI.Text.TextManager;
+import UI.Text.TextType;
 import audio.SoundEffect;
 import audio.SoundManager;
 import exception.ExceptionHandler;
-import exception.ResourceLoadException;
 import input.KeyboardManager;
 import object.*;
 import utils.LevelLoaderUtils;
@@ -15,14 +17,13 @@ import java.awt.event.KeyEvent;
 public class GameManager extends JPanel implements Runnable {
     private static volatile GameManager gameManager;
     private Thread gameThread;
-    private final int width = 500;
-    private final int height = 500;
+    private final int width = 600;
+    private final int height = 600;
     private final int FPS = 60;
-    private int destroyedBricksCount = 0; // đếm số gạch bị phá
     private boolean gameOver = false;
     private boolean gameWin = false;
-    private boolean running;
-    private Background background;
+
+    private volatile boolean initialized = false;
 
     // the minimum nanosecond at each frame
     private final double frameTime = 1_000_000_000.0 / FPS;
@@ -45,25 +46,28 @@ public class GameManager extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(KeyboardManager.getInstance());
         this.setFocusable(true);
-        initGame();
     }
 
     public void startGame() {
-        if (gameThread == null || !running) {
-            running = true;
+        if (gameThread == null) {
+            initGame();
             gameThread = new Thread(this);
             gameThread.start();
         }
     }
 
     public void stopGame() {
-        running = false;
+        System.exit(0);
+    }
+
+    public boolean isRunning() {
+        return gameThread != null;
     }
 
     @Override
     public void run() {
 
-        while (running) {
+        while (isRunning()) {
 
             long startFrame = System.nanoTime();
 
@@ -92,111 +96,102 @@ public class GameManager extends JPanel implements Runnable {
         renderGame(graphics2D);
     }
 
-
     GameContext gameContext = GameContext.getInstance();
     BrickManager brickManager = BrickManager.getInstance();
+    SoundManager soundManager = SoundManager.getInstance();
+    KeyboardManager keyboardManager = KeyboardManager.getInstance();
+    TextManager textManager = TextManager.getInstance();
 
     LevelData levelData;
 
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    private void checkGameCondition() {
+
+        if (brickManager.isCleared()) {
+            gameWin = true;
+            gameContext.getBall().stop();
+        }
+    }
+
+    public void resetGame() {
+
+        gameOver = false;
+        gameWin = false;
+
+        initGame();
+    }
+
+    public void handleGameState() {
+
+        if(gameWin || gameOver) {
+            if(keyboardManager.isKeyPressed(KeyEvent.VK_ENTER)) {
+                resetGame();
+            }
+            if(keyboardManager.isKeyPressed(KeyEvent.VK_ESCAPE)) {
+                stopGame();
+            }
+        }
+    }
+
     public void initGame() {
 
-        try {
-            levelData = LevelLoaderUtils.loadLevelFromJson("assets/json/levels/level1.json");
-        } catch (ResourceLoadException e) {
-            ExceptionHandler.handle(e);
-            stopGame();
-        }
-
-        Paddle paddle = new Paddle(levelData.paddle);
-        Ball ball = new Ball(levelData.ball);
-        background = new Background(levelData.background);
-
-        background.setX(0);
-        background.setY(0);
-        background.setWidth(width);
-        background.setHeight(height);
+        levelData = LevelLoaderUtils.loadLevelFromJson("assets/json/levels/level1.json");
 
         gameContext.setWindowWidth(width);
         gameContext.setWindowHeight(height);
+
+        Paddle paddle = new Paddle(levelData.paddle);
         gameContext.setPaddle(paddle);
+
+        Ball ball = new Ball(levelData.ball);
         gameContext.setBall(ball);
+
+        Background background = new Background(levelData.background);
+        gameContext.setBackground(background);
 
         brickManager.setNormalBrickTypeId(levelData.normalBrickTypeId);
         brickManager.setStrongBrickTypeId(levelData.strongBrickTypeId);
         brickManager.initBricks(levelData);
 
-        SoundManager soundManager = SoundManager.getInstance();
-        soundManager.loadSound(SoundEffect.NORMAL_BRICK);
-        soundManager.loadSound(SoundEffect.STRONG_BRICK);
+        soundManager.loadSound(SoundEffect.NORMAL_BRICK, levelData.normalBrickSoundPath);
+        soundManager.loadSound(SoundEffect.STRONG_BRICK, levelData.strongBrickSoundPath);
         soundManager.setGlobalVolume(0.6f);
+
+
+
+        initialized = true;
     }
 
     public void updateGame() {
-        // Khi Game Over hoặc You Win
-        if (gameOver || gameWin) {
-            KeyboardManager keyboard = KeyboardManager.getInstance();
 
-            // Nhấn ENTER để chơi lại
-            if (keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
-                resetGame();
-            }
+        handleGameState();
 
-            // Nhấn ESC để thoát game
-            if (keyboard.isKeyPressed(KeyEvent.VK_ESCAPE)) {
-                System.exit(0);
-            }
-
+        if (!initialized || gameWin || gameOver) {
             return;
         }
+
+        gameContext.getBackground().update();
         gameContext.getPaddle().update();
         gameContext.getBall().update();
         brickManager.updateBricks();
 
-        checkWinCondition();
+        checkGameCondition();
     }
-
-    private void checkWinCondition() {
-        Brick[][] bricks = BrickManager.getInstance().getBricks();
-        for (Brick[] row : bricks) {
-            for (Brick brick : row) {
-                if (brick != null && !brick.isDestroyed()) {
-                    return; // vẫn còn gạch → chưa thắng
-                }
-            }
-        }
-        gameWin = true;
-        // Dừng bóng ngay lập tức
-        gameContext.getBall().setDx(0);
-        gameContext.getBall().setDy(0);
-    }
-
-    public void resetGame() {
-        destroyedBricksCount = 0;
-        gameOver = false;
-        gameWin = false;
-
-        GameContext gameContext = GameContext.getInstance();
-
-        // Tải lại level từ file JSON
-        try {
-            levelData = LevelLoaderUtils.loadLevelFromJson("assets/json/levels/level1.json");
-        } catch (ResourceLoadException e) {
-            ExceptionHandler.handle(e);
-            stopGame();
-        }
-
-        Paddle paddle = new Paddle(levelData.paddle);
-        Ball ball = new Ball(levelData.ball);
-
-        gameContext.setPaddle(paddle);
-        gameContext.setBall(ball);
-        brickManager.initBricks(levelData);
-    }
-
 
     public void renderGame(Graphics2D graphics2D) {
 
-        background.render(graphics2D);
+        if (!initialized) {
+            return;
+        }
+
+        gameContext.getBackground().render(graphics2D);
         brickManager.renderBricks(graphics2D);
         gameContext.getPaddle().render(graphics2D);
         gameContext.getBall().render(graphics2D);
@@ -205,9 +200,8 @@ public class GameManager extends JPanel implements Runnable {
 
         graphics2D.setColor(Color.BLACK);
         graphics2D.setFont(new Font("Arial", Font.BOLD, 18));
-        graphics2D.drawString("Bricks destroyed: " + destroyedBricksCount, width - 200, 25);
+        graphics2D.drawString("Bricks destroyed: " + brickManager.getDestroyedBricksCount(), width - 200, 25);
 
-        // Nếu game kết thúc (thắng hoặc thua)
         if (gameOver || gameWin) {
             String message = gameOver ? "GAME OVER" : "YOU WIN!";
             Color messageColor = gameOver ? Color.RED : Color.GREEN;
@@ -217,7 +211,6 @@ public class GameManager extends JPanel implements Runnable {
             int textWidth = fm.stringWidth(message);
             int textHeight = fm.getHeight();
 
-            // Vẽ dòng chữ chính giữa
             graphics2D.setColor(messageColor);
             graphics2D.drawString(
                     message,
@@ -236,21 +229,4 @@ public class GameManager extends JPanel implements Runnable {
             graphics2D.drawString(hintExit, (width - hintExitWidth) / 2, (height + textHeight) / 2 + 70);
         }
     }
-
-    public void incrementDestroyedBricks() {
-        destroyedBricksCount++;
-    }
-
-    public int getDestroyedBricksCount() {
-        return destroyedBricksCount;
-    }
-
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
 }

@@ -10,8 +10,8 @@ public class SoundManager {
     private SoundManager() {
     }
 
-    public void loadSound(SoundEffect effect) {
-        sounds.put(effect, new Sound(effect.getPath()));
+    public void loadSound(SoundEffect effect, String path) {
+        sounds.put(effect, new Sound(path));
     }
 
     public static SoundManager getInstance() {

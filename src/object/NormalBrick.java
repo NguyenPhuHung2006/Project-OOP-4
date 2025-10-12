@@ -1,7 +1,6 @@
 package object;
 
 import audio.SoundEffect;
-import audio.SoundManager;
 
 public class NormalBrick extends Brick {
 
@@ -11,7 +10,7 @@ public class NormalBrick extends Brick {
 
     @Override
     protected void handleHit() {
-        SoundManager.getInstance().play(SoundEffect.NORMAL_BRICK);
+        soundManager.play(SoundEffect.NORMAL_BRICK);
         if (!frames.isEmpty()) {
             frames.removeLast();
             currentTexture = frames.isEmpty() ? null : frames.getLast();
@@ -25,5 +24,13 @@ public class NormalBrick extends Brick {
     @Override
     public void update() {
         hit = false;
+    }
+
+    @Override
+    protected void initScreenBounds(GameObject gameObject) {
+        x = gameObject.getX();
+        y = gameObject.getY();
+        width = gameObject.getWidth();
+        height = gameObject.getHeight();
     }
 }

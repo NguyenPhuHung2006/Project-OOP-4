@@ -1,25 +1,25 @@
 package main;
 
-import input.KeyboardManager;
+import object.Background;
 import object.Ball;
-import object.Brick;
 import object.Paddle;
-import main.GameManager;
 
 public class GameContext {
-    private static GameContext instance;
+    private static GameContext gameContext;
     private int windowWidth;
     private int windowHeight;
     private Paddle paddle;
     private Ball ball;
+    private Background background;
 
-    private GameContext() {}
+    private GameContext() {
+    }
 
     public static GameContext getInstance() {
-        if (instance == null) {
-            instance = new GameContext();
+        if (gameContext == null) {
+            gameContext = new GameContext();
         }
-        return instance;
+        return gameContext;
     }
 
     public void setWindowWidth(int windowWidth) {
@@ -38,6 +38,10 @@ public class GameContext {
         this.ball = ball;
     }
 
+    public void setBackground(Background background) {
+        this.background = background;
+    }
+
     public int getWindowWidth() {
         return windowWidth;
     }
@@ -52,5 +56,11 @@ public class GameContext {
 
     public Ball getBall() {
         return ball;
+    }
+
+
+
+    public Background getBackground() {
+        return background;
     }
 }

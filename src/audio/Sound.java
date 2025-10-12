@@ -5,9 +5,13 @@ import exception.ExceptionHandler;
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 public class Sound {
-    private Clip clip;
+    private byte[] audioData;
+    private AudioFormat format;
+    private float volume = 1.0f;
     private FloatControl volumeControl;
 
     public Sound(String path) {
@@ -16,50 +20,91 @@ public class Sound {
             if (url == null) {
                 throw new IllegalArgumentException("Sound file not found: " + path);
             }
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(url);
-            clip = AudioSystem.getClip();
-            clip.open(audioStream);
 
-            if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
-                volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            try (AudioInputStream stream = AudioSystem.getAudioInputStream(url);
+                 ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+
+                format = stream.getFormat();
+                byte[] temp = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = stream.read(temp)) != -1) {
+                    buffer.write(temp, 0, bytesRead);
+                }
+                audioData = buffer.toByteArray();
             }
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+
+        } catch (UnsupportedAudioFileException | IOException e) {
             ExceptionHandler.handle(e);
         }
     }
 
     public void play() {
-        if (clip == null) {
-            return;
-        }
-        if (clip.isRunning()) {
-            clip.stop();
-        }
-        clip.setFramePosition(0);
-        clip.start();
+        if (audioData == null || format == null) return;
+
+        new Thread(() -> {
+            try (AudioInputStream ais = new AudioInputStream(
+                    new ByteArrayInputStream(audioData),
+                    format,
+                    audioData.length / format.getFrameSize())) {
+
+                Clip clip = AudioSystem.getClip();
+                clip.open(ais);
+
+                if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                    FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                    float min = control.getMinimum();
+                    float max = control.getMaximum();
+                    float gain = min + (max - min) * volume;
+                    control.setValue(gain);
+                }
+
+                clip.start();
+
+                clip.addLineListener(event -> {
+                    if (event.getType() == LineEvent.Type.STOP) {
+                        clip.close();
+                    }
+                });
+
+            } catch (Exception e) {
+                ExceptionHandler.handle(e);
+            }
+        }).start();
     }
 
     public void loop() {
-        if (clip == null) {
-            return;
-        }
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        if (audioData == null || format == null) return;
+
+        new Thread(() -> {
+            try (AudioInputStream ais = new AudioInputStream(
+                    new ByteArrayInputStream(audioData),
+                    format,
+                    audioData.length / format.getFrameSize())) {
+
+                Clip clip = AudioSystem.getClip();
+                clip.open(ais);
+
+                if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                    FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                    float min = control.getMinimum();
+                    float max = control.getMaximum();
+                    float gain = min + (max - min) * volume;
+                    control.setValue(gain);
+                }
+
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+
+            } catch (Exception e) {
+                ExceptionHandler.handle(e);
+            }
+        }).start();
     }
 
     public void stop() {
-        if (clip == null) {
-            return;
-        }
-        clip.stop();
+
     }
 
     public void setVolume(float level) {
-        if (volumeControl == null) return;
-        level = Math.max(0f, Math.min(level, 1f)); // giới hạn 0–1
-
-        float min = volumeControl.getMinimum(); // thường khoảng -80 dB
-        float max = volumeControl.getMaximum(); // thường khoảng 6 dB
-        float gain = (max - min) * level + min; // nội suy
-        volumeControl.setValue(gain);
+        this.volume = level;
     }
 }

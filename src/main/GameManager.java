@@ -8,6 +8,7 @@ import config.GameConfig;
 import config.LevelData;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
+import exception.ResourceLoadException;
 import input.KeyboardManager;
 import object.*;
 import utils.JsonLoaderUtils;
@@ -154,6 +155,10 @@ public class GameManager extends JPanel implements Runnable {
     public void initGame() {
 
         levelData = JsonLoaderUtils.loadLevelFromJson("assets/json/levels/Level1.json");
+
+        if(levelData == null) {
+            ExceptionHandler.handle(new ResourceLoadException("assets/json/levels/Level1.json", null));
+        }
 
         gameContext.loadFromLevel(levelData, gameConfig);
 

@@ -1,69 +1,66 @@
 package audio;
 
 import config.LevelData;
+import kuusisto.tinysound.TinySound;
 
 import java.util.EnumMap;
 import java.util.Map;
 
 public class SoundManager {
-    private static SoundManager soundManager;
-    private final Map<SoundEffect, Sound> sounds = new EnumMap<>(SoundEffect.class);
+    private static SoundManager instance;
+    private final Map<SoundEffect, GameSound> sounds = new EnumMap<>(SoundEffect.class);
+    private float globalVolume = 1.0f;
 
     private SoundManager() {
-    }
-
-    public void loadSound(SoundEffect effect, String path) {
-        sounds.put(effect, new Sound(path));
+        TinySound.init();
     }
 
     public static SoundManager getInstance() {
-        if (soundManager == null) {
-            soundManager = new SoundManager();
+        if (instance == null) {
+            instance = new SoundManager();
         }
-        return soundManager;
+        return instance;
+    }
+
+    public void loadSound(SoundEffect effect, String path) {
+        sounds.put(effect, new GameSound(path));
     }
 
     public void loadFromLevel(LevelData levelData) {
-        soundManager.loadSound(SoundEffect.NORMAL_BRICK, levelData.normalBrickSoundPath);
-        soundManager.loadSound(SoundEffect.STRONG_BRICK, levelData.strongBrickSoundPath);
-        soundManager.setGlobalVolume(0.6f);
+        loadSound(SoundEffect.NORMAL_BRICK, levelData.normalBrickSoundPath);
+        loadSound(SoundEffect.STRONG_BRICK, levelData.strongBrickSoundPath);
+        setGlobalVolume(0.6f);
     }
 
     public void play(SoundEffect effect) {
-        Sound sound = sounds.get(effect);
+        GameSound sound = sounds.get(effect);
         if (sound != null) {
             sound.play();
         }
     }
 
-    public void loop(SoundEffect effect) {
-        Sound sound = sounds.get(effect);
-        if (sound != null) {
-            sound.loop();
-        }
-    }
-
     public void stop(SoundEffect effect) {
-        Sound sound = sounds.get(effect);
+        GameSound sound = sounds.get(effect);
         if (sound != null) {
             sound.stop();
         }
     }
 
-    public Sound getSound(SoundEffect effect) {
-        return sounds.get(effect);
-    }
-
     public void setVolume(SoundEffect effect, float level) {
-        Sound sound = sounds.get(effect);
+        GameSound sound = sounds.get(effect);
         if (sound != null) {
             sound.setVolume(level);
         }
     }
 
     public void setGlobalVolume(float level) {
-        for (Sound sound : sounds.values()) {
-            sound.setVolume(level);
+        globalVolume = Math.max(0f, Math.min(1f, level));
+        for (GameSound sound : sounds.values()) {
+            sound.setVolume(globalVolume);
         }
+    }
+
+    public void cleanup() {
+        TinySound.shutdown();
     }
 }

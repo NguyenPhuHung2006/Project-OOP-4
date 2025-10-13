@@ -1,5 +1,7 @@
 package object;
 
+import audio.SoundType;
+
 public class PowerUpBrick extends Brick{
 
     public PowerUpBrick(Brick brick) {
@@ -8,12 +10,16 @@ public class PowerUpBrick extends Brick{
 
     @Override
     protected void handleHit() {
-
+        hit = false;
+        soundManager.play(SoundType.POWERUP_BRICK);
+        destroyed = true;
     }
 
     @Override
     public void update() {
-
+        if(hit) {
+            handleHit();
+        }
     }
 
     @Override

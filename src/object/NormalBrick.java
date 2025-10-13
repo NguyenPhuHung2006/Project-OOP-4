@@ -1,6 +1,6 @@
 package object;
 
-import audio.SoundEffect;
+import audio.SoundType;
 
 public class NormalBrick extends Brick {
 
@@ -11,7 +11,7 @@ public class NormalBrick extends Brick {
     @Override
     protected void handleHit() {
         hit = false;
-        soundManager.play(SoundEffect.NORMAL_BRICK);
+        soundManager.play(SoundType.NORMAL_BRICK);
         if (!frames.isEmpty()) {
             frames.removeLast();
             currentTexture = frames.isEmpty() ? null : frames.getLast();

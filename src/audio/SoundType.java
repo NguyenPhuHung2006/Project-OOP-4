@@ -1,7 +1,8 @@
 package audio;
 
-public enum SoundEffect {
+public enum SoundType {
     NORMAL_BRICK,
     STRONG_BRICK,
+    POWERUP_BRICK,
     THEME
 }

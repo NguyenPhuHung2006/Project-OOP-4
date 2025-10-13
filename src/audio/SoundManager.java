@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class SoundManager {
     private static SoundManager instance;
-    private final Map<SoundEffect, GameSound> sounds = new EnumMap<>(SoundEffect.class);
+    private final Map<SoundType, GameSound> sounds = new EnumMap<>(SoundType.class);
     private float globalVolume = 1.0f;
 
     private SoundManager() {
@@ -22,31 +22,32 @@ public class SoundManager {
         return instance;
     }
 
-    public void loadSound(SoundEffect effect, String path) {
+    public void loadSound(SoundType effect, String path) {
         sounds.put(effect, new GameSound(path));
     }
 
     public void loadFromLevel(LevelData levelData) {
-        loadSound(SoundEffect.NORMAL_BRICK, levelData.normalBrickSoundPath);
-        loadSound(SoundEffect.STRONG_BRICK, levelData.strongBrickSoundPath);
+        loadSound(SoundType.NORMAL_BRICK, levelData.normalBrickSoundPath);
+        loadSound(SoundType.STRONG_BRICK, levelData.strongBrickSoundPath);
+        loadSound(SoundType.POWERUP_BRICK, levelData.powerUpBrickSoundPath);
         setGlobalVolume(0.6f);
     }
 
-    public void play(SoundEffect effect) {
+    public void play(SoundType effect) {
         GameSound sound = sounds.get(effect);
         if (sound != null) {
             sound.play();
         }
     }
 
-    public void stop(SoundEffect effect) {
+    public void stop(SoundType effect) {
         GameSound sound = sounds.get(effect);
         if (sound != null) {
             sound.stop();
         }
     }
 
-    public void setVolume(SoundEffect effect, float level) {
+    public void setVolume(SoundType effect, float level) {
         GameSound sound = sounds.get(effect);
         if (sound != null) {
             sound.setVolume(level);

@@ -23,9 +23,11 @@ public class BrickManager {
 
     private HashSet<Integer> normalBrickTextureSet;
     private HashSet<Integer> strongBrickTextureSet;
+    private HashSet<Integer> powerUpBrickTextureSet;
 
     private int normalBrickTypeId;
     private int strongBrickTypeId;
+    private int powerUpBrickTypeId;
 
     private int framePerRow;
 
@@ -49,9 +51,14 @@ public class BrickManager {
         return new StrongBrick(strongBrick);
     }
 
+    private PowerUpBrick createPowerUpBrick(PowerUpBrick powerUpBrick) {
+        return new PowerUpBrick(powerUpBrick);
+    }
+
     public void loadFromLevel(LevelData levelData) {
         brickManager.setNormalBrickTypeId(levelData.normalBrickTypeId);
         brickManager.setStrongBrickTypeId(levelData.strongBrickTypeId);
+        brickManager.setPowerUpBrickTypeId(levelData.powerUpBrickTypeId);
         brickManager.initBricks(levelData);
     }
 
@@ -61,9 +68,11 @@ public class BrickManager {
 
         normalBrickTypeId = levelData.normalBrickTypeId;
         strongBrickTypeId = levelData.strongBrickTypeId;
+        powerUpBrickTypeId = levelData.powerUpBrickTypeId;
 
         normalBrickTextureSet = new HashSet<>();
         strongBrickTextureSet = new HashSet<>();
+        powerUpBrickTextureSet = new HashSet<>();
 
         for (int normalBrickTextureIndex : levelData.normalBrickTextureIndices) {
             normalBrickTextureSet.add(normalBrickTextureIndex);
@@ -71,6 +80,10 @@ public class BrickManager {
 
         for (int strongBrickTextureIndex : levelData.strongBrickTextureIndices) {
             strongBrickTextureSet.add(strongBrickTextureIndex);
+        }
+
+        for(int powerUpBrickTextureIndex : levelData.powerUpBrickTextureIndices) {
+            powerUpBrickTextureSet.add(powerUpBrickTextureIndex);
         }
 
         brickCountX = levelData.brickLayout[0].length;
@@ -113,8 +126,13 @@ public class BrickManager {
 
                 if (currentBrickType == normalBrickTypeId) {
                     currentBrick = levelData.normalBrick.clone();
+
                 } else if(currentBrickType == strongBrickTypeId) {
                     currentBrick = levelData.strongBrick.clone();
+
+                } else if(currentBrickType == powerUpBrickTypeId) {
+                    currentBrick = levelData.powerUpBrick.clone();
+
                 } else {
                     ExceptionHandler.handle(new InvalidGameStateException("the current brick type is not found", null));
                     return;
@@ -133,6 +151,8 @@ public class BrickManager {
                     currentBrick = createNormalBrick((NormalBrick) currentBrick);
                 } else if (isStrongBrick(currentBrick)) {
                     currentBrick = createStrongBrick((StrongBrick) currentBrick);
+                } else if(isPowerUpBrick(currentBrick)) {
+                    currentBrick = createPowerUpBrick((PowerUpBrick) currentBrick);
                 }
                 bricks[y][x] = currentBrick;
             }
@@ -147,6 +167,10 @@ public class BrickManager {
         return brick.getBrickTypeId() == strongBrickTypeId;
     }
 
+    private boolean isPowerUpBrick(Brick brick) {
+        return brick.getBrickTypeId() == powerUpBrickTypeId;
+    }
+
     private boolean isNormalBrickTextureIndex(int brickTextureIndex) {
         return normalBrickTextureSet.contains(brickTextureIndex);
     }
@@ -155,12 +179,18 @@ public class BrickManager {
         return strongBrickTextureSet.contains(brickTextureIndex);
     }
 
+    private boolean isPowerUpBrickTextureIndex(int brickTextureIndex) {
+        return powerUpBrickTextureSet.contains(brickTextureIndex);
+    }
+
     private int getBrickTextureType(int tileIndex) {
 
         if (isNormalBrickTextureIndex(tileIndex)) {
             return normalBrickTypeId;
         } else if (isStrongBrickTextureIndex(tileIndex)) {
             return strongBrickTypeId;
+        } else if(isPowerUpBrickTextureIndex(tileIndex)) {
+            return powerUpBrickTypeId;
         }
         ExceptionHandler.handle(new InvalidGameStateException("index " + tileIndex + " is not valid when getting brick type", null));
         return -1;
@@ -203,6 +233,10 @@ public class BrickManager {
         this.strongBrickTypeId = strongBrickTypeId;
     }
 
+    public void setPowerUpBrickTypeId(int powerUpBrickTypeId) {
+        this.powerUpBrickTypeId = powerUpBrickTypeId;
+    }
+
     public void setDestroyedBricksCount(int destroyedBricksCount) {
         this.destroyedBricksCount = destroyedBricksCount;
     }
@@ -225,6 +259,10 @@ public class BrickManager {
 
     public int getStrongBrickTypeId() {
         return strongBrickTypeId;
+    }
+
+    public int getPowerUpBrickTypeId() {
+        return powerUpBrickTypeId;
     }
 
     public int getTotalBricksCount() {

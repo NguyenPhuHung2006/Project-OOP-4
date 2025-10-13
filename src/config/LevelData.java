@@ -12,15 +12,19 @@ public class LevelData {
 
     public NormalBrick normalBrick;
     public StrongBrick strongBrick;
+    public PowerUpBrick powerUpBrick;
 
     public int normalBrickTypeId;
     public int strongBrickTypeId;
+    public int powerUpBrickTypeId;
 
     public int[] normalBrickTextureIndices;
     public int[] strongBrickTextureIndices;
+    public int[] powerUpBrickTextureIndices;
 
     public String normalBrickSoundPath;
     public String strongBrickSoundPath;
+    public String powerUpBrickSoundPath;
 
     public int framePerRow;
 

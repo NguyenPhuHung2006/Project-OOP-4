@@ -23,26 +23,36 @@
     "textureX": -1, "textureY": -1, "textureWidth": 32, "textureHeight": 16,
     "texturePath": "/textures/brick.png",
     "numberOfFrames": 6,
-    "normalBrickTypeId": 0
+    "brickTypeId": 0
   },
 
   "strongBrick": {
     "textureX": -1, "textureY": -1, "textureWidth": 32, "textureHeight": 16,
     "texturePath": "/textures/brick.png",
     "numberOfFrames": 1,
-    "strongBrickTypeId": 1
+    "brickTypeId": 1
+  },
+
+  "powerUpBrick": {
+    "textureX": -1, "textureY": -1, "textureWidth": 32, "textureHeight": 16,
+    "texturePath": "/textures/brick.png",
+    "numberOfFrames": 1,
+    "brickTypeId": 2
   },
 
   "normalBrickTextureIndices": [0, 1, 2, 3, 4, 5],
   "strongBrickTextureIndices": [6, 7, 8, 9],
+  "powerUpBrickTextureIndices": [10, 11, 12, 13, 14, 15, 16],
 
   "normalBrickTypeId": 0,
   "strongBrickTypeId": 1,
+  "powerUpBrickTypeId": 2,
 
   "framePerRow": 11,
 
   "normalBrickSoundPath": "/sounds/normalBrick.wav",
   "strongBrickSoundPath": "/sounds/strongBrick.wav",
+  "powerUpBrickSoundPath": "/sounds/powerUpBrick.wav",
 
   "brickDestroyedText": {
     "content": "Brick Destroyed: ",
@@ -76,14 +86,14 @@
   },
 
   "brickLayout": [
-    [0, 0, -1, -1, -1, -1, -1, -1, -1, -1],
-    [11, 11, -1, -1, -1, -1, -1, -1, 88, -1],
+    [11, 11, 33, 132, 66, 66, 99, 99, 110, 110],
+    [22, 11, 33, -1, 77, 66, -1, 121, 110, 121],
+    [22, 0, 0, -1, 77, 88, -1, 154, 121, 121],
+    [44, 165, -1, -1, -1, 88, -1, -1, 143, 132],
+    [176, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, 44, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, 55, -1, -1, 55, 88, 55, -1],
-    [-1, 44, -1, -1, -1, -1, -1, -1, -1, -1],
-    [-1, -1, -1, 55, -1, 55, -1, 88, -1, -1],
-    [-1, -1, -1, -1, -1, -1, -1, 88, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],

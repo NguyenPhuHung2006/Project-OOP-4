@@ -2,7 +2,6 @@ package main;
 
 import UI.Text.TextManager;
 import UI.Text.TextType;
-import audio.SoundEffect;
 import audio.SoundManager;
 import config.GameConfig;
 import config.LevelData;

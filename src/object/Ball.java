@@ -138,14 +138,6 @@ public class Ball extends MovableObject {
 
                     if (!brick.isHit()) {
                         brick.takeHit();
-                        brick.handleHit();
-                    }
-
-                    if (brick.isDestroyed()) {
-                        bricks[tileY][tileX] = null;
-                        brick = null;
-                        int newDestroyedBrickCount = brickManager.incrementDestroyedBricks();
-                        textManager.getText(TextType.SCORE).setContent(String.valueOf(newDestroyedBrickCount));
                     }
 
                     if (checkX) {

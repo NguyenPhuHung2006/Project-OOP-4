@@ -173,6 +173,11 @@ public class BrickManager {
                 Brick currentBrick = bricks[y][x];
                 if (currentBrick != null) {
                     currentBrick.update();
+                    if(currentBrick.isDestroyed()) {
+                        bricks[y][x] = null;
+                        int newDestroyedBrickCount = incrementDestroyedBricks();
+                        TextManager.getInstance().getText(TextType.SCORE).setContent(String.valueOf(newDestroyedBrickCount));
+                    }
                 }
             }
         }

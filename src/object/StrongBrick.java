@@ -11,12 +11,15 @@ public class StrongBrick extends Brick{
 
     @Override
     protected void handleHit() {
+        hit = false;
         soundManager.play(SoundEffect.STRONG_BRICK);
     }
 
     @Override
     public void update() {
-        hit = false;
+        if(hit) {
+            handleHit();
+        }
     }
 
     @Override

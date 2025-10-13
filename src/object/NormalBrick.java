@@ -10,6 +10,7 @@ public class NormalBrick extends Brick {
 
     @Override
     protected void handleHit() {
+        hit = false;
         soundManager.play(SoundEffect.NORMAL_BRICK);
         if (!frames.isEmpty()) {
             frames.removeLast();
@@ -23,7 +24,9 @@ public class NormalBrick extends Brick {
 
     @Override
     public void update() {
-        hit = false;
+        if(hit) {
+            handleHit();
+        }
     }
 
     @Override

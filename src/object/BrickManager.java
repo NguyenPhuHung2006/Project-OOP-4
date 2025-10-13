@@ -32,6 +32,8 @@ public class BrickManager {
     private int destroyedBricksCount;
     private int totalBricksCount;
 
+    private BrickManager() {}
+
     public static BrickManager getInstance() {
         if (brickManager == null) {
             brickManager = new BrickManager();
@@ -53,7 +55,7 @@ public class BrickManager {
         brickManager.initBricks(levelData);
     }
 
-    public void initBricks(LevelData levelData) {
+    private void initBricks(LevelData levelData) {
 
         framePerRow = levelData.framePerRow;
 
@@ -188,20 +190,28 @@ public class BrickManager {
         }
     }
 
-    public int getBrickWidth() {
-        return brickWidth;
-    }
-
-    public int getBrickHeight() {
-        return brickHeight;
-    }
-
     public void setNormalBrickTypeId(int normalBrickTypeId) {
         this.normalBrickTypeId = normalBrickTypeId;
     }
 
     public void setStrongBrickTypeId(int strongBrickTypeId) {
         this.strongBrickTypeId = strongBrickTypeId;
+    }
+
+    public void setDestroyedBricksCount(int destroyedBricksCount) {
+        this.destroyedBricksCount = destroyedBricksCount;
+    }
+
+    public void setTotalBricksCount(int totalBricksCount) {
+        this.totalBricksCount = totalBricksCount;
+    }
+
+    public int getBrickWidth() {
+        return brickWidth;
+    }
+
+    public int getBrickHeight() {
+        return brickHeight;
     }
 
     public int getNormalBrickTypeId() {
@@ -212,6 +222,14 @@ public class BrickManager {
         return strongBrickTypeId;
     }
 
+    public int getTotalBricksCount() {
+        return totalBricksCount;
+    }
+
+    public int getDestroyedBricksCount() {
+        return destroyedBricksCount;
+    }
+
     public Brick[][] getBricks() {
         return bricks;
     }
@@ -220,9 +238,6 @@ public class BrickManager {
         return ++destroyedBricksCount;
     }
 
-    public int getDestroyedBricksCount() {
-        return destroyedBricksCount;
-    }
     public boolean isCleared() {
         return destroyedBricksCount >= totalBricksCount;
     }

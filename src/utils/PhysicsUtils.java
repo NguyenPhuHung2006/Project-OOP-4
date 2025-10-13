@@ -8,6 +8,9 @@ public class PhysicsUtils {
     private PhysicsUtils() {
     }
 
+    static final float MAX_BOUNCE_ANGLE = (float) Math.toRadians(75);
+    static final float MIN_BOUNCE_ANGLE = (float) Math.toRadians(20);
+
     public static void bounceOffPaddle(Ball ball, Paddle paddle) {
 
         float paddleCenter = paddle.getX() + paddle.getWidth() / 2f;
@@ -16,10 +19,9 @@ public class PhysicsUtils {
         float relativeHit = (ballCenter - paddleCenter) / (paddle.getWidth() / 2f);
         relativeHit = Math.max(-1f, Math.min(1f, relativeHit));
 
-        final float MAX_BOUNCE_ANGLE = (float) Math.toRadians(75);
-        float baseAngle = relativeHit * MAX_BOUNCE_ANGLE;
+        float baseAngle = Math.max(MIN_BOUNCE_ANGLE, relativeHit * MAX_BOUNCE_ANGLE);
 
-        float randomOffset = (float) RandomUtils.nextFloat(0f, 0.2f);
+        float randomOffset = RandomUtils.nextFloat(0f, 0.2f);
         float bounceAngle = baseAngle + randomOffset;
 
         float speed = (float) Math.sqrt(ball.getDx() * ball.getDx() + ball.getDy() * ball.getDy());

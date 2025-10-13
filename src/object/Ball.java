@@ -66,7 +66,7 @@ public class Ball extends MovableObject {
         if (keyboardManager.isKeyPressed(KeyEvent.VK_UP)) {
             isMoving = true;
             dy = -1;
-            dx = (RandomUtils.nextBoolean() ? 1 : -1);
+            dx = RandomUtils.nextFloat(-0.8f, 0.8f);
         } else {
             x = paddle.getX() + (paddle.getWidth() - width) / 2.0f;
         }

@@ -72,6 +72,16 @@ public class Ball extends MovableObject {
         }
     }
 
+    private void followPaddleIfAttached(Paddle paddle) {
+        if(IntersectUtils.intersect(this, paddle)) {
+            if (paddle.getDx() == 1) {
+                x = paddle.getX() + paddle.getWidth();
+            } else {
+                x = paddle.getX() - width;
+            }
+        }
+    }
+
     @Override
     public void moveAndCollide() {
 
@@ -79,6 +89,8 @@ public class Ball extends MovableObject {
         Brick[][] bricks = brickManager.getBricks();
         int tileWidth = brickManager.getBrickWidth();
         int tileHeight = brickManager.getBrickHeight();
+
+        followPaddleIfAttached(paddle);
 
         moveX();
         if (IntersectUtils.intersect(this, paddle)) {

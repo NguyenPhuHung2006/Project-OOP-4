@@ -29,9 +29,12 @@ public abstract class TexturedObject extends GameObject {
     public TexturedObject(TexturedObject texturedObject) {
 
         super(texturedObject);
+
         initScreenBounds(texturedObject);
+
         this.texturePath = texturedObject.texturePath;
         this.numberOfFrames = texturedObject.numberOfFrames;
+
         loadFrames();
     }
 

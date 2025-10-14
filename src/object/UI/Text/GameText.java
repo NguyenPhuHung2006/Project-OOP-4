@@ -2,7 +2,6 @@ package object.UI.Text;
 
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
-import object.GameContext;
 import object.GameObject;
 
 import java.awt.*;
@@ -10,107 +9,128 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-public class GameText {
+public class GameText extends GameObject {
+
     private String content;
-    private transient float x, y;
     private transient Color color;
     private transient Font font;
-
-    private transient GameContext gameContext = GameContext.getInstance();
-    private transient TextManager textManager = TextManager.getInstance();
+    private transient TextType type;
 
     public GameText(TextData textData, TextType type) {
+        super(null);
+
         this.content = textData.getContent();
         this.color = textData.getColorData().toColor();
         this.font = textData.getFontData().toFont();
+        this.type = type;
 
-        initScreenPosition(type);
+        initScreenBounds(null);
     }
 
-    public void render(Graphics2D graphics2D) {
-        graphics2D.setFont(font);
-        graphics2D.setColor(color);
-        graphics2D.drawString(content, x, y);
+    @Override
+    public void update() {
+        // No logic yet — placeholder for animation or dynamic updates
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    @Override
+    public void render(Graphics2D g2d) {
+        g2d.setFont(font);
+        g2d.setColor(color);
+        g2d.drawString(content, x, y);
     }
 
-    private void updateFontSizeToWindow(float ratio, int windowHeight) {
-        this.font = font.deriveFont(ratio * windowHeight);
-    }
-
-    private void initScreenPosition(TextType type) {
+    @Override
+    protected void initScreenBounds(GameObject gameObject) {
         int windowWidth = gameContext.getWindowWidth();
         int windowHeight = gameContext.getWindowHeight();
 
         switch (type) {
             case BRICK_DESTROYED -> {
-                updateFontSizeToWindow(0.05f, windowHeight);
+                updateFontAndBounds(0.05f, windowHeight);
                 x = windowWidth / 50.0f;
-                y = windowHeight - getHeight() / 5.0f;
+                y = windowHeight - height / 5.0f;
             }
 
             case SCORE -> {
-                updateFontSizeToWindow(0.05f, windowHeight);
-                if(textManager.getText(TextType.BRICK_DESTROYED) == null) {
-                    ExceptionHandler.handle(new InvalidGameStateException(
-                            "brick destroyed text should be declared before score text", null));
-                }
-                GameText brickDestroyedText = textManager.getText(TextType.BRICK_DESTROYED);
-                x = brickDestroyedText.getX() + brickDestroyedText.getWidth();
-                y = brickDestroyedText.getY();
+                updateFontAndBounds(0.05f, windowHeight);
+                GameText destroyedText = getRequiredText(TextType.BRICK_DESTROYED,
+                        "brick destroyed text should be declared before score text");
+                x = destroyedText.getX() + destroyedText.getWidth();
+                y = destroyedText.getY();
             }
 
             case GAME_OVER, GAME_WIN -> {
-                updateFontSizeToWindow(0.1f, windowHeight);
-                x = (windowWidth - getWidth()) / 2.0f;
-                y = (windowHeight + getHeight()) / 2.0f;
+                updateFontAndBounds(0.1f, windowHeight);
+                x = (windowWidth - width) / 2.0f;
+                y = (windowHeight + height) / 2.0f;
             }
 
             case PRESS_ENTER -> {
-                updateFontSizeToWindow(0.05f, windowHeight);
-                if(textManager.getText(TextType.GAME_OVER) == null ||
-                        textManager.getText(TextType.GAME_WIN) == null) {
-                    ExceptionHandler.handle(new InvalidGameStateException(
-                            "game over or game win text should be declared before score text", null));
-                }
-                GameText gameOverText = textManager.getText(TextType.GAME_OVER);
+                updateFontAndBounds(0.05f, windowHeight);
+                GameText gameOverText = getRequiredText(TextType.GAME_OVER,
+                        "game over or game win text should be declared before press enter text");
                 x = gameOverText.getX();
-                y = gameOverText.getY() + getHeight();
+                y = gameOverText.getY() + height;
             }
 
             case PRESS_ESC -> {
-                updateFontSizeToWindow(0.05f, windowHeight);
-                if(textManager.getText(TextType.PRESS_ENTER) == null) {
-                    ExceptionHandler.handle(new InvalidGameStateException(
-                            "press enter text should be declared before score text", null));
-                }
-                GameText pressEnterText = textManager.getText(TextType.PRESS_ENTER);
+                updateFontAndBounds(0.05f, windowHeight);
+                GameText pressEnterText = getRequiredText(TextType.PRESS_ENTER,
+                        "press enter text should be declared before press esc text");
                 x = pressEnterText.getX();
-                y = pressEnterText.getY() + getHeight();
+                y = pressEnterText.getY() + height;
             }
         }
     }
 
-    public int getWidth() {
+    /**
+     * Updates the font size based on window height and recalculates text bounds.
+     */
+    private void updateFontAndBounds(float ratio, int windowHeight) {
+        font = font.deriveFont(ratio * windowHeight);
+        updateTextBounds();
+    }
+
+    /**
+     * Recalculates width and height using the current font and content.
+     */
+    private void updateTextBounds() {
         FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, true);
         Rectangle2D bounds = font.getStringBounds(content, frc);
-        return (int) bounds.getWidth();
+        width = (int) bounds.getWidth();
+        height = (int) bounds.getHeight();
     }
 
-    public int getHeight() {
-        FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, true);
-        Rectangle2D bounds = font.getStringBounds(content, frc);
-        return (int) bounds.getHeight();
+    /**
+     * Retrieves a required text object or throws a handled exception if missing.
+     */
+    private GameText getRequiredText(TextType textType, String errorMessage) {
+        GameText text = textManager.getText(textType);
+        if (text == null) {
+            ExceptionHandler.handle(new InvalidGameStateException(errorMessage, null));
+        }
+        return text;
     }
 
-    public float getX() {
-        return x;
+
+    public void setContent(String content) {
+        this.content = content;
+        updateTextBounds(); // Recalculate width when content changes
     }
 
-    public float getY() {
-        return y;
+    public TextType getType() {
+        return type;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public Font getFont() {
+        return font;
+    }
+
+    public String getContent() {
+        return content;
     }
 }

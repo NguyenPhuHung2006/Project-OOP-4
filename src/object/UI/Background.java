@@ -1,5 +1,8 @@
-package object;
+package object.UI;
 
+
+import object.GameObject;
+import object.TexturedObject;
 
 public class Background extends TexturedObject {
 

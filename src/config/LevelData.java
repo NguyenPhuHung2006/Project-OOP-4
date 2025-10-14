@@ -1,6 +1,7 @@
 package config;
 
 import object.*;
+import object.UI.Background;
 import object.UI.Text.TextData;
 import object.brick.NormalBrick;
 import object.brick.PowerUpBrick;

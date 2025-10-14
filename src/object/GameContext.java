@@ -2,7 +2,7 @@ package object;
 
 import config.GameConfig;
 import config.LevelData;
-import object.Background;
+import object.UI.Background;
 import object.movable.Ball;
 import object.movable.Paddle;
 

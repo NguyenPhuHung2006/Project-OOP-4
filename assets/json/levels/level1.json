@@ -1,40 +1,40 @@
 {
   "paddle": {
-    "textureX": 0, "textureY": 0, "textureWidth": 96, "textureHeight": 24,
+    "textureWidth": 96, "textureHeight": 24,
     "texturePath": "/textures/paddle.png",
     "speed": 10,
     "numberOfFrames": 1
   },
 
   "ball":   {
-    "textureX": 0, "textureY": 0, "textureWidth": 24, "textureHeight": 24,
+    "textureWidth": 24, "textureHeight": 24,
     "texturePath": "/textures/ball.png",
     "speed": 3,
     "numberOfFrames": 4
   },
 
   "background": {
-    "textureX": 0, "textureY": 0, "textureWidth": 1000, "textureHeight": 1000,
+    "textureWidth": 1000, "textureHeight": 1000,
     "texturePath": "/textures/background.png",
     "numberOfFrames": 1
   },
 
   "normalBrick": {
-    "textureX": -1, "textureY": -1, "textureWidth": 32, "textureHeight": 16,
+    "textureWidth": 32, "textureHeight": 16,
     "texturePath": "/textures/brick.png",
     "numberOfFrames": 6,
     "brickTypeId": 0
   },
 
   "strongBrick": {
-    "textureX": -1, "textureY": -1, "textureWidth": 32, "textureHeight": 16,
+    "textureWidth": 32, "textureHeight": 16,
     "texturePath": "/textures/brick.png",
     "numberOfFrames": 1,
     "brickTypeId": 1
   },
 
   "powerUpBrick": {
-    "textureX": -1, "textureY": -1, "textureWidth": 32, "textureHeight": 16,
+    "textureWidth": 32, "textureHeight": 16,
     "texturePath": "/textures/brick.png",
     "numberOfFrames": 1,
     "brickTypeId": 2

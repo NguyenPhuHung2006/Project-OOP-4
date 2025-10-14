@@ -138,13 +138,15 @@ public class BrickManager {
                     return;
                 }
 
+                currentBrick.setBrickTypeId(currentBrickType);
+
                 currentBrick.setX(x * brickWidth);
                 currentBrick.setY(y * brickHeight);
                 currentBrick.setWidth(brickWidth);
                 currentBrick.setHeight(brickHeight);
 
-                currentBrick.setBrickTypeId(currentBrickType);
-                currentBrick.setTextureX(0);
+                // the textureX will always be equal to 0
+
                 currentBrick.setTextureY(brickTextureIndex * currentBrick.getTextureHeight());
 
                 if (isNormalBrick(currentBrick)) {

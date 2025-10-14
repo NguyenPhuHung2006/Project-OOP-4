@@ -1,11 +1,12 @@
 package object.powerup;
 
 import object.GameObject;
+import object.TexturedObject;
 
-public class PowerUp extends GameObject {
+public class PowerUp extends TexturedObject {
 
-    public PowerUp(GameObject gameObject) {
-        super(gameObject);
+    public PowerUp(PowerUp powerUp) {
+        super(powerUp);
     }
 
     @Override

@@ -1,11 +1,10 @@
 package object;
 
 
-public class Background extends GameObject {
+public class Background extends TexturedObject {
 
     public Background(Background background) {
-        // Sử dụng constructor tiện lợi: sẽ lấy textureX=0,textureY=0,numberOfFrames=1
-        // và scale ảnh vào width=screenWidth, height=screenHeight
+
         super(background);
     }
 
@@ -16,6 +15,8 @@ public class Background extends GameObject {
 
     @Override
     protected void initScreenBounds(GameObject gameObject) {
+
+        initTextureBounds(gameObject);
 
         x = 0;
         y = 0;

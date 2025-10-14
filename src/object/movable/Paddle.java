@@ -1,6 +1,7 @@
 package object.movable;
 
 import object.GameObject;
+
 import java.awt.event.KeyEvent;
 
 public class Paddle extends MovableObject {
@@ -19,11 +20,12 @@ public class Paddle extends MovableObject {
     @Override
     protected void initScreenBounds(GameObject gameObject) {
 
+        initTextureBounds(gameObject);
+
         width = gameContext.getWindowWidth() / 5.0f;
-        height = width * (1.0f * gameObject.getTextureHeight() / gameObject.getTextureWidth());
+        height = width * (1.0f * textureHeight / textureWidth);
 
         y = gameContext.getWindowHeight() * 20.0f / 25;
-
         x = (gameContext.getWindowWidth() - width) / 2;
     }
 

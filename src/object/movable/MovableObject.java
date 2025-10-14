@@ -1,9 +1,10 @@
 package object.movable;
 
 import object.GameObject;
+import object.TexturedObject;
 import utils.IntersectUtils;
 
-public abstract class MovableObject extends GameObject {
+public abstract class MovableObject extends TexturedObject {
 
     protected float dx;
     protected float dy;
@@ -63,7 +64,7 @@ public abstract class MovableObject extends GameObject {
 
     protected void handleObjectCollisionX(GameObject gameObject) {
 
-        if(gameObject == null) {
+        if (gameObject == null) {
             return;
         }
 
@@ -79,7 +80,7 @@ public abstract class MovableObject extends GameObject {
 
     protected void handleObjectCollisionY(GameObject gameObject) {
 
-        if(gameObject == null) {
+        if (gameObject == null) {
             return;
         }
 

@@ -53,6 +53,9 @@ public class Ball extends MovableObject {
         if(gameContext.getPaddle() == null) {
             ExceptionHandler.handle(new InvalidGameStateException("the paddle should be initialized before the ball", null));
         }
+
+        initTextureBounds(gameObject);
+
         Paddle paddle = gameContext.getPaddle();
         width = paddle.getHeight();
         height = paddle.getHeight();

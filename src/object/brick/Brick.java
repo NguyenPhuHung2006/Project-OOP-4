@@ -1,8 +1,9 @@
 package object.brick;
 
 import object.GameObject;
+import object.TexturedObject;
 
-public abstract class Brick extends GameObject {
+public abstract class Brick extends TexturedObject {
 
     private int brickTypeId;
     protected boolean destroyed;
@@ -22,6 +23,16 @@ public abstract class Brick extends GameObject {
     public Brick clone() {
 
         return (Brick) super.clone();
+    }
+
+    @Override
+    protected void initScreenBounds(GameObject gameObject) {
+
+        initTextureBounds(gameObject);
+        x = gameObject.getX();
+        y = gameObject.getY();
+        width = gameObject.getWidth();
+        height = gameObject.getHeight();
     }
 
     public int getBrickTypeId() {

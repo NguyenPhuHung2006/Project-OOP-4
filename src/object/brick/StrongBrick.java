@@ -21,12 +21,4 @@ public class StrongBrick extends Brick{
             handleHit();
         }
     }
-
-    @Override
-    protected void initScreenBounds(GameObject gameObject) {
-        x = gameObject.getX();
-        y = gameObject.getY();
-        width = gameObject.getWidth();
-        height = gameObject.getHeight();
-    }
 }

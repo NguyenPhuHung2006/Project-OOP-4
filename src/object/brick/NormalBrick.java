@@ -1,7 +1,6 @@
 package object.brick;
 
 import audio.SoundType;
-import object.GameObject;
 
 public class NormalBrick extends Brick {
 
@@ -28,13 +27,5 @@ public class NormalBrick extends Brick {
         if(hit) {
             handleHit();
         }
-    }
-
-    @Override
-    protected void initScreenBounds(GameObject gameObject) {
-        x = gameObject.getX();
-        y = gameObject.getY();
-        width = gameObject.getWidth();
-        height = gameObject.getHeight();
     }
 }

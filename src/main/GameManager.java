@@ -1,7 +1,5 @@
 package main;
 
-import UI.Text.TextManager;
-import UI.Text.TextType;
 import audio.SoundManager;
 import config.GameConfig;
 import config.LevelData;
@@ -10,6 +8,9 @@ import exception.InvalidGameStateException;
 import exception.ResourceLoadException;
 import input.KeyboardManager;
 import object.*;
+import object.UI.Text.TextManager;
+import object.UI.Text.TextType;
+import object.brick.BrickManager;
 import utils.JsonLoaderUtils;
 
 import javax.swing.*;
@@ -113,8 +114,6 @@ public class GameManager extends JPanel implements Runnable {
     KeyboardManager keyboardManager = KeyboardManager.getInstance();
     TextManager textManager = TextManager.getInstance();
 
-    LevelData levelData;
-
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
@@ -151,12 +150,14 @@ public class GameManager extends JPanel implements Runnable {
         }
     }
 
+    LevelData levelData;
+
     public void initGame() {
 
-        levelData = JsonLoaderUtils.loadLevelFromJson("assets/json/levels/Level1.json");
+        levelData = JsonLoaderUtils.loadLevelFromJson(gameConfig.levelPath);
 
         if(levelData == null) {
-            ExceptionHandler.handle(new ResourceLoadException("assets/json/levels/Level1.json", null));
+            ExceptionHandler.handle(new ResourceLoadException(gameConfig.levelPath, null));
         }
 
         gameContext.loadFromLevel(levelData, gameConfig);

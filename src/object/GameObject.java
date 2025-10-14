@@ -1,12 +1,11 @@
 package object;
 
-import UI.Text.TextManager;
 import audio.SoundManager;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
 import input.KeyboardManager;
-import main.GameContext;
-import main.GameManager;
+import object.UI.Text.TextManager;
+import object.brick.BrickManager;
 import utils.RendererUtils;
 import utils.TextureLoaderUtils;
 

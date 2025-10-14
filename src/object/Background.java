@@ -1,6 +1,5 @@
 package object;
 
-import object.GameObject;
 
 public class Background extends GameObject {
 

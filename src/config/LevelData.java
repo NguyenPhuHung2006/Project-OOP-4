@@ -1,7 +1,12 @@
 package config;
 
-import UI.Text.TextData;
 import object.*;
+import object.UI.Text.TextData;
+import object.brick.NormalBrick;
+import object.brick.PowerUpBrick;
+import object.brick.StrongBrick;
+import object.movable.Ball;
+import object.movable.Paddle;
 
 public class LevelData {
     public Paddle paddle;

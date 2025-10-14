@@ -1,7 +1,5 @@
 package utils;
 
-import object.Brick;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 

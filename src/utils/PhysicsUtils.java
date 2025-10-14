@@ -1,7 +1,6 @@
 package utils;
 
-import object.Ball;
-import object.Paddle;
+import object.movable.*;
 
 public class PhysicsUtils {
 

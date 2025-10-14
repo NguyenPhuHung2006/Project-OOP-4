@@ -1,4 +1,7 @@
 {
   "windowWidth": 600,
-  "windowHeight": 600
+  "windowHeight": 600,
+  "gameConfigPath": "assets/json/GameConfig.json",
+  "levelPath": "assets/json/levels/level1.json",
+  "gameSavePath": "assets/json/GameSave.json"
 }

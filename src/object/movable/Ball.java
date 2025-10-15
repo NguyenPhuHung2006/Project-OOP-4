@@ -5,7 +5,6 @@ import exception.InvalidGameStateException;
 import main.GameManager;
 import object.GameObject;
 import object.brick.Brick;
-import utils.IntersectUtils;
 
 import utils.PhysicsUtils;
 import utils.RandomUtils;
@@ -74,7 +73,7 @@ public class Ball extends MovableObject {
     }
 
     private void followPaddleIfAttached(Paddle paddle) {
-        if(IntersectUtils.intersect(this, paddle)) {
+        if(isIntersect(paddle)) {
             if (paddle.getDx() == 1) {
                 x = paddle.getX() + paddle.getWidth();
             } else {
@@ -94,14 +93,14 @@ public class Ball extends MovableObject {
         followPaddleIfAttached(paddle);
 
         moveX();
-        if (IntersectUtils.intersect(this, paddle)) {
+        if (isIntersect(paddle)) {
             handleObjectCollisionX(paddle);
             PhysicsUtils.bounceOffPaddle(this, paddle);
         }
         handleBricksCollisionX(bricks, tileWidth, tileHeight);
 
         moveY();
-        if (IntersectUtils.intersect(this, paddle)) {
+        if (isIntersect(paddle)) {
             handleObjectCollisionY(paddle);
             PhysicsUtils.bounceOffPaddle(this, paddle);
         }
@@ -135,7 +134,7 @@ public class Ball extends MovableObject {
 
             if (validBrickPosition(tileX, tileY, tileBoundX, tileBoundY)) {
                 Brick brick = bricks[tileY][tileX];
-                if (brick != null && IntersectUtils.intersect(this, brick)) {
+                if (brick != null && isIntersect(brick)) {
 
                     if (!brick.isHit()) {
                         brick.takeHit();

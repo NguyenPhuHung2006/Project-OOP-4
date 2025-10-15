@@ -5,7 +5,6 @@ import exception.InvalidGameStateException;
 import object.GameObject;
 import object.brick.Brick;
 import object.movable.MovableObject;
-import utils.IntersectUtils;
 
 public class PowerUp extends MovableObject {
 
@@ -60,7 +59,7 @@ public class PowerUp extends MovableObject {
 
     private void handleCollide() {
 
-        boolean isIntersectWithPaddle = IntersectUtils.intersect(this, gameContext.getPaddle());
+        boolean isIntersectWithPaddle = isIntersect(gameContext.getPaddle());
         boolean isOutOfBound = y + height >= gameContext.getWindowHeight();
         if (isIntersectWithPaddle || isOutOfBound) {
             isFalling = false;

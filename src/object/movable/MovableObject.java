@@ -2,7 +2,6 @@ package object.movable;
 
 import object.GameObject;
 import object.TexturedObject;
-import utils.IntersectUtils;
 
 public abstract class MovableObject extends TexturedObject {
 
@@ -68,7 +67,7 @@ public abstract class MovableObject extends TexturedObject {
             return;
         }
 
-        if (IntersectUtils.intersect(this, gameObject)) {
+        if (isIntersect(gameObject)) {
             if (dx > 0) {
                 x = gameObject.getX() - width;
             } else {
@@ -84,7 +83,7 @@ public abstract class MovableObject extends TexturedObject {
             return;
         }
 
-        if (IntersectUtils.intersect(this, gameObject)) {
+        if (isIntersect(gameObject)) {
             if (dy > 0) {
                 y = gameObject.getY() - height;
             } else {

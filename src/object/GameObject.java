@@ -32,6 +32,23 @@ public abstract class GameObject implements Cloneable {
 
     }
 
+    public boolean isIntersect(GameObject otherObject) {
+        float x1 = getX();
+        float y1 = getY();
+        float w1 = getWidth();
+        float h1 = getHeight();
+
+        float x2 = otherObject.getX();
+        float y2 = otherObject.getY();
+        float w2 = otherObject.getWidth();
+        float h2 = otherObject.getHeight();
+
+        return x1 < x2 + w2 &&
+                x1 + w1 > x2 &&
+                y1 < y2 + h2 &&
+                y1 + h1 > y2;
+    }
+
     @Override
     public GameObject clone() {
         try {

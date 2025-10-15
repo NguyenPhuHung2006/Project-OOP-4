@@ -26,7 +26,7 @@ public abstract class Brick extends TexturedObject {
     }
 
     @Override
-    protected void initScreenBounds(GameObject gameObject) {
+    protected void initBounds(GameObject gameObject) {
 
         initTextureBounds(gameObject);
         x = gameObject.getX();

@@ -7,7 +7,7 @@ import object.brick.PowerUpBrick;
 import object.brick.StrongBrick;
 import object.movable.Ball;
 import object.movable.Paddle;
-import object.powerup.PowerUp;
+import object.movable.powerup.PowerUp;
 
 public class LevelData {
     public Paddle paddle;

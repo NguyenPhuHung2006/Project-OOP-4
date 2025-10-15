@@ -49,7 +49,7 @@ public class Ball extends MovableObject {
     }
 
     @Override
-    protected void initScreenBounds(GameObject gameObject) {
+    protected void initBounds(GameObject gameObject) {
         if(gameContext.getPaddle() == null) {
             ExceptionHandler.handle(new InvalidGameStateException("the paddle should be initialized before the ball", null));
         }

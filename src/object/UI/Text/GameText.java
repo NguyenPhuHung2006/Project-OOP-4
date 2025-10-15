@@ -24,7 +24,7 @@ public class GameText extends GameObject {
         this.font = textData.getFontData().toFont();
         this.type = type;
 
-        initScreenBounds(null);
+        initBounds(null);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class GameText extends GameObject {
     }
 
     @Override
-    protected void initScreenBounds(GameObject gameObject) {
+    protected void initBounds(GameObject gameObject) {
         int windowWidth = gameContext.getWindowWidth();
         int windowHeight = gameContext.getWindowHeight();
 

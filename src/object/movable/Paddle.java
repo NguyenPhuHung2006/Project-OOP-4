@@ -18,7 +18,7 @@ public class Paddle extends MovableObject {
     }
 
     @Override
-    protected void initScreenBounds(GameObject gameObject) {
+    protected void initBounds(GameObject gameObject) {
 
         initTextureBounds(gameObject);
 

@@ -1,4 +1,4 @@
-package object.powerup;
+package object.movable.powerup;
 
 public enum PowerUpType {
     SLOW

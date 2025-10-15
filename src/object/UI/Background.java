@@ -17,7 +17,7 @@ public class Background extends TexturedObject {
     }
 
     @Override
-    protected void initScreenBounds(GameObject gameObject) {
+    protected void initBounds(GameObject gameObject) {
 
         initTextureBounds(gameObject);
 

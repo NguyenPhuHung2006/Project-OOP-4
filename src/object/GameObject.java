@@ -4,6 +4,7 @@ import audio.SoundManager;
 import input.KeyboardManager;
 import object.UI.Text.TextManager;
 import object.brick.BrickManager;
+import object.movable.powerup.PowerUpManager;
 
 import java.awt.*;
 
@@ -19,10 +20,11 @@ public abstract class GameObject implements Cloneable {
     protected transient BrickManager brickManager = BrickManager.getInstance();
     protected transient SoundManager soundManager = SoundManager.getInstance();
     protected transient TextManager textManager = TextManager.getInstance();
+    protected transient PowerUpManager powerUpManager = PowerUpManager.getInstance();
 
     public abstract void update();
     public abstract void render(Graphics2D graphics2D);
-    protected abstract void initScreenBounds(GameObject gameObject);
+    protected abstract void initBounds(GameObject gameObject);
 
     public GameObject(GameObject gameObject) {
 

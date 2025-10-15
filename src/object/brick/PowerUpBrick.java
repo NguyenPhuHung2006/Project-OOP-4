@@ -2,8 +2,9 @@ package object.brick;
 
 import audio.SoundType;
 import object.GameObject;
+import object.movable.powerup.PowerUpType;
 
-public class PowerUpBrick extends Brick{
+public class PowerUpBrick extends Brick {
 
     public PowerUpBrick(Brick brick) {
         super(brick);
@@ -14,6 +15,8 @@ public class PowerUpBrick extends Brick{
         hit = false;
         soundManager.play(SoundType.POWERUP_BRICK);
         destroyed = true;
+
+        powerUpManager.addPowerUps(PowerUpType.SLOW, this);
     }
 
     @Override

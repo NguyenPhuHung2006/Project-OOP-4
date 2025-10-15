@@ -11,7 +11,7 @@ import object.*;
 import object.UI.Text.TextManager;
 import object.UI.Text.TextType;
 import object.brick.BrickManager;
-import object.powerup.PowerUpManager;
+import object.movable.powerup.PowerUpManager;
 import utils.JsonLoaderUtils;
 
 import javax.swing.*;
@@ -187,6 +187,7 @@ public class GameManager extends JPanel implements Runnable {
         gameContext.getPaddle().update();
         gameContext.getBall().update();
         brickManager.updateBricks();
+        powerUpManager.updatePowerUps();
 
         checkGameCondition();
     }
@@ -201,6 +202,8 @@ public class GameManager extends JPanel implements Runnable {
         brickManager.renderBricks(graphics2D);
         gameContext.getPaddle().render(graphics2D);
         gameContext.getBall().render(graphics2D);
+
+        powerUpManager.renderPowerUps(graphics2D);
 
         textManager.getText(TextType.BRICK_DESTROYED).render(graphics2D);
         textManager.getText(TextType.SCORE).render(graphics2D);

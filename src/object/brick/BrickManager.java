@@ -116,8 +116,6 @@ public class BrickManager {
                 if (brickLayout[y][x] < 0)
                     continue;
 
-                totalBricksCount++;
-
                 int brickTextureIndex = brickLayout[y][x] / framePerRow;
 
                 int currentBrickType = getBrickTextureType(brickTextureIndex);
@@ -151,11 +149,14 @@ public class BrickManager {
 
                 if (isNormalBrick(currentBrick)) {
                     currentBrick = createNormalBrick((NormalBrick) currentBrick);
+                    totalBricksCount++;
                 } else if (isStrongBrick(currentBrick)) {
                     currentBrick = createStrongBrick((StrongBrick) currentBrick);
                 } else if(isPowerUpBrick(currentBrick)) {
                     currentBrick = createPowerUpBrick((PowerUpBrick) currentBrick);
+                    totalBricksCount++;
                 }
+
                 bricks[y][x] = currentBrick;
             }
         }

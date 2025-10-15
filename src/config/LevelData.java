@@ -1,6 +1,5 @@
 package config;
 
-import object.*;
 import object.UI.Background;
 import object.UI.Text.TextData;
 import object.brick.NormalBrick;
@@ -8,6 +7,7 @@ import object.brick.PowerUpBrick;
 import object.brick.StrongBrick;
 import object.movable.Ball;
 import object.movable.Paddle;
+import object.powerup.PowerUp;
 
 public class LevelData {
     public Paddle paddle;
@@ -40,5 +40,7 @@ public class LevelData {
     public TextData pressEnterText;
     public TextData pressExitText;
     public TextData scoreText;
+
+    public PowerUp slowPowerUp;
 
 }

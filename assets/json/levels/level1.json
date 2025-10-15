@@ -40,6 +40,12 @@
     "brickTypeId": 2
   },
 
+  "slowPowerUp": {
+    "textureWidth": 14, "textureHeight": 20,
+    "texturePath": "/textures/slow_powerup.png",
+    "numberOfFrames": 1
+  },
+
   "normalBrickTextureIndices": [0, 1, 2, 3, 4, 5],
   "strongBrickTextureIndices": [6, 7, 8, 9],
   "powerUpBrickTextureIndices": [10, 11, 12, 13, 14, 15, 16],

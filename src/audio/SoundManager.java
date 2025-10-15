@@ -1,6 +1,8 @@
 package audio;
 
 import config.LevelData;
+import exception.ExceptionHandler;
+import exception.InvalidGameStateException;
 import kuusisto.tinysound.TinySound;
 
 import java.util.EnumMap;
@@ -22,8 +24,12 @@ public class SoundManager {
         return soundManager;
     }
 
-    public void loadSound(SoundType effect, String path) {
-        sounds.put(effect, new GameSound(path));
+    public void loadSound(SoundType soundType, String path) {
+
+        if(sounds.containsKey(soundType)) {
+            ExceptionHandler.handle(new InvalidGameStateException("the sound type " + soundType + " is loaded twice", null));
+        }
+        sounds.put(soundType, new GameSound(path));
     }
 
     public void loadFromLevel(LevelData levelData) {

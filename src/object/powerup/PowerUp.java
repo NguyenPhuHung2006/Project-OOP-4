@@ -16,6 +16,6 @@ public class PowerUp extends TexturedObject {
 
     @Override
     protected void initScreenBounds(GameObject gameObject) {
-
+        initTextureBounds(gameObject);
     }
 }

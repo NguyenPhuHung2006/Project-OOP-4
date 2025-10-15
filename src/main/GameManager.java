@@ -11,6 +11,7 @@ import object.*;
 import object.UI.Text.TextManager;
 import object.UI.Text.TextType;
 import object.brick.BrickManager;
+import object.powerup.PowerUpManager;
 import utils.JsonLoaderUtils;
 
 import javax.swing.*;
@@ -47,7 +48,7 @@ public class GameManager extends JPanel implements Runnable {
         width = gameConfig.windowWidth;
         height = gameConfig.windowHeight;
 
-        if(width <= 100 || height <= 100) {
+        if (width <= 100 || height <= 100) {
             ExceptionHandler.handle(new InvalidGameStateException("window size is too small", null));
         }
 
@@ -113,6 +114,7 @@ public class GameManager extends JPanel implements Runnable {
     SoundManager soundManager = SoundManager.getInstance();
     KeyboardManager keyboardManager = KeyboardManager.getInstance();
     TextManager textManager = TextManager.getInstance();
+    PowerUpManager powerUpManager = PowerUpManager.getInstance();
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
@@ -140,11 +142,11 @@ public class GameManager extends JPanel implements Runnable {
 
     public void handleGameState() {
 
-        if(gameWin || gameOver) {
-            if(keyboardManager.isKeyPressed(KeyEvent.VK_ENTER)) {
+        if (gameWin || gameOver) {
+            if (keyboardManager.isKeyPressed(KeyEvent.VK_ENTER)) {
                 resetGame();
             }
-            if(keyboardManager.isKeyPressed(KeyEvent.VK_ESCAPE)) {
+            if (keyboardManager.isKeyPressed(KeyEvent.VK_ESCAPE)) {
                 stopGame();
             }
         }
@@ -156,7 +158,7 @@ public class GameManager extends JPanel implements Runnable {
 
         levelData = JsonLoaderUtils.loadLevelFromJson(gameConfig.levelPath);
 
-        if(levelData == null) {
+        if (levelData == null) {
             ExceptionHandler.handle(new ResourceLoadException(gameConfig.levelPath, null));
         }
 
@@ -167,6 +169,8 @@ public class GameManager extends JPanel implements Runnable {
         brickManager.loadFromLevel(levelData);
 
         soundManager.loadFromLevel(levelData);
+
+        powerUpManager.loadFromLevel(levelData);
 
         initialized = true;
     }
@@ -203,10 +207,10 @@ public class GameManager extends JPanel implements Runnable {
 
         brickManager.renderBricks(graphics2D);
 
-        if(gameOver || gameWin) {
-            if(gameOver) {
+        if (gameOver || gameWin) {
+            if (gameOver) {
                 textManager.getText(TextType.GAME_OVER).render(graphics2D);
-            } else if(gameWin) {
+            } else if (gameWin) {
                 textManager.getText(TextType.GAME_WIN).render(graphics2D);
             }
             textManager.getText(TextType.PRESS_ENTER).render(graphics2D);

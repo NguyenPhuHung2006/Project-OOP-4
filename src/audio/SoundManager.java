@@ -7,7 +7,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class SoundManager {
-    private static SoundManager instance;
+    private static SoundManager soundManager;
     private final Map<SoundType, GameSound> sounds = new EnumMap<>(SoundType.class);
     private float globalVolume = 1.0f;
 
@@ -16,10 +16,10 @@ public class SoundManager {
     }
 
     public static SoundManager getInstance() {
-        if (instance == null) {
-            instance = new SoundManager();
+        if (soundManager == null) {
+            soundManager = new SoundManager();
         }
-        return instance;
+        return soundManager;
     }
 
     public void loadSound(SoundType effect, String path) {

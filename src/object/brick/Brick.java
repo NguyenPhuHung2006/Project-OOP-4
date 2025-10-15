@@ -5,14 +5,13 @@ import object.TexturedObject;
 
 public abstract class Brick extends TexturedObject {
 
-    private int brickTypeId;
     protected boolean destroyed;
     protected boolean hit;
+    private BrickType brickType;
 
     public Brick(Brick brick) {
 
         super(brick);
-        this.brickTypeId = brick.brickTypeId;
         destroyed = false;
         hit = false;
     }
@@ -35,23 +34,19 @@ public abstract class Brick extends TexturedObject {
         height = gameObject.getHeight();
     }
 
-    public int getBrickTypeId() {
-        return brickTypeId;
-    }
-
     public boolean isDestroyed() {
         return destroyed;
     }
 
     public boolean isHit() { return hit; }
 
-    public void setBrickTypeId(int brickTypeId) {
-        this.brickTypeId = brickTypeId;
-    }
-
     public void takeHit() { hit = true; }
 
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
+    }
+
+    public BrickType getBrickType() {
+        return brickType;
     }
 }

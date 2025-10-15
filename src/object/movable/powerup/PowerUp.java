@@ -77,6 +77,11 @@ public abstract class PowerUp extends MovableObject {
         }
     }
 
+    @Override
+    public PowerUp clone() {
+        return (PowerUp) super.clone();
+    }
+
     public void setPowerUpType(PowerUpType powerUpType) {
         this.powerUpType = powerUpType;
     }

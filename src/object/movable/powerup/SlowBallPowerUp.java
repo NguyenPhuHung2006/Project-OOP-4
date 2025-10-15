@@ -1,6 +1,7 @@
 package object.movable.powerup;
 
 import object.movable.Ball;
+import object.movable.Paddle;
 
 public class SlowBallPowerUp extends PowerUp {
 
@@ -23,5 +24,10 @@ public class SlowBallPowerUp extends PowerUp {
     @Override
     public void revertEffect() {
         gameContext.getBall().setSpeed(originalSpeed);
+    }
+
+    @Override
+    public SlowBallPowerUp clone() {
+        return (SlowBallPowerUp) super.clone();
     }
 }

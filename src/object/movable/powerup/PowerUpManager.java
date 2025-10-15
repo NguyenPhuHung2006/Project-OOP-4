@@ -34,7 +34,7 @@ public class PowerUpManager {
 
     public void addPowerUp(PowerUpType powerUpType, Brick brick) {
 
-        PowerUp newPowerUp = (PowerUp) powerUpsRegistry.get(powerUpType).clone();
+        PowerUp newPowerUp = powerUpsRegistry.get(powerUpType).clone();
         newPowerUp.setInitialPosition(brick);
         newPowerUp.setPowerUpType(powerUpType);
         fallingPowerUps.add(newPowerUp);

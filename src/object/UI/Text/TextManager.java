@@ -1,6 +1,7 @@
 package object.UI.Text;
 
 import config.LevelData;
+import main.GameManager;
 
 import java.awt.*;
 import java.util.EnumMap;
@@ -44,6 +45,23 @@ public class TextManager {
         addText(TextType.SCORE, levelData.scoreText);
         addText(TextType.PRESS_ENTER, levelData.pressEnterText);
         addText(TextType.PRESS_ESC, levelData.pressExitText);
+    }
+
+    public void handleEndGameState(Graphics2D graphics2D) {
+
+        GameManager gameManager = GameManager.getInstance();
+        boolean isGameWin = gameManager.isGameWin();
+        boolean isGameOver = gameManager.isGameOver();
+        if(isGameOver || isGameWin) {
+            if(isGameOver) {
+                texts.get(TextType.GAME_OVER).render(graphics2D);
+            }
+            if(isGameWin) {
+                texts.get(TextType.GAME_WIN).render(graphics2D);
+            }
+            texts.get(TextType.PRESS_ENTER).render(graphics2D);
+            texts.get(TextType.PRESS_ESC).render(graphics2D);
+        }
     }
 
     public void clear() {

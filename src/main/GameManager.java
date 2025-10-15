@@ -49,7 +49,7 @@ public class GameManager extends JPanel implements Runnable {
         height = gameConfig.windowHeight;
 
         if (width <= 100 || height <= 100) {
-            ExceptionHandler.handle(new InvalidGameStateException("window size is too small", null));
+            ExceptionHandler.handle(new InvalidGameStateException("the window size is too small", null));
         }
 
         this.setPreferredSize(new Dimension(width, height));
@@ -124,6 +124,10 @@ public class GameManager extends JPanel implements Runnable {
         return gameOver;
     }
 
+    public boolean isGameWin() {
+        return gameWin;
+    }
+
     private void checkGameCondition() {
 
         if (brickManager.isCleared()) {
@@ -138,18 +142,6 @@ public class GameManager extends JPanel implements Runnable {
         gameWin = false;
 
         initGame();
-    }
-
-    public void handleGameState() {
-
-        if (gameWin || gameOver) {
-            if (keyboardManager.isKeyPressed(KeyEvent.VK_ENTER)) {
-                resetGame();
-            }
-            if (keyboardManager.isKeyPressed(KeyEvent.VK_ESCAPE)) {
-                stopGame();
-            }
-        }
     }
 
     LevelData levelData;
@@ -177,7 +169,7 @@ public class GameManager extends JPanel implements Runnable {
 
     public void updateGame() {
 
-        handleGameState();
+        keyboardManager.handleGameState();
 
         if (!initialized || gameWin || gameOver) {
             return;
@@ -211,14 +203,6 @@ public class GameManager extends JPanel implements Runnable {
 
         brickManager.renderBricks(graphics2D);
 
-        if (gameOver || gameWin) {
-            if (gameOver) {
-                textManager.getText(TextType.GAME_OVER).render(graphics2D);
-            } else if (gameWin) {
-                textManager.getText(TextType.GAME_WIN).render(graphics2D);
-            }
-            textManager.getText(TextType.PRESS_ENTER).render(graphics2D);
-            textManager.getText(TextType.PRESS_ESC).render(graphics2D);
-        }
+        textManager.handleEndGameState(graphics2D);
     }
 }

@@ -187,7 +187,8 @@ public class GameManager extends JPanel implements Runnable {
         gameContext.getPaddle().update();
         gameContext.getBall().update();
         brickManager.updateBricks();
-        powerUpManager.updatePowerUps();
+        powerUpManager.updateFallingPowerUps();
+        powerUpManager.updateActivePowerUps();
 
         checkGameCondition();
     }

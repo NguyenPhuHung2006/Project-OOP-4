@@ -23,7 +23,9 @@ public abstract class GameObject implements Cloneable {
     protected transient PowerUpManager powerUpManager = PowerUpManager.getInstance();
 
     public abstract void update();
+
     public abstract void render(Graphics2D graphics2D);
+
     protected abstract void initBounds(GameObject gameObject);
 
     public GameObject(GameObject gameObject) {

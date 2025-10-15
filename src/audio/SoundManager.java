@@ -33,6 +33,8 @@ public class SoundManager {
     }
 
     public void loadFromLevel(LevelData levelData) {
+
+        refreshSounds();
         loadSound(SoundType.NORMAL_BRICK, levelData.normalBrickSoundPath);
         loadSound(SoundType.STRONG_BRICK, levelData.strongBrickSoundPath);
         loadSound(SoundType.POWERUP_BRICK, levelData.powerUpBrickSoundPath);
@@ -69,5 +71,9 @@ public class SoundManager {
 
     public void cleanup() {
         TinySound.shutdown();
+    }
+
+    private void refreshSounds() {
+        sounds.clear();
     }
 }

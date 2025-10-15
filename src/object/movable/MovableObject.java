@@ -7,7 +7,7 @@ public abstract class MovableObject extends TexturedObject {
 
     protected float dx;
     protected float dy;
-    protected int speed;
+    protected float speed;
 
     public void setDx(int dx) {
         this.dx = dx;
@@ -29,7 +29,7 @@ public abstract class MovableObject extends TexturedObject {
         return (MovableObject) super.clone();
     }
 
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
@@ -39,7 +39,7 @@ public abstract class MovableObject extends TexturedObject {
         return dy;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 

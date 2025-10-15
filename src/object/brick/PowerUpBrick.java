@@ -15,7 +15,7 @@ public class PowerUpBrick extends Brick {
         soundManager.play(SoundType.POWERUP_BRICK);
         destroyed = true;
 
-        powerUpManager.addPowerUp(PowerUpType.SLOW, this);
+        powerUpManager.addPowerUp(PowerUpType.SLOW_BALL, this);
     }
 
     @Override

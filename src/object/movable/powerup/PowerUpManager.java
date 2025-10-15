@@ -1,8 +1,6 @@
 package object.movable.powerup;
 
 import config.LevelData;
-import exception.ExceptionHandler;
-import exception.InvalidGameStateException;
 import object.brick.Brick;
 
 import java.awt.*;
@@ -14,6 +12,9 @@ public class PowerUpManager {
     private final Map<PowerUpType, PowerUp> powerUpsRegistry = new EnumMap<>(PowerUpType.class);
     private final Map<PowerUpType, PowerUp> activePowerUps = new EnumMap<>(PowerUpType.class);
     private final List<PowerUp> fallingPowerUps = new ArrayList<>();
+
+    private final Object lock = new Object();
+    private final Timer timer = new Timer(true);
 
     private PowerUpManager() {
     }
@@ -28,15 +29,7 @@ public class PowerUpManager {
     public void loadFromLevel(LevelData levelData) {
 
         refreshPowerUps();
-        loadPowerUp(PowerUpType.SLOW, levelData.slowPowerUp);
-    }
-
-    private void loadPowerUp(PowerUpType powerUpType, PowerUp powerUp) {
-
-        if (powerUpsRegistry.containsKey(powerUpType)) {
-            ExceptionHandler.handle(new InvalidGameStateException("the power type " + powerUpType + " is loaded twice", null));
-        }
-        powerUpsRegistry.put(powerUpType, new PowerUp(powerUp));
+        powerUpsRegistry.put(PowerUpType.SLOW_BALL, new SlowBallPowerUp(levelData.slowPowerUp));
     }
 
     public void addPowerUp(PowerUpType powerUpType, Brick brick) {
@@ -49,7 +42,29 @@ public class PowerUpManager {
 
     public void applyPowerUp(PowerUpType powerUpType, PowerUp powerUp) {
 
-        activePowerUps.put(powerUpType, powerUp);
+        synchronized (lock) {
+            PowerUp existing = activePowerUps.get(powerUpType);
+
+            if (existing != null) {
+                timer.purge();
+            } else {
+                powerUp.applyEffect();
+                activePowerUps.put(powerUpType, powerUp);
+            }
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    synchronized (lock) {
+                        PowerUp active = activePowerUps.get(powerUpType);
+                        if (active != null) {
+                            active.revertEffect();
+                            activePowerUps.remove(powerUpType);
+                        }
+                    }
+                }
+            }, powerUp.getDurationMs());
+        }
     }
 
     public void updateActivePowerUps() {
@@ -71,10 +86,6 @@ public class PowerUpManager {
         for (PowerUp fallingPowerUp : fallingPowerUps) {
             fallingPowerUp.render(graphics2D);
         }
-    }
-
-    public void disableActivePowerUp(PowerUpType powerUpType) {
-        activePowerUps.put(powerUpType, null);
     }
 
     private void refreshPowerUps() {

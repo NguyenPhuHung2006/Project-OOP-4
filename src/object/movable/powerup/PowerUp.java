@@ -6,24 +6,31 @@ import object.GameObject;
 import object.brick.Brick;
 import object.movable.MovableObject;
 
-public class PowerUp extends MovableObject {
-
-    public PowerUp(PowerUp powerUp) {
-        super(powerUp);
-    }
+public abstract class PowerUp extends MovableObject {
 
     private boolean isActive = false;
     private boolean isFalling = false;
     private boolean isRemoved = false;
-    PowerUpType powerUpType;
+    protected int durationMs;
+    private PowerUpType powerUpType;
+
+    public PowerUp(PowerUp powerUp) {
+
+        super(powerUp);
+
+        durationMs = powerUp.durationMs;
+    }
+
+    public abstract void applyEffect();
+    public abstract void revertEffect();
 
     @Override
     public void update() {
         if (isFalling) {
             moveAndCollide();
         }
-        if (isActive) {
-            applyPowerUpToObject();
+        if(isActive) {
+            powerUpManager.applyPowerUp(powerUpType, this);
         }
     }
 
@@ -66,20 +73,23 @@ public class PowerUp extends MovableObject {
             isRemoved = true;
             if (isIntersectWithPaddle) {
                 isActive = true;
-                powerUpManager.applyPowerUp(powerUpType, this);
             }
         }
-    }
-
-    private void applyPowerUpToObject() {
-
     }
 
     public void setPowerUpType(PowerUpType powerUpType) {
         this.powerUpType = powerUpType;
     }
 
+    public void setDurationMs(int durationMs) {
+        this.durationMs = durationMs;
+    }
+
     public boolean isRemoved() {
         return isRemoved;
+    }
+
+    public int getDurationMs() {
+        return durationMs;
     }
 }

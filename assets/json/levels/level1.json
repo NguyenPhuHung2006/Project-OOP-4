@@ -44,7 +44,9 @@
     "textureWidth": 14, "textureHeight": 20,
     "texturePath": "/textures/slow_powerup.png",
     "numberOfFrames": 1,
-    "speed": 3
+    "speed": 3,
+    "durationMs": 5000,
+    "slowMultiplier": 0.5
   },
 
   "normalBrickTextureIndices": [0, 1, 2, 3, 4, 5],

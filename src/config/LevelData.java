@@ -7,7 +7,7 @@ import object.brick.PowerUpBrick;
 import object.brick.StrongBrick;
 import object.movable.Ball;
 import object.movable.Paddle;
-import object.movable.powerup.PowerUp;
+import object.movable.powerup.SlowBallPowerUp;
 
 public class LevelData {
     public Paddle paddle;
@@ -41,6 +41,6 @@ public class LevelData {
     public TextData pressExitText;
     public TextData scoreText;
 
-    public PowerUp slowPowerUp;
+    public SlowBallPowerUp slowPowerUp;
 
 }

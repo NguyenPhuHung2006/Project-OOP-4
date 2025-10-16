@@ -19,6 +19,7 @@ public class SlowBallPowerUp extends PowerUp {
         Ball ball = gameContext.getBall();
         originalSpeed = ball.getSpeed();
         ball.setSpeed(originalSpeed * slowMultiplier);
+        System.out.println(originalSpeed + " " + ball.getSpeed());
     }
 
     @Override

@@ -29,9 +29,6 @@ public abstract class PowerUp extends MovableObject {
         if (isFalling) {
             moveAndCollide();
         }
-        if(isActive) {
-            powerUpManager.applyPowerUp(powerUpType, this);
-        }
     }
 
     @Override
@@ -72,7 +69,7 @@ public abstract class PowerUp extends MovableObject {
             isFalling = false;
             isRemoved = true;
             if (isIntersectWithPaddle) {
-                isActive = true;
+                powerUpManager.applyPowerUp(powerUpType, this);
             }
         }
     }
@@ -88,6 +85,10 @@ public abstract class PowerUp extends MovableObject {
 
     public void setDurationMs(int durationMs) {
         this.durationMs = durationMs;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     public boolean isRemoved() {

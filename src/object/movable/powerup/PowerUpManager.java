@@ -46,25 +46,32 @@ public class PowerUpManager {
             PowerUp existing = activePowerUps.get(powerUpType);
 
             if (existing != null) {
-                timer.purge();
-            } else {
-                powerUp.applyEffect();
-                activePowerUps.put(powerUpType, powerUp);
+                existing.revertEffect();
+                existing.applyEffect();
+                scheduleRevert(existing, powerUpType, existing.getDurationMs());
+                return;
             }
 
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    synchronized (lock) {
-                        PowerUp active = activePowerUps.get(powerUpType);
-                        if (active != null) {
-                            active.revertEffect();
-                            activePowerUps.remove(powerUpType);
-                        }
+            // New activation
+            powerUp.applyEffect();
+            activePowerUps.put(powerUpType, powerUp);
+            scheduleRevert(powerUp, powerUpType, powerUp.getDurationMs());
+        }
+    }
+
+    private void scheduleRevert(PowerUp powerUp, PowerUpType type, int durationMs) {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                synchronized (lock) {
+                    PowerUp active = activePowerUps.get(type);
+                    if (active == powerUp) {
+                        active.revertEffect();
+                        activePowerUps.remove(type);
                     }
                 }
-            }, powerUp.getDurationMs());
-        }
+            }
+        }, durationMs);
     }
 
     public void updateActivePowerUps() {

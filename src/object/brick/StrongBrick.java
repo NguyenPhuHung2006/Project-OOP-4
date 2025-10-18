@@ -1,7 +1,6 @@
 package object.brick;
 
 import audio.SoundType;
-import object.GameObject;
 
 public class StrongBrick extends Brick{
 

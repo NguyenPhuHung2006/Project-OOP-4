@@ -20,10 +20,6 @@ public class LevelData {
     public StrongBrick strongBrick;
     public PowerUpBrick powerUpBrick;
 
-    public int normalBrickTypeId;
-    public int strongBrickTypeId;
-    public int powerUpBrickTypeId;
-
     public int[] normalBrickTextureIndices;
     public int[] strongBrickTextureIndices;
     public int[] powerUpBrickTextureIndices;
@@ -33,13 +29,6 @@ public class LevelData {
     public String powerUpBrickSoundPath;
 
     public int framePerRow;
-
-    public TextData brickDestroyedText;
-    public TextData loseText;
-    public TextData winText;
-    public TextData pressEnterText;
-    public TextData pressExitText;
-    public TextData scoreText;
 
     public SlowBallPowerUp slowPowerUp;
 

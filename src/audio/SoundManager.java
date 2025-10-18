@@ -32,7 +32,7 @@ public class SoundManager {
         sounds.put(soundType, new GameSound(path));
     }
 
-    public void loadFromLevel(LevelData levelData) {
+    public void loadFromJson(LevelData levelData) {
 
         refreshSounds();
         loadSound(SoundType.NORMAL_BRICK, levelData.normalBrickSoundPath);

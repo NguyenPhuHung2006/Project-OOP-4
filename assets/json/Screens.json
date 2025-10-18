@@ -1,0 +1,31 @@
+{
+  "menuScreen": {
+    "texts": [
+      {
+        "x": 100,
+        "y": 100,
+        "content": "Hello",
+        "colorData": {"r":255,"g":255,"b":255,"a":255},
+        "fontData": {"fontPath":"/fonts/Minecraftia-Regular.ttf","style":"PLAIN","size":24}
+      }
+    ]
+  },
+  "playScreen": {
+    "texts":[
+      {
+        "x": 100,
+        "y": 100,
+        "content": "Score: ",
+        "colorData": {"r":255,"g":255,"b":255,"a":255},
+        "fontData": {"fontPath":"/fonts/Minecraftia-Regular.ttf","style":"PLAIN","size":24}
+      },
+      {
+        "x": 500,
+        "y": 100,
+        "content": "0",
+        "colorData": {"r":255,"g":255,"b":0,"a":255},
+        "fontData": {"fontPath":"/fonts/Minecraftia-Regular.ttf","style":"PLAIN","size":24}
+      }
+    ]
+  }
+}

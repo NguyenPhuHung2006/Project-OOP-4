@@ -24,7 +24,7 @@ public class GameContext {
         return gameContext;
     }
 
-    public void loadFromLevel(LevelData levelData, GameConfig gameConfig) {
+    public void loadFromJson(LevelData levelData, GameConfig gameConfig) {
 
         gameContext.setWindowWidth(gameConfig.windowWidth);
         gameContext.setWindowHeight(gameConfig.windowHeight);

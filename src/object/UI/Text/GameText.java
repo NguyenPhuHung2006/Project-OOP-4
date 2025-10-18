@@ -14,22 +14,19 @@ public class GameText extends GameObject {
     private String content;
     private transient Color color;
     private transient Font font;
-    private transient TextType type;
 
-    public GameText(TextData textData, TextType type) {
+    private TextData textData;
+
+    public GameText(TextData textData) {
         super(null);
 
-        this.content = textData.getContent();
         this.color = textData.getColorData().toColor();
         this.font = textData.getFontData().toFont();
-        this.type = type;
-
-        initBounds(null);
     }
 
     @Override
     public void update() {
-        // No logic yet — placeholder for animation or dynamic updates
+
     }
 
     @Override
@@ -41,46 +38,11 @@ public class GameText extends GameObject {
 
     @Override
     protected void initBounds(GameObject gameObject) {
-        int windowWidth = gameContext.getWindowWidth();
-        int windowHeight = gameContext.getWindowHeight();
 
-        switch (type) {
-            case BRICK_DESTROYED -> {
-                updateFontAndBounds(0.05f, windowHeight);
-                x = windowWidth / 50.0f;
-                y = windowHeight - height / 5.0f;
-            }
-
-            case SCORE -> {
-                updateFontAndBounds(0.05f, windowHeight);
-                GameText destroyedText = getRequiredText(TextType.BRICK_DESTROYED,
-                        "brick destroyed text should be declared before score text");
-                x = destroyedText.getX() + destroyedText.getWidth();
-                y = destroyedText.getY();
-            }
-
-            case GAME_OVER, GAME_WIN -> {
-                updateFontAndBounds(0.1f, windowHeight);
-                x = (windowWidth - width) / 2.0f;
-                y = (windowHeight + height) / 2.0f;
-            }
-
-            case PRESS_ENTER -> {
-                updateFontAndBounds(0.05f, windowHeight);
-                GameText gameOverText = getRequiredText(TextType.GAME_OVER,
-                        "game over or game win text should be declared before press enter text");
-                x = gameOverText.getX();
-                y = gameOverText.getY() + height;
-            }
-
-            case PRESS_ESC -> {
-                updateFontAndBounds(0.05f, windowHeight);
-                GameText pressEnterText = getRequiredText(TextType.PRESS_ENTER,
-                        "press enter text should be declared before press esc text");
-                x = pressEnterText.getX();
-                y = pressEnterText.getY() + height;
-            }
-        }
+        x = gameObject.getX();
+        y = gameObject.getY();
+        width = gameObject.getWidth();
+        height = gameObject.getHeight();
     }
 
     /**
@@ -101,25 +63,10 @@ public class GameText extends GameObject {
         height = (int) bounds.getHeight();
     }
 
-    /**
-     * Retrieves a required text object or throws a handled exception if missing.
-     */
-    private GameText getRequiredText(TextType textType, String errorMessage) {
-        GameText text = textManager.getText(textType);
-        if (text == null) {
-            ExceptionHandler.handle(new InvalidGameStateException(errorMessage, null));
-        }
-        return text;
-    }
-
 
     public void setContent(String content) {
         this.content = content;
         updateTextBounds(); // Recalculate width when content changes
-    }
-
-    public TextType getType() {
-        return type;
     }
 
     public Color getColor() {

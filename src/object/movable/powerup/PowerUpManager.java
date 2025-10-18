@@ -26,7 +26,7 @@ public class PowerUpManager {
         return powerUpManager;
     }
 
-    public void loadFromLevel(LevelData levelData) {
+    public void loadFromJson(LevelData levelData) {
 
         refreshPowerUps();
         powerUpsRegistry.put(PowerUpType.SLOW_BALL, new SlowBallPowerUp(levelData.slowPowerUp));

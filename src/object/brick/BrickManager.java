@@ -4,8 +4,6 @@ import config.LevelData;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
 import object.GameContext;
-import object.UI.Text.TextManager;
-import object.UI.Text.TextType;
 
 import java.awt.*;
 import java.util.EnumMap;
@@ -43,7 +41,7 @@ public class BrickManager {
         return brickManager;
     }
 
-    public void loadFromLevel(LevelData levelData) {
+    public void loadFromJson(LevelData levelData) {
         initBricks(levelData);
         loadBricks(levelData);
     }
@@ -87,7 +85,6 @@ public class BrickManager {
     private void loadBricks(LevelData levelData) {
 
         destroyedBricksCount = 0;
-        TextManager.getInstance().getText(TextType.SCORE).setContent(String.valueOf(destroyedBricksCount));
         totalBricksCount = 0;
 
         int[][] brickLayout = levelData.brickLayout;
@@ -170,7 +167,6 @@ public class BrickManager {
                     if(currentBrick.isDestroyed()) {
                         bricks[y][x] = null;
                         int newDestroyedBrickCount = incrementDestroyedBricks();
-                        TextManager.getInstance().getText(TextType.SCORE).setContent(String.valueOf(newDestroyedBrickCount));
                     }
                 }
             }

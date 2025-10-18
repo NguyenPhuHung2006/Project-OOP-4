@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import config.GameConfig;
 import config.GameSave;
 import config.LevelData;
+import config.ScreenConfig;
 import exception.ExceptionHandler;
 import exception.ResourceLoadException;
 
@@ -29,6 +30,15 @@ public class JsonLoaderUtils {
     public static LevelData loadLevelFromJson(String path) {
         try (FileReader reader = new FileReader(path)) {
             return gson.fromJson(reader, LevelData.class);
+        } catch (IOException e) {
+            ExceptionHandler.handle(new ResourceLoadException(path, e));
+            return null;
+        }
+    }
+
+    public static ScreenConfig loadScreensFromJson(String path) {
+        try (FileReader reader = new FileReader(path)) {
+            return gson.fromJson(reader, ScreenConfig.class);
         } catch (IOException e) {
             ExceptionHandler.handle(new ResourceLoadException(path, e));
             return null;

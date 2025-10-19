@@ -2,7 +2,7 @@ package screen;
 
 public enum ScreenType {
     MENU,
-    PLAY,
+    PLAY_LEVEL1,
     PAUSE,
     LOADING,
     SELECT

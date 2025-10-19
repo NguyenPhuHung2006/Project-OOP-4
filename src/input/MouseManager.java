@@ -9,6 +9,8 @@ import java.awt.event.MouseWheelListener;
 public class MouseManager implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     private int mouseX, mouseY;
+    private int clickX, clickY;
+    private boolean leftClicked;
     private boolean leftPressed, rightPressed, middlePressed;
     private int wheelRotation;
 
@@ -30,6 +32,15 @@ public class MouseManager implements MouseListener, MouseMotionListener, MouseWh
     public int getY() {
         return mouseY;
     }
+
+    public int getClickX() {
+        return clickX;
+    }
+
+    public int getClickY() {
+        return clickY;
+    }
+
 
     public boolean isLeftPressed() {
         return leftPressed;
@@ -63,10 +74,23 @@ public class MouseManager implements MouseListener, MouseMotionListener, MouseWh
     @Override
     public void mouseReleased(MouseEvent e) {
         switch (e.getButton()) {
-            case MouseEvent.BUTTON1 -> leftPressed = false;
+            case MouseEvent.BUTTON1 -> {
+                leftPressed = false;
+                leftClicked = true;
+                clickX = e.getX();
+                clickY = e.getY();
+            }
             case MouseEvent.BUTTON2 -> middlePressed = false;
             case MouseEvent.BUTTON3 -> rightPressed = false;
         }
+    }
+
+    public boolean isLeftClicked() {
+        if (leftClicked) {
+            leftClicked = false;
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -6,6 +6,6 @@ import screen.SelectScreen;
 
 public class ScreenConfig {
     public MenuScreen menuScreen;
-    public PlayScreen playScreen;
     public SelectScreen selectScreen;
+    public PlayScreen playLevel1Screen;
 }

@@ -1,6 +1,7 @@
 package audio;
 
-import config.LevelData;
+import config.LevelConfig;
+import config.SoundConfig;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
 import kuusisto.tinysound.TinySound;
@@ -32,12 +33,12 @@ public class SoundManager {
         sounds.put(soundType, new GameSound(path));
     }
 
-    public void loadFromJson(LevelData levelData) {
+    public void loadFromJson(SoundConfig soundConfig) {
 
         refreshSounds();
-        loadSound(SoundType.NORMAL_BRICK, levelData.normalBrickSoundPath);
-        loadSound(SoundType.STRONG_BRICK, levelData.strongBrickSoundPath);
-        loadSound(SoundType.POWERUP_BRICK, levelData.powerUpBrickSoundPath);
+        loadSound(SoundType.NORMAL_BRICK, soundConfig.normalBrickSoundPath);
+        loadSound(SoundType.STRONG_BRICK, soundConfig.strongBrickSoundPath);
+        loadSound(SoundType.POWERUP_BRICK, soundConfig.powerUpBrickSoundPath);
         setGlobalVolume(0.6f);
     }
 

@@ -1,6 +1,6 @@
 package object.movable.powerup;
 
-import config.LevelData;
+import config.LevelConfig;
 import object.brick.Brick;
 
 import java.awt.*;
@@ -26,10 +26,10 @@ public class PowerUpManager {
         return powerUpManager;
     }
 
-    public void loadFromJson(LevelData levelData) {
+    public void loadFromJson(LevelConfig levelConfig) {
 
         refreshPowerUps();
-        powerUpsRegistry.put(PowerUpType.SLOW_BALL, new SlowBallPowerUp(levelData.slowPowerUp));
+        powerUpsRegistry.put(PowerUpType.SLOW_BALL, new SlowBallPowerUp(levelConfig.slowPowerUp));
     }
 
     public void addPowerUp(PowerUpType powerUpType, Brick brick) {
@@ -72,14 +72,6 @@ public class PowerUpManager {
                 }
             }
         }, durationMs);
-    }
-
-    public void updateActivePowerUps() {
-        for (PowerUp activePowerUp : activePowerUps.values()) {
-            if (activePowerUp != null) {
-                activePowerUp.update();
-            }
-        }
     }
 
     public void updateFallingPowerUps() {

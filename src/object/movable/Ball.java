@@ -2,7 +2,6 @@ package object.movable;
 
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
-import main.GameManager;
 import object.GameObject;
 import object.brick.Brick;
 
@@ -30,13 +29,6 @@ public class Ball extends MovableObject {
     public void update() {
 
         Paddle paddle = gameContext.getPaddle();
-        GameManager gameManager = GameManager.getInstance();
-
-        if (y + height >= gameContext.getWindowHeight()) {
-            if (gameManager != null) {
-                gameManager.setGameOver(true);
-            }
-        }
 
         if (!isMoving) {
             handleInitialMovement(paddle);

@@ -1,7 +1,6 @@
 package config;
 
 import object.UI.Background;
-import object.UI.Text.TextData;
 import object.brick.NormalBrick;
 import object.brick.PowerUpBrick;
 import object.brick.StrongBrick;
@@ -9,7 +8,7 @@ import object.movable.Ball;
 import object.movable.Paddle;
 import object.movable.powerup.SlowBallPowerUp;
 
-public class LevelData {
+public class LevelConfig {
     public Paddle paddle;
     public Ball ball;
     public Background background;
@@ -23,10 +22,6 @@ public class LevelData {
     public int[] normalBrickTextureIndices;
     public int[] strongBrickTextureIndices;
     public int[] powerUpBrickTextureIndices;
-
-    public String normalBrickSoundPath;
-    public String strongBrickSoundPath;
-    public String powerUpBrickSoundPath;
 
     public int framePerRow;
 

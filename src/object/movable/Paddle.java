@@ -22,10 +22,10 @@ public class Paddle extends MovableObject {
 
         initTextureBounds(gameObject);
 
-        width = gameContext.getWindowWidth() / 5.0f;
+        width = gameContext.getWindowWidth() * gameObject.getRelativeSize();
         height = width * (1.0f * textureHeight / textureWidth);
 
-        y = gameContext.getWindowHeight() * 20.0f / 25;
+        y = gameContext.getWindowHeight() * gameObject.getRelativeY();
         x = (gameContext.getWindowWidth() - width) / 2;
     }
 

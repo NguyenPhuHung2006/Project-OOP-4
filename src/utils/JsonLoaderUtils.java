@@ -1,10 +1,7 @@
 package utils;
 
 import com.google.gson.Gson;
-import config.GameConfig;
 import config.GameSave;
-import config.LevelData;
-import config.ScreenConfig;
 import exception.ExceptionHandler;
 import exception.ResourceLoadException;
 
@@ -18,27 +15,9 @@ public class JsonLoaderUtils {
 
     private static final Gson gson = new Gson();
 
-    public static GameConfig loadConfigFromJson(String path) {
+    public static <T> T loadFromJson(String path, Class<T> type) {
         try (FileReader reader = new FileReader(path)) {
-            return gson.fromJson(reader, GameConfig.class);
-        } catch (IOException e) {
-            ExceptionHandler.handle(new ResourceLoadException(path, e));
-            return null;
-        }
-    }
-
-    public static LevelData loadLevelFromJson(String path) {
-        try (FileReader reader = new FileReader(path)) {
-            return gson.fromJson(reader, LevelData.class);
-        } catch (IOException e) {
-            ExceptionHandler.handle(new ResourceLoadException(path, e));
-            return null;
-        }
-    }
-
-    public static ScreenConfig loadScreensFromJson(String path) {
-        try (FileReader reader = new FileReader(path)) {
-            return gson.fromJson(reader, ScreenConfig.class);
+            return gson.fromJson(reader, type);
         } catch (IOException e) {
             ExceptionHandler.handle(new ResourceLoadException(path, e));
             return null;
@@ -50,15 +29,6 @@ public class JsonLoaderUtils {
             gson.toJson(saveData, writer);
         } catch (IOException e) {
             ExceptionHandler.handle(new ResourceLoadException(path, e));
-        }
-    }
-
-    public static GameSave loadGameProgress(String path) {
-        try (FileReader reader = new FileReader(path)) {
-            return gson.fromJson(reader, GameSave.class);
-        } catch (IOException e) {
-            ExceptionHandler.handle(new ResourceLoadException(path, e));
-            return null;
         }
     }
 

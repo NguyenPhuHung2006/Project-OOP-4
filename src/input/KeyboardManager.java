@@ -28,18 +28,6 @@ public class KeyboardManager implements KeyListener {
         return keyboardManager;
     }
 
-    public void handleGameState() {
-        GameManager gameManager = GameManager.getInstance();
-        if(gameManager.isGameWin() || gameManager.isGameOver()) {
-            if(isKeyPressed(KeyEvent.VK_ENTER)) {
-                gameManager.resetGame();
-            }
-            if(isKeyPressed(KeyEvent.VK_ESCAPE)) {
-                gameManager.stopGame();
-            }
-        }
-    }
-
     @Override
     public void keyTyped(KeyEvent e) {
     }

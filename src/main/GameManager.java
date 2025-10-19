@@ -2,15 +2,16 @@ package main;
 
 import audio.SoundManager;
 import config.GameConfig;
-import config.LevelData;
+import config.ScreenConfig;
+import config.SoundConfig;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
 import exception.ResourceLoadException;
 import input.KeyboardManager;
-import object.*;
-import object.brick.BrickManager;
-import object.movable.powerup.PowerUpManager;
+import input.MouseManager;
+import object.GameContext;
 import screen.ScreenManager;
+import screen.ScreenType;
 import utils.JsonLoaderUtils;
 
 import javax.swing.*;
@@ -22,10 +23,6 @@ public class GameManager extends JPanel implements Runnable {
     private final int width;
     private final int height;
     private final int FPS = 60;
-    private boolean gameOver = false;
-    private boolean gameWin = false;
-
-    private volatile boolean initialized = false;
 
     // the minimum nanosecond at each frame
     private final double frameTime = 1_000_000_000.0 / FPS;
@@ -41,16 +38,10 @@ public class GameManager extends JPanel implements Runnable {
     }
 
     GameConfig gameConfig;
-    GameContext gameContext;
-    BrickManager brickManager;
-    SoundManager soundManager;
-    KeyboardManager keyboardManager;
-    PowerUpManager powerUpManager;
-    ScreenManager screenManager;
 
     private GameManager() {
 
-        gameConfig = JsonLoaderUtils.loadConfigFromJson("assets/json/GameConfig.json");
+        gameConfig = JsonLoaderUtils.loadFromJson("assets/json/GameConfig.json", GameConfig.class);
 
         if(gameConfig == null) {
             ExceptionHandler.handle(new ResourceLoadException("assets/json/GameConfig.json", null));
@@ -68,15 +59,15 @@ public class GameManager extends JPanel implements Runnable {
         Color backgroundColor = Color.white;
         this.setBackground(backgroundColor);
         this.setDoubleBuffered(true);
-        this.addKeyListener(KeyboardManager.getInstance());
-        this.setFocusable(true);
 
-        gameContext = GameContext.getInstance();
-        brickManager = BrickManager.getInstance();
-        soundManager = SoundManager.getInstance();
         keyboardManager = KeyboardManager.getInstance();
-        powerUpManager = PowerUpManager.getInstance();
-        screenManager = ScreenManager.getInstance();
+        mouseManager = MouseManager.getInstance();
+
+        this.addKeyListener(keyboardManager);
+        this.addMouseListener(mouseManager);
+        this.addMouseMotionListener(mouseManager);
+        this.addMouseWheelListener(mouseManager);
+        this.setFocusable(true);
     }
 
     public void startGame() {
@@ -127,83 +118,58 @@ public class GameManager extends JPanel implements Runnable {
         renderGame(graphics2D);
     }
 
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
-    }
+    SoundManager soundManager;
+    KeyboardManager keyboardManager;
+    ScreenManager screenManager;
+    GameContext gameContext;
+    MouseManager mouseManager;
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public boolean isGameWin() {
-        return gameWin;
-    }
-
-    private void checkGameCondition() {
-
-        if (brickManager.isCleared()) {
-            gameWin = true;
-            gameContext.getBall().stop();
-        }
-    }
-
-    public void resetGame() {
-
-        gameOver = false;
-        gameWin = false;
-
-        initGame();
-    }
-
-    LevelData levelData;
+    boolean initialized = false;
 
     public void initGame() {
 
-        levelData = JsonLoaderUtils.loadLevelFromJson(gameConfig.levelPath);
+        soundManager = SoundManager.getInstance();
+        screenManager = ScreenManager.getInstance();
+        gameContext = GameContext.getInstance();
 
-        if (levelData == null) {
-            ExceptionHandler.handle(new ResourceLoadException(gameConfig.levelPath, null));
+        SoundConfig soundConfig = JsonLoaderUtils.loadFromJson(gameConfig.soundConfigPath, SoundConfig.class);
+
+        if(soundConfig == null) {
+            ExceptionHandler.handle(new ResourceLoadException(gameConfig.soundConfigPath, null));
         }
 
-        gameContext.loadFromJson(levelData, gameConfig);
-        brickManager.loadFromJson(levelData);
-        soundManager.loadFromJson(levelData);
-        powerUpManager.loadFromJson(levelData);
+        ScreenConfig screenConfig = JsonLoaderUtils.loadFromJson(gameConfig.screenConfigPath, ScreenConfig.class);
+
+        if(screenConfig == null) {
+            ExceptionHandler.handle(new ResourceLoadException(gameConfig.screenConfigPath, null));
+        }
+
+        gameContext.setWindowWidth(width);
+        gameContext.setWindowHeight(height);
+
+        assert soundConfig != null;
+        soundManager.loadFromJson(soundConfig);
+        assert screenConfig != null;
+        screenManager.loadFromJson(screenConfig);
+
+        screenManager.push(ScreenType.MENU);
 
         initialized = true;
     }
 
     public void updateGame() {
 
-        keyboardManager.handleGameState();
-
-        if (!initialized || gameWin || gameOver) {
+        if(!initialized) {
             return;
         }
-
-        gameContext.getBackground().update();
-        gameContext.getPaddle().update();
-        gameContext.getBall().update();
-        brickManager.updateBricks();
-        powerUpManager.updateFallingPowerUps();
-        powerUpManager.updateActivePowerUps();
-
-        checkGameCondition();
+        screenManager.update();
     }
 
     public void renderGame(Graphics2D graphics2D) {
 
-        if (!initialized) {
+        if(!initialized) {
             return;
         }
-
-        gameContext.getBackground().render(graphics2D);
-        brickManager.renderBricks(graphics2D);
-        gameContext.getPaddle().render(graphics2D);
-        gameContext.getBall().render(graphics2D);
-
-        powerUpManager.renderPowerUps(graphics2D);
-
-        brickManager.renderBricks(graphics2D);
+        screenManager.render(graphics2D);
     }
 }

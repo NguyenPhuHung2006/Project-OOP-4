@@ -1,6 +1,6 @@
 package object.brick;
 
-import config.LevelData;
+import config.LevelConfig;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
 import object.GameContext;
@@ -41,33 +41,33 @@ public class BrickManager {
         return brickManager;
     }
 
-    public void loadFromJson(LevelData levelData) {
-        initBricks(levelData);
-        loadBricks(levelData);
+    public void loadFromJson(LevelConfig levelConfig) {
+        initBricks(levelConfig);
+        loadBricks(levelConfig);
     }
 
-    private void initBricks(LevelData levelData) {
+    private void initBricks(LevelConfig levelConfig) {
 
-        framePerRow = levelData.framePerRow;
+        framePerRow = levelConfig.framePerRow;
 
         normalBrickTextureSet = new HashSet<>();
         strongBrickTextureSet = new HashSet<>();
         powerUpBrickTextureSet = new HashSet<>();
 
-        for (int normalBrickTextureIndex : levelData.normalBrickTextureIndices) {
+        for (int normalBrickTextureIndex : levelConfig.normalBrickTextureIndices) {
             normalBrickTextureSet.add(normalBrickTextureIndex);
         }
 
-        for (int strongBrickTextureIndex : levelData.strongBrickTextureIndices) {
+        for (int strongBrickTextureIndex : levelConfig.strongBrickTextureIndices) {
             strongBrickTextureSet.add(strongBrickTextureIndex);
         }
 
-        for(int powerUpBrickTextureIndex : levelData.powerUpBrickTextureIndices) {
+        for(int powerUpBrickTextureIndex : levelConfig.powerUpBrickTextureIndices) {
             powerUpBrickTextureSet.add(powerUpBrickTextureIndex);
         }
 
-        brickCountX = levelData.brickLayout[0].length;
-        brickCountY = levelData.brickLayout.length;
+        brickCountX = levelConfig.brickLayout[0].length;
+        brickCountY = levelConfig.brickLayout.length;
 
         GameContext gameContext = GameContext.getInstance();
 
@@ -77,17 +77,17 @@ public class BrickManager {
         brickWidth = windowWidth / brickCountX;
         brickHeight = windowHeight / brickCountY;
 
-        brickRegistry.put(BrickType.NORMAL_BRICK, levelData.normalBrick);
-        brickRegistry.put(BrickType.STRONG_BRICK, levelData.strongBrick);
-        brickRegistry.put(BrickType.POWERUP_BRICK, levelData.powerUpBrick);
+        brickRegistry.put(BrickType.NORMAL_BRICK, levelConfig.normalBrick);
+        brickRegistry.put(BrickType.STRONG_BRICK, levelConfig.strongBrick);
+        brickRegistry.put(BrickType.POWERUP_BRICK, levelConfig.powerUpBrick);
     }
 
-    private void loadBricks(LevelData levelData) {
+    private void loadBricks(LevelConfig levelConfig) {
 
         destroyedBricksCount = 0;
         totalBricksCount = 0;
 
-        int[][] brickLayout = levelData.brickLayout;
+        int[][] brickLayout = levelConfig.brickLayout;
 
         bricks = new Brick[brickCountY][brickCountX];
 

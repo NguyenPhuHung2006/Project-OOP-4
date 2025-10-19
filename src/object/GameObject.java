@@ -14,6 +14,10 @@ public abstract class GameObject implements Cloneable {
     protected transient float width;
     protected transient float height;
 
+    protected float relativeSize;
+    protected float relativeX;
+    protected float relativeY;
+
     protected transient GameContext gameContext = GameContext.getInstance();
     protected transient KeyboardManager keyboardManager = KeyboardManager.getInstance();
     protected transient BrickManager brickManager = BrickManager.getInstance();
@@ -72,19 +76,44 @@ public abstract class GameObject implements Cloneable {
         return height;
     }
 
-    public void setX(int x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public void setY(int y) {
+    public void setY(float y) {
         this.y = y;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         this.width = width;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(float height) {
         this.height = height;
     }
+
+    public float getRelativeSize() {
+        return relativeSize;
+    }
+
+    public void setRelativeSize(float relativeSize) {
+        this.relativeSize = relativeSize;
+    }
+
+    public float getRelativeX() {
+        return relativeX;
+    }
+
+    public void setRelativeX(float relativeX) {
+        this.relativeX = relativeX;
+    }
+
+    public float getRelativeY() {
+        return relativeY;
+    }
+
+    public void setRelativeY(float relativeY) {
+        this.relativeY = relativeY;
+    }
+
 }

@@ -1,27 +1,29 @@
 package object.UI.Text;
 
-import exception.ExceptionHandler;
-import exception.InvalidGameStateException;
 import object.GameObject;
+import utils.TextUtils;
 
 import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 
 public class GameText extends GameObject {
 
     private String content;
     private transient Color color;
     private transient Font font;
+    private transient float ratio;
 
-    private TextData textData;
+    private ColorData colorData;
+    private FontData fontData;
 
-    public GameText(TextData textData) {
+    public GameText(GameText gameText) {
         super(null);
 
-        this.color = textData.getColorData().toColor();
-        this.font = textData.getFontData().toFont();
+        initBounds(gameText);
+
+        this.content = gameText.getContent();
+
+        this.font = gameText.font;
+        this.color = TextUtils.toColor(gameText.getColorData());
     }
 
     @Override
@@ -30,10 +32,11 @@ public class GameText extends GameObject {
     }
 
     @Override
-    public void render(Graphics2D g2d) {
-        g2d.setFont(font);
-        g2d.setColor(color);
-        g2d.drawString(content, x, y);
+    public void render(Graphics2D graphics2D) {
+        
+        graphics2D.setFont(font);
+        graphics2D.setColor(color);
+        graphics2D.drawString(content, x, y);
     }
 
     @Override
@@ -45,28 +48,24 @@ public class GameText extends GameObject {
         height = gameObject.getHeight();
     }
 
-    /**
-     * Updates the font size based on window height and recalculates text bounds.
-     */
-    private void updateFontAndBounds(float ratio, int windowHeight) {
-        font = font.deriveFont(ratio * windowHeight);
+    public void updateFontAndBounds(float ratio, int windowHeight) {
+        font = TextUtils.derivedFont(ratio, windowHeight, font);
         updateTextBounds();
     }
 
-    /**
-     * Recalculates width and height using the current font and content.
-     */
     private void updateTextBounds() {
-        FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, true);
-        Rectangle2D bounds = font.getStringBounds(content, frc);
-        width = (int) bounds.getWidth();
-        height = (int) bounds.getHeight();
+        Dimension size = TextUtils.getTextSize(content, font);
+        width = size.width;
+        height = size.height;
     }
-
 
     public void setContent(String content) {
         this.content = content;
-        updateTextBounds(); // Recalculate width when content changes
+        updateTextBounds();
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
     }
 
     public Color getColor() {
@@ -79,5 +78,13 @@ public class GameText extends GameObject {
 
     public String getContent() {
         return content;
+    }
+
+    public ColorData getColorData() {
+        return colorData;
+    }
+
+    public FontData getFontData() {
+        return fontData;
     }
 }

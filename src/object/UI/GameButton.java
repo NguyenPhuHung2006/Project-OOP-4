@@ -1,17 +1,24 @@
 package object.UI;
 
+import input.MouseManager;
 import object.GameObject;
 import object.TexturedObject;
 
-public class Button extends TexturedObject {
+public class GameButton extends TexturedObject {
 
-    public Button(TexturedObject texturedObject) {
+    public GameButton(TexturedObject texturedObject) {
         super(texturedObject);
     }
 
     @Override
     public void update() {
 
+    }
+
+    public boolean isClicked(MouseManager mouseManager) {
+        int clickedX = mouseManager.getClickX();
+        int clickedY = mouseManager.getClickY();
+        return clickedX > x && clickedY > y && clickedX < x + width && clickedY < y + height;
     }
 
     @Override

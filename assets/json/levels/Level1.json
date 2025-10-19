@@ -1,6 +1,8 @@
 {
   "paddle": {
     "textureWidth": 96, "textureHeight": 24,
+    "relativeSize": 0.2,
+    "relativeY": 0.8,
     "texturePath": "/textures/paddle.png",
     "speed": 10,
     "numberOfFrames": 1
@@ -11,12 +13,6 @@
     "texturePath": "/textures/ball.png",
     "speed": 3,
     "numberOfFrames": 4
-  },
-
-  "background": {
-    "textureWidth": 1000, "textureHeight": 1000,
-    "texturePath": "/textures/background.png",
-    "numberOfFrames": 1
   },
 
   "normalBrick": {
@@ -51,10 +47,6 @@
   "powerUpBrickTextureIndices": [10, 11, 12, 13, 14, 15, 16],
 
   "framePerRow": 11,
-
-  "normalBrickSoundPath": "/sounds/normalBrick.wav",
-  "strongBrickSoundPath": "/sounds/strongBrick.wav",
-  "powerUpBrickSoundPath": "/sounds/powerUpBrick.wav",
 
   "brickLayout": [
     [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],

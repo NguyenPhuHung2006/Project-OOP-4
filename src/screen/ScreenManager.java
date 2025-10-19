@@ -1,7 +1,10 @@
 package screen;
 
 import config.ScreenConfig;
+import exception.ExceptionHandler;
+import exception.InvalidGameStateException;
 
+import java.awt.*;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Stack;
@@ -11,25 +14,51 @@ public class ScreenManager {
     Map<ScreenType, Screen> screenRegistry = new EnumMap<>(ScreenType.class);
 
     private static ScreenManager screenManager;
-    private ScreenManager() {}
+
+    private ScreenManager() {
+    }
 
     public static ScreenManager getInstance() {
-        if(screenManager == null) {
+        if (screenManager == null) {
             screenManager = new ScreenManager();
         }
         return screenManager;
     }
 
     public void loadFromJson(ScreenConfig screenConfig) {
-
+        screenRegistry.put(ScreenType.MENU, screenConfig.menuScreen);
+        screenRegistry.put(ScreenType.SELECT, screenConfig.selectScreen);
+        screenRegistry.put(ScreenType.PLAY_LEVEL1, screenConfig.playLevel1Screen);
     }
 
-    public void push(Screen screen) {
+    public void push(ScreenType screenType) {
         if (!screens.isEmpty()) {
             screens.peek().onExit();
         }
-        screens.push(screen);
-        screen.onEnter();
+
+        Screen baseScreen = screenRegistry.get(screenType);
+
+        if (baseScreen == null) {
+            ExceptionHandler.handle(new InvalidGameStateException("the screen: " + screenType + " has not been registered", null));
+        }
+
+        Screen newScreen = getScreenByType(screenType, baseScreen);
+
+        screens.push(newScreen);
+        newScreen.onEnter();
+    }
+
+    private Screen getScreenByType(ScreenType type, Screen baseScreen) {
+        switch (type) {
+            case MENU:
+                return new MenuScreen((MenuScreen) baseScreen);
+            case SELECT:
+                return new SelectScreen((SelectScreen) baseScreen);
+            case PLAY_LEVEL1:
+                return new PlayScreen((PlayScreen) baseScreen);
+            default:
+                return baseScreen;
+        }
     }
 
     public void pop() {
@@ -44,6 +73,12 @@ public class ScreenManager {
     public void update() {
         if (!screens.isEmpty()) {
             screens.peek().update();
+        }
+    }
+
+    public void render(Graphics2D graphics2D) {
+        if (!screens.isEmpty()) {
+            screens.peek().render(graphics2D);
         }
     }
 

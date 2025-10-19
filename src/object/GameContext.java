@@ -1,8 +1,7 @@
 package object;
 
 import config.GameConfig;
-import config.LevelData;
-import object.UI.Background;
+import config.LevelConfig;
 import object.movable.Ball;
 import object.movable.Paddle;
 
@@ -12,7 +11,6 @@ public class GameContext {
     private int windowHeight;
     private Paddle paddle;
     private Ball ball;
-    private Background background;
 
     private GameContext() {
     }
@@ -24,19 +22,13 @@ public class GameContext {
         return gameContext;
     }
 
-    public void loadFromJson(LevelData levelData, GameConfig gameConfig) {
+    public void loadFromJson(LevelConfig levelConfig) {
 
-        gameContext.setWindowWidth(gameConfig.windowWidth);
-        gameContext.setWindowHeight(gameConfig.windowHeight);
-
-        Paddle paddle = new Paddle(levelData.paddle);
+        Paddle paddle = new Paddle(levelConfig.paddle);
         gameContext.setPaddle(paddle);
 
-        Ball ball = new Ball(levelData.ball);
+        Ball ball = new Ball(levelConfig.ball);
         gameContext.setBall(ball);
-
-        Background background = new Background(levelData.background);
-        gameContext.setBackground(background);
     }
 
     public void setWindowWidth(int windowWidth) {
@@ -55,10 +47,6 @@ public class GameContext {
         this.ball = ball;
     }
 
-    public void setBackground(Background background) {
-        this.background = background;
-    }
-
     public int getWindowWidth() {
         return windowWidth;
     }
@@ -75,7 +63,4 @@ public class GameContext {
         return ball;
     }
 
-    public Background getBackground() {
-        return background;
-    }
 }

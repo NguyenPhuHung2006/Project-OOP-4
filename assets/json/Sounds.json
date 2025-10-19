@@ -1,0 +1,5 @@
+{
+  "normalBrickSoundPath": "/sounds/normalBrick.wav",
+  "strongBrickSoundPath": "/sounds/strongBrick.wav",
+  "powerUpBrickSoundPath": "/sounds/powerUpBrick.wav"
+}

@@ -1,31 +1,68 @@
 {
   "menuScreen": {
-    "texts": [
-      {
-        "x": 100,
-        "y": 100,
-        "content": "Hello",
-        "colorData": {"r":255,"g":255,"b":255,"a":255},
-        "fontData": {"fontPath":"/fonts/Minecraftia-Regular.ttf","style":"PLAIN","size":24}
-      }
-    ]
+    "playButton": {
+      "textureX": 16, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.1,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "title": {
+      "content": "Arkanoid",
+      "relativeSize": 0.1,
+      "colorData": {"r":255,"g":0,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":48}
+    },
+    "background": {
+      "textureWidth": 1000, "textureHeight": 1000,
+      "texturePath": "/textures/background.png",
+      "numberOfFrames": 1
+    }
   },
-  "playScreen": {
-    "texts":[
-      {
-        "x": 100,
-        "y": 100,
-        "content": "Score: ",
-        "colorData": {"r":255,"g":255,"b":255,"a":255},
-        "fontData": {"fontPath":"/fonts/Minecraftia-Regular.ttf","style":"PLAIN","size":24}
-      },
-      {
-        "x": 500,
-        "y": 100,
-        "content": "0",
-        "colorData": {"r":255,"g":255,"b":0,"a":255},
-        "fontData": {"fontPath":"/fonts/Minecraftia-Regular.ttf","style":"PLAIN","size":24}
-      }
-    ]
+
+  "selectScreen": {
+    "level1Text": {
+      "content": "LEVEL 1 ",
+      "relativeSize": 0.05,
+      "relativeX": 0.04, "relativeY": 0.2,
+      "colorData": {"r":255,"g":0,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
+    "level1Button": {
+      "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "background": {
+      "textureWidth": 1000, "textureHeight": 1000,
+      "texturePath": "/textures/background.png",
+      "numberOfFrames": 1
+    }
+  },
+
+  "playLevel1Screen": {
+    "scoreText": {
+      "content": "Score: ",
+      "relativeSize": 0.05,
+      "relativeX": 0.01,
+      "colorData": {"r":255,"g":255,"b":255,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
+    "numScoreText": {
+      "content": " 0",
+      "relativeSize": 0.05,
+      "colorData": {"r":255,"g":255,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
+    "pauseButton": {
+      "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "background": {
+      "textureWidth": 1000, "textureHeight": 1000,
+      "texturePath": "/textures/background.png",
+      "numberOfFrames": 1
+    },
+    "levelPath": "assets/json/levels/Level1.json"
   }
 }

@@ -174,7 +174,6 @@ public class BrickManager {
                     if (currentBrick.isDestroyed()) {
                         bricks[y][x] = null;
                         incrementDestroyedBricks();
-                        setIsIncremented(true);
                     }
                 }
             }
@@ -201,10 +200,6 @@ public class BrickManager {
         this.totalBricksCount = totalBricksCount;
     }
 
-    public void setIsIncremented(boolean isIncremented) {
-        this.isIncremented = isIncremented;
-    }
-
     public int getBrickWidth() {
         return brickWidth;
     }
@@ -226,10 +221,15 @@ public class BrickManager {
     }
 
     public boolean isIncremented() {
-        return isIncremented;
+        if(isIncremented) {
+            isIncremented = false;
+            return true;
+        }
+        return false;
     }
 
     public int incrementDestroyedBricks() {
+        isIncremented = true;
         return ++destroyedBricksCount;
     }
 

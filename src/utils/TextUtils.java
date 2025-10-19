@@ -6,6 +6,8 @@ import object.UI.Text.FontData;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -23,28 +25,30 @@ public final class TextUtils {
         if (text == null || font == null) {
             return 0;
         }
-        Rectangle2D bounds = font.getStringBounds(text, DEFAULT_FRC);
-        return (int) Math.ceil(bounds.getWidth());
+        TextLayout layout = new TextLayout(text, font, DEFAULT_FRC);
+        return (int) Math.ceil(layout.getAdvance());
     }
 
     public static int getTextHeight(String text, Font font) {
         if (text == null || font == null) {
             return 0;
         }
-        Rectangle2D bounds = font.getStringBounds(text, DEFAULT_FRC);
-        return (int) Math.ceil(bounds.getHeight());
+        TextLayout layout = new TextLayout(text, font, DEFAULT_FRC);
+        Rectangle pixelBounds = layout.getPixelBounds(DEFAULT_FRC, 0f, 0f);
+        return pixelBounds.height;
     }
 
     public static Dimension getTextSize(String text, Font font) {
         if (text == null || font == null) {
             return new Dimension(0, 0);
         }
-        Rectangle2D bounds = font.getStringBounds(text, DEFAULT_FRC);
-        return new Dimension(
-                (int) Math.ceil(bounds.getWidth()),
-                (int) Math.ceil(bounds.getHeight())
-        );
+        TextLayout layout = new TextLayout(text, font, DEFAULT_FRC);
+        Rectangle pixelBounds = layout.getPixelBounds(DEFAULT_FRC, 0f, 0f);
+        int width = (int) Math.ceil(layout.getAdvance());
+        int height = pixelBounds.height;
+        return new Dimension(width, height);
     }
+
 
     public static Font toFont(FontData fontData) {
         int fontStyle = switch (fontData.style.toUpperCase()) {
@@ -76,5 +80,4 @@ public final class TextUtils {
         int a = colorData.a;
         return new Color(r, g, b, a);
     }
-
 }

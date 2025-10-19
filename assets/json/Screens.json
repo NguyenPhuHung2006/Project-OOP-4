@@ -21,7 +21,7 @@
 
   "selectScreen": {
     "level1Text": {
-      "content": "LEVEL 1 ",
+      "content": "LEVEL 1  ",
       "relativeSize": 0.05,
       "relativeX": 0.04, "relativeY": 0.2,
       "colorData": {"r":255,"g":0,"b":0,"a":255},
@@ -55,6 +55,7 @@
     },
     "pauseButton": {
       "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1
     },

@@ -90,10 +90,10 @@ public class PlayScreen implements Screen {
         baseNumScoreText.setX(baseScoreText.getX() + baseScoreText.getWidth());
         baseNumScoreText.setY(baseScoreText.getY());
 
-        basePauseButton.setWidth(baseScoreText.getHeight());
-        basePauseButton.setHeight(baseScoreText.getHeight());
+        basePauseButton.setWidth(windowWidth * basePauseButton.getRelativeSize());
+        basePauseButton.setHeight(basePauseButton.getWidth());
         basePauseButton.setX((windowWidth - basePauseButton.getWidth()) / 2f);
-        basePauseButton.setY(baseScoreText.getY() - baseScoreText.getHeight());
+        basePauseButton.setY(windowHeight - basePauseButton.getHeight());
 
     }
 
@@ -110,7 +110,6 @@ public class PlayScreen implements Screen {
         powerUpManager.loadFromJson(levelConfig);
 
         numScoreText.setContent(String.valueOf(0));
-
     }
 
     @Override
@@ -122,7 +121,6 @@ public class PlayScreen implements Screen {
 
         if(brickManager.isIncremented()) {
             numScoreText.setContent(String.valueOf(brickManager.getDestroyedBricksCount()));
-            brickManager.setIsIncremented(false);
         }
 
         powerUpManager.updateFallingPowerUps();

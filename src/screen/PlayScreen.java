@@ -37,15 +37,8 @@ public class PlayScreen implements Screen {
         background = new Background(playScreen.background);
         levelPath = playScreen.levelPath;
 
-        LevelConfig levelConfig = JsonLoaderUtils.loadFromJson(levelPath, LevelConfig.class);
+        initObjects(levelPath);
 
-        if(levelConfig == null) {
-            ExceptionHandler.handle(new ResourceLoadException(levelPath, null));
-        }
-
-        gameContext.loadFromJson(levelConfig);
-        brickManager.loadFromJson(levelConfig);
-        powerUpManager.loadFromJson(levelConfig);
     }
 
     @Override
@@ -104,12 +97,34 @@ public class PlayScreen implements Screen {
 
     }
 
+    private void initObjects(String levelPath) {
+
+        LevelConfig levelConfig = JsonLoaderUtils.loadFromJson(levelPath, LevelConfig.class);
+
+        if(levelConfig == null) {
+            ExceptionHandler.handle(new ResourceLoadException(levelPath, null));
+        }
+
+        gameContext.loadFromJson(levelConfig);
+        brickManager.loadFromJson(levelConfig);
+        powerUpManager.loadFromJson(levelConfig);
+
+        numScoreText.setContent(String.valueOf(0));
+
+    }
+
     @Override
     public void update() {
 
         gameContext.getPaddle().update();
         gameContext.getBall().update();
         brickManager.updateBricks();
+
+        if(brickManager.isIncremented()) {
+            numScoreText.setContent(String.valueOf(brickManager.getDestroyedBricksCount()));
+            brickManager.setIsIncremented(false);
+        }
+
         powerUpManager.updateFallingPowerUps();
     }
 

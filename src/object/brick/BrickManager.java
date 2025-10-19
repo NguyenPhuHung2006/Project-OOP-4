@@ -32,7 +32,10 @@ public class BrickManager {
     private int destroyedBricksCount;
     private int totalBricksCount;
 
-    private BrickManager() {}
+    private boolean isIncremented;
+
+    private BrickManager() {
+    }
 
     public static BrickManager getInstance() {
         if (brickManager == null) {
@@ -62,7 +65,7 @@ public class BrickManager {
             strongBrickTextureSet.add(strongBrickTextureIndex);
         }
 
-        for(int powerUpBrickTextureIndex : levelConfig.powerUpBrickTextureIndices) {
+        for (int powerUpBrickTextureIndex : levelConfig.powerUpBrickTextureIndices) {
             powerUpBrickTextureSet.add(powerUpBrickTextureIndex);
         }
 
@@ -113,8 +116,8 @@ public class BrickManager {
 
                 Brick currentBrick = createBrickByType(brickType, baseBrick);
 
-                if(brickType == BrickType.POWERUP_BRICK ||
-                   brickType == BrickType.NORMAL_BRICK) {
+                if (brickType == BrickType.POWERUP_BRICK ||
+                        brickType == BrickType.NORMAL_BRICK) {
                     totalBricksCount++;
                 }
 
@@ -125,10 +128,14 @@ public class BrickManager {
 
     private Brick createBrickByType(BrickType type, Brick baseBrick) {
         switch (type) {
-            case NORMAL_BRICK: return new NormalBrick(baseBrick);
-            case STRONG_BRICK: return new StrongBrick(baseBrick);
-            case POWERUP_BRICK: return new PowerUpBrick(baseBrick);
-            default: return baseBrick;
+            case NORMAL_BRICK:
+                return new NormalBrick(baseBrick);
+            case STRONG_BRICK:
+                return new StrongBrick(baseBrick);
+            case POWERUP_BRICK:
+                return new PowerUpBrick(baseBrick);
+            default:
+                return baseBrick;
         }
     }
 
@@ -150,7 +157,7 @@ public class BrickManager {
             return BrickType.NORMAL_BRICK;
         } else if (isStrongBrickTextureIndex(tileIndex)) {
             return BrickType.STRONG_BRICK;
-        } else if(isPowerUpBrickTextureIndex(tileIndex)) {
+        } else if (isPowerUpBrickTextureIndex(tileIndex)) {
             return BrickType.POWERUP_BRICK;
         }
         ExceptionHandler.handle(new InvalidGameStateException("index " + tileIndex + " is not valid when getting brick type", null));
@@ -164,9 +171,10 @@ public class BrickManager {
                 Brick currentBrick = bricks[y][x];
                 if (currentBrick != null) {
                     currentBrick.update();
-                    if(currentBrick.isDestroyed()) {
+                    if (currentBrick.isDestroyed()) {
                         bricks[y][x] = null;
-                        int newDestroyedBrickCount = incrementDestroyedBricks();
+                        incrementDestroyedBricks();
+                        setIsIncremented(true);
                     }
                 }
             }
@@ -193,6 +201,10 @@ public class BrickManager {
         this.totalBricksCount = totalBricksCount;
     }
 
+    public void setIsIncremented(boolean isIncremented) {
+        this.isIncremented = isIncremented;
+    }
+
     public int getBrickWidth() {
         return brickWidth;
     }
@@ -211,6 +223,10 @@ public class BrickManager {
 
     public Brick[][] getBricks() {
         return bricks;
+    }
+
+    public boolean isIncremented() {
+        return isIncremented;
     }
 
     public int incrementDestroyedBricks() {

@@ -48,7 +48,7 @@
       "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
     },
     "numScoreText": {
-      "content": " 0",
+      "content": "0",
       "relativeSize": 0.05,
       "colorData": {"r":255,"g":255,"b":0,"a":255},
       "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}

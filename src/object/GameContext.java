@@ -6,16 +6,17 @@ import object.movable.Paddle;
 
 public class GameContext {
     private static GameContext gameContext;
+
     private int windowWidth;
     private int windowHeight;
+    private int paddingX;
+    private int paddingY;
+
     private Paddle paddle;
     private Ball ball;
 
     private boolean gameWin;
     private boolean gameOver;
-
-    private int paddingX;
-    private int paddingY;
 
     private GameContext() {
     }
@@ -45,13 +46,11 @@ public class GameContext {
     }
 
     public void setWindowWidth(int windowWidth) {
-
         this.windowWidth = windowWidth;
         paddingX = windowWidth / 100;
     }
 
     public void setWindowHeight(int windowHeight) {
-
         this.windowHeight = windowHeight;
         paddingY = windowHeight / 100;
     }
@@ -88,20 +87,20 @@ public class GameContext {
         return ball;
     }
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public boolean isGameWin() {
-        return gameWin;
-    }
-
     public int getPaddingX() {
         return paddingX;
     }
 
     public int getPaddingY() {
         return paddingY;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public boolean isGameWin() {
+        return gameWin;
     }
 
 }

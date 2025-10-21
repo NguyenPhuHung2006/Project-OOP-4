@@ -10,6 +10,7 @@
 
   "ball":   {
     "textureWidth": 24, "textureHeight": 24,
+    "relativeSize": 0.05,
     "texturePath": "/textures/ball.png",
     "speed": 3,
     "numberOfFrames": 4

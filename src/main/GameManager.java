@@ -137,26 +137,24 @@ public class GameManager extends JPanel implements Runnable {
     public void initGame() {
 
         soundManager = SoundManager.getInstance();
-        screenManager = ScreenManager.getInstance();
-        gameContext = GameContext.getInstance();
-
         SoundConfig soundConfig = JsonLoaderUtils.loadFromJson(gameConfig.soundConfigPath, SoundConfig.class);
-
         if(soundConfig == null) {
             ExceptionHandler.handle(new ResourceLoadException(gameConfig.soundConfigPath, null));
         }
 
-        ScreenConfig screenConfig = JsonLoaderUtils.loadFromJson(gameConfig.screenConfigPath, ScreenConfig.class);
+        gameContext = GameContext.getInstance();
+        gameContext.setWindowWidth(width);
+        gameContext.setWindowHeight(height);
 
+        screenManager = ScreenManager.getInstance();
+        ScreenConfig screenConfig = JsonLoaderUtils.loadFromJson(gameConfig.screenConfigPath, ScreenConfig.class);
         if(screenConfig == null) {
             ExceptionHandler.handle(new ResourceLoadException(gameConfig.screenConfigPath, null));
         }
 
-        gameContext.setWindowWidth(width);
-        gameContext.setWindowHeight(height);
-
         assert soundConfig != null;
         soundManager.loadFromJson(soundConfig);
+
         assert screenConfig != null;
         screenManager.loadFromJson(screenConfig);
 

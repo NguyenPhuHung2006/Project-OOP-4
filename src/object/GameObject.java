@@ -14,6 +14,11 @@ public abstract class GameObject implements Cloneable {
     protected transient float width;
     protected transient float height;
 
+    protected static final int windowWidth = GameContext.getInstance().getWindowWidth();
+    protected static final int windowHeight = GameContext.getInstance().getWindowHeight();
+    protected static final int paddingX = GameContext.getInstance().getPaddingX();
+    protected static final int paddingY = GameContext.getInstance().getPaddingY();
+
     protected float relativeSize;
     protected float relativeX;
     protected float relativeY;
@@ -50,6 +55,100 @@ public abstract class GameObject implements Cloneable {
                 y1 < y2 + h2 &&
                 y1 + h1 > y2;
     }
+
+    public void alignLeftOf(GameObject target) {
+        this.x = target.x - this.width - paddingX;
+        this.y = target.y;
+    }
+
+    public void alignRightOf(GameObject target) {
+        this.x = target.x + target.width + paddingX;
+        this.y = target.y;
+    }
+
+    public void alignAbove(GameObject target) {
+        this.y = target.y - this.height - paddingY;
+        this.x = target.x;
+    }
+
+    public void alignBelow(GameObject target) {
+        this.y = target.y + target.height + paddingY;
+        this.x = target.x;
+    }
+
+    public void centerHorizontally() {
+        this.x = (windowWidth - this.width) / 2f;
+    }
+
+    public void centerVertically() {
+        this.y = (windowHeight - this.height) / 2f;
+    }
+
+    public void center() {
+
+        centerHorizontally();
+        centerVertically();
+    }
+
+    public void applyRelativeSize(TexturedObject texturedObject) {
+
+        int textureWidth = texturedObject.getTextureWidth();
+        int textureHeight = texturedObject.getTextureHeight();
+
+        this.width = windowWidth * relativeSize;
+        this.height = textureHeight * width / textureWidth;
+    }
+
+    public void applyRelativePositionX() {
+        this.x = windowWidth * relativeX;
+    }
+
+    public void applyRelativePositionY() {
+        this.y = windowHeight * relativeY;
+    }
+
+    public void applyRelativePosition() {
+
+        applyRelativePositionX();
+        applyRelativePositionY();
+    }
+
+    public void alignTopLeft() {
+        x = paddingX;
+        y = paddingY;
+    }
+
+    public void alignTopRight() {
+        x = windowWidth - width - paddingX;
+        y = paddingY;
+    }
+
+    public void alignBottomLeft() {
+        x = paddingX;
+        y = windowHeight - height - paddingY;
+    }
+
+    public void alignBottomRight() {
+        x = windowWidth - width - paddingX;
+        y = windowHeight - height - paddingY;
+    }
+
+    public void alignTop() {
+        y = paddingY;
+    }
+
+    public void alignBottom() {
+        y = windowHeight - height - paddingY;
+    }
+
+    public void alignLeft() {
+        x = paddingX;
+    }
+
+    public void alignRight() {
+        x = windowWidth - width - paddingX;
+    }
+
 
     @Override
     public GameObject clone() {

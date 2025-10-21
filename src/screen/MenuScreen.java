@@ -1,13 +1,9 @@
 package screen;
 
-import exception.ExceptionHandler;
-import exception.InvalidGameStateException;
 import input.MouseManager;
-import object.GameContext;
 import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
-import utils.TextUtils;
 
 import java.awt.*;
 
@@ -30,32 +26,16 @@ public class MenuScreen implements Screen {
             return;
         }
 
-        GameContext context = GameContext.getInstance();
-        int windowWidth = context.getWindowWidth();
-        int windowHeight = context.getWindowHeight();
+        GameButton basePlayButton = menuScreen.playButton;
+        GameText baseTitleText = menuScreen.title;
 
-        Font baseFont = TextUtils.toFont(menuScreen.title.getFontData());
-        if (baseFont == null) {
-            ExceptionHandler.handle(new InvalidGameStateException("Can't load the title font", null));
-            return;
-        }
+        baseTitleText.updateSizeFromFontData();
+        baseTitleText.center();
 
-        Font titleFont = TextUtils.derivedFont(menuScreen.title.getRelativeSize(), windowHeight, baseFont);
-        Dimension titleSize = TextUtils.getTextSize(menuScreen.title.getContent(), titleFont);
+        basePlayButton.applyRelativeSize(basePlayButton);
+        basePlayButton.alignBelow(baseTitleText);
+        basePlayButton.centerHorizontally();
 
-        menuScreen.title.setFont(titleFont);
-        menuScreen.title.setWidth(titleSize.width);
-        menuScreen.title.setHeight(titleSize.height);
-        menuScreen.title.setX((windowWidth - titleSize.width) / 2f);
-        menuScreen.title.setY((windowHeight + titleSize.height) / 2f);
-
-        float buttonWidth = windowWidth * menuScreen.playButton.getRelativeSize();
-        float buttonHeight = menuScreen.playButton.getTextureHeight() * buttonWidth / menuScreen.playButton.getTextureWidth();
-
-        menuScreen.playButton.setWidth(buttonWidth);
-        menuScreen.playButton.setHeight(buttonHeight);
-        menuScreen.playButton.setX((windowWidth - buttonWidth) / 2f);
-        menuScreen.playButton.setY(menuScreen.title.getY() + GameContext.getInstance().getPaddingY());
     }
 
     @Override

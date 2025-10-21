@@ -1,5 +1,7 @@
 package object.UI.Text;
 
+import exception.ExceptionHandler;
+import exception.InvalidGameStateException;
 import object.GameObject;
 import utils.TextUtils;
 
@@ -36,7 +38,7 @@ public class GameText extends GameObject {
         
         graphics2D.setFont(font);
         graphics2D.setColor(color);
-        graphics2D.drawString(content, x, y);
+        graphics2D.drawString(content, x, y + height);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class GameText extends GameObject {
         height = gameObject.getHeight();
     }
 
-    public void updateFontAndBounds(float ratio, int windowHeight) {
+    public void updateFontAndBounds(float ratio) {
         font = TextUtils.derivedFont(ratio, windowHeight, font);
         updateTextBounds();
     }
@@ -57,6 +59,22 @@ public class GameText extends GameObject {
         Dimension size = TextUtils.getTextSize(content, font);
         width = size.width;
         height = size.height;
+    }
+
+    public void updateSizeFromFontData() {
+
+        Font baseFont = TextUtils.toFont(fontData);
+        if(baseFont == null) {
+            ExceptionHandler.handle(new InvalidGameStateException("Failed to load font", null));
+            return;
+        }
+
+        Font derivedFont = TextUtils.derivedFont(relativeSize, windowHeight, baseFont);
+        Dimension textSize = TextUtils.getTextSize(content, derivedFont);
+
+        font = derivedFont;
+        width = textSize.width;
+        height = textSize.height;
     }
 
     public void setContent(String content) {

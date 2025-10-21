@@ -29,6 +29,10 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(PlayScreen playScreen) {
 
+        gameContext = GameContext.getInstance();
+        brickManager = BrickManager.getInstance();
+        powerUpManager = PowerUpManager.getInstance();
+
         init(playScreen);
 
         scoreText = new GameText(playScreen.scoreText);
@@ -48,52 +52,19 @@ public class PlayScreen implements Screen {
             return;
         }
 
-        gameContext = GameContext.getInstance();
-        brickManager = BrickManager.getInstance();
-        powerUpManager = PowerUpManager.getInstance();
-
-        int windowWidth = gameContext.getWindowWidth();
-        int windowHeight = gameContext.getWindowHeight();
-
         GameText baseScoreText = playScreen.scoreText;
         GameText baseNumScoreText = playScreen.numScoreText;
         GameButton basePauseButton = playScreen.pauseButton;
 
-        Font baseScoreFont = TextUtils.toFont(baseScoreText.getFontData());
-        Font numScoreBaseFont = TextUtils.toFont(playScreen.scoreText.getFontData());
+        baseScoreText.updateSizeFromFontData();
+        baseScoreText.alignBottomLeft();
 
-        if (baseScoreFont == null) {
-            ExceptionHandler.handle(new InvalidGameStateException("Can't load the brick destroyed text font", null));
-            return;
-        }
+        baseNumScoreText.updateSizeFromFontData();
+        baseNumScoreText.alignRightOf(baseScoreText);
 
-        if (numScoreBaseFont == null) {
-            ExceptionHandler.handle(new InvalidGameStateException("Can't load the score text font", null));
-            return;
-        }
-
-        Font scoreFont = TextUtils.derivedFont(baseScoreText.getRelativeSize(), windowHeight, baseScoreFont);
-        Font numScoreFont = TextUtils.derivedFont(baseNumScoreText.getRelativeSize(), windowHeight, numScoreBaseFont);
-
-        Dimension scoreSize = TextUtils.getTextSize(baseScoreText.getContent(), scoreFont);
-        Dimension numScoreSize = TextUtils.getTextSize(playScreen.scoreText.getContent(), numScoreFont);
-
-        baseScoreText.setFont(scoreFont);
-        baseScoreText.setWidth(scoreSize.width);
-        baseScoreText.setHeight(scoreSize.height);
-        baseScoreText.setX(windowWidth * baseScoreText.getRelativeX());
-        baseScoreText.setY(windowHeight - gameContext.getPaddingY());
-
-        baseNumScoreText.setFont(scoreFont);
-        baseNumScoreText.setWidth(scoreSize.width);
-        baseNumScoreText.setHeight(numScoreSize.height);
-        baseNumScoreText.setX(baseScoreText.getX() + baseScoreText.getWidth());
-        baseNumScoreText.setY(baseScoreText.getY());
-
-        basePauseButton.setWidth(windowWidth * basePauseButton.getRelativeSize());
-        basePauseButton.setHeight(basePauseButton.getWidth());
-        basePauseButton.setX((windowWidth - basePauseButton.getWidth()) / 2f);
-        basePauseButton.setY(windowHeight - basePauseButton.getHeight() - gameContext.getPaddingY());
+        basePauseButton.applyRelativeSize(basePauseButton);
+        basePauseButton.centerHorizontally();
+        basePauseButton.alignBottom();
 
     }
 

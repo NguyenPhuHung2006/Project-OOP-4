@@ -29,6 +29,7 @@
     },
     "level1Button": {
       "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1
     },
@@ -43,7 +44,6 @@
     "scoreText": {
       "content": "Score: ",
       "relativeSize": 0.05,
-      "relativeX": 0.01,
       "colorData": {"r":255,"g":255,"b":255,"a":255},
       "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
     },
@@ -91,7 +91,13 @@
       "relativeSize": 0.05,
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1
-    }
+    },
+    "background": {
+      "textureWidth": 1000, "textureHeight": 1000,
+      "texturePath": "/textures/background.png",
+      "numberOfFrames": 1
+    },
+    "levelPath": "assets/json/levels/Level1.json"
   },
 
   "gameWinScreen": {
@@ -118,6 +124,12 @@
       "relativeSize": 0.05,
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1
-    }
+    },
+    "background": {
+      "textureWidth": 1000, "textureHeight": 1000,
+      "texturePath": "/textures/background.png",
+      "numberOfFrames": 1
+    },
+    "levelPath": "assets/json/levels/Level1.json"
   }
 }

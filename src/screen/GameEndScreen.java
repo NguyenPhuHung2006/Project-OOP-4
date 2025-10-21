@@ -1,12 +1,8 @@
 package screen;
 
-import exception.ExceptionHandler;
-import exception.InvalidGameStateException;
-import object.GameContext;
 import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
-import utils.TextUtils;
 
 import java.awt.*;
 
@@ -23,6 +19,10 @@ public abstract class GameEndScreen implements Screen {
         init(gameEndScreen);
 
         gameEndText = new GameText(gameEndScreen.gameEndText);
+        escapeButton = new GameButton(gameEndScreen.escapeButton);
+        playAgainButton = new GameButton(gameEndScreen.playAgainButton);
+        saveProgressButton = new GameButton(gameEndScreen.saveProgressButton);
+        background = new Background(gameEndScreen.background);
 
     }
 
@@ -33,34 +33,23 @@ public abstract class GameEndScreen implements Screen {
             return;
         }
 
-        GameContext gameContext = GameContext.getInstance();
-        int windowWidth = gameContext.getWindowWidth();
-        int windowHeight = gameContext.getWindowHeight();
-
         GameText baseGameEndText = gameEndScreen.gameEndText;
         GameButton baseEscapeButton = gameEndScreen.escapeButton;
         GameButton basePlayAgainButton = gameEndScreen.playAgainButton;
         GameButton baseSaveProgressButton = gameEndScreen.saveProgressButton;
 
-        Font baseGameEndFont = TextUtils.toFont(baseGameEndText.getFontData());
+        baseGameEndText.updateSizeFromFontData();
+        baseGameEndText.center();
 
-        if (baseGameEndFont == null) {
-            ExceptionHandler.handle(new InvalidGameStateException("Can't load the game end text font", null));
-            return;
-        }
+        basePlayAgainButton.applyRelativeSize(basePlayAgainButton);
+        basePlayAgainButton.alignBelow(baseGameEndText);
+        basePlayAgainButton.centerHorizontally();
 
-        Font gameEndFont = TextUtils.derivedFont(baseGameEndText.getRelativeSize(), windowHeight, baseGameEndFont);
-        Dimension gameEndSize = TextUtils.getTextSize(baseGameEndText.getContent(), gameEndFont);
+        baseEscapeButton.applyRelativeSize(baseEscapeButton);
+        baseEscapeButton.alignRightOf(basePlayAgainButton);
 
-        baseGameEndText.setFont(gameEndFont);
-        baseGameEndText.setWidth(gameEndSize.width);
-        baseGameEndText.setHeight(gameEndSize.height);
-        baseGameEndText.setX((windowWidth - baseGameEndText.getWidth()) / 2f);
-        baseGameEndText.setY((windowHeight + baseGameEndText.getHeight()) / 2f);
-
-        baseEscapeButton.setWidth(windowWidth * baseEscapeButton.getRelativeSize());
-        baseEscapeButton.setHeight(baseEscapeButton.getTextureHeight() * baseEscapeButton.getWidth() / baseEscapeButton.getTextureWidth());
-        baseEscapeButton.setX((windowWidth - baseEscapeButton.getWidth()) / 2f);
+        baseSaveProgressButton.applyRelativeSize(baseSaveProgressButton);
+        baseSaveProgressButton.alignLeftOf(basePlayAgainButton);
 
     }
 
@@ -71,7 +60,12 @@ public abstract class GameEndScreen implements Screen {
 
     @Override
     public void render(Graphics2D graphics2D) {
+
+        background.render(graphics2D);
         gameEndText.render(graphics2D);
+        escapeButton.render(graphics2D);
+        playAgainButton.render(graphics2D);
+        saveProgressButton.render(graphics2D);
     }
 
     @Override

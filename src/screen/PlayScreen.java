@@ -54,15 +54,15 @@ public class PlayScreen implements Screen {
 
         int windowWidth = gameContext.getWindowWidth();
         int windowHeight = gameContext.getWindowHeight();
-        
+
         GameText baseScoreText = playScreen.scoreText;
         GameText baseNumScoreText = playScreen.numScoreText;
         GameButton basePauseButton = playScreen.pauseButton;
 
-        Font scoreBaseFont = TextUtils.toFont(baseScoreText.getFontData());
+        Font baseScoreFont = TextUtils.toFont(baseScoreText.getFontData());
         Font numScoreBaseFont = TextUtils.toFont(playScreen.scoreText.getFontData());
 
-        if (scoreBaseFont == null) {
+        if (baseScoreFont == null) {
             ExceptionHandler.handle(new InvalidGameStateException("Can't load the brick destroyed text font", null));
             return;
         }
@@ -72,7 +72,7 @@ public class PlayScreen implements Screen {
             return;
         }
 
-        Font scoreFont = TextUtils.derivedFont(baseScoreText.getRelativeSize(), windowHeight, scoreBaseFont);
+        Font scoreFont = TextUtils.derivedFont(baseScoreText.getRelativeSize(), windowHeight, baseScoreFont);
         Font numScoreFont = TextUtils.derivedFont(baseNumScoreText.getRelativeSize(), windowHeight, numScoreBaseFont);
 
         Dimension scoreSize = TextUtils.getTextSize(baseScoreText.getContent(), scoreFont);
@@ -82,7 +82,7 @@ public class PlayScreen implements Screen {
         baseScoreText.setWidth(scoreSize.width);
         baseScoreText.setHeight(scoreSize.height);
         baseScoreText.setX(windowWidth * baseScoreText.getRelativeX());
-        baseScoreText.setY(windowHeight);
+        baseScoreText.setY(windowHeight - gameContext.getPaddingY());
 
         baseNumScoreText.setFont(scoreFont);
         baseNumScoreText.setWidth(scoreSize.width);
@@ -93,7 +93,7 @@ public class PlayScreen implements Screen {
         basePauseButton.setWidth(windowWidth * basePauseButton.getRelativeSize());
         basePauseButton.setHeight(basePauseButton.getWidth());
         basePauseButton.setX((windowWidth - basePauseButton.getWidth()) / 2f);
-        basePauseButton.setY(windowHeight - basePauseButton.getHeight());
+        basePauseButton.setY(windowHeight - basePauseButton.getHeight() - gameContext.getPaddingY());
 
     }
 
@@ -101,7 +101,7 @@ public class PlayScreen implements Screen {
 
         LevelConfig levelConfig = JsonLoaderUtils.loadFromJson(levelPath, LevelConfig.class);
 
-        if(levelConfig == null) {
+        if (levelConfig == null) {
             ExceptionHandler.handle(new ResourceLoadException(levelPath, null));
         }
 
@@ -115,11 +115,25 @@ public class PlayScreen implements Screen {
     @Override
     public void update() {
 
-        gameContext.getPaddle().update();
-        gameContext.getBall().update();
+        ScreenManager screenManager = ScreenManager.getInstance();
+
+        boolean isGameOver = gameContext.isGameOver();
+        boolean isGameWin = gameContext.isGameWin();
+
+        if(isGameOver || isGameWin) {
+            screenManager.pop();
+            if(isGameOver) {
+                screenManager.push(ScreenType.GAME_OVER);
+            } else {
+                screenManager.push(ScreenType.GAME_WIN);
+            }
+            return;
+        }
+
+        gameContext.updateContext();
         brickManager.updateBricks();
 
-        if(brickManager.isIncremented()) {
+        if (brickManager.isIncremented()) {
             numScoreText.setContent(String.valueOf(brickManager.getDestroyedBricksCount()));
         }
 

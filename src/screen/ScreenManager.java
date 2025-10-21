@@ -29,6 +29,8 @@ public class ScreenManager {
         screenRegistry.put(ScreenType.MENU, screenConfig.menuScreen);
         screenRegistry.put(ScreenType.SELECT, screenConfig.selectScreen);
         screenRegistry.put(ScreenType.PLAY_LEVEL1, screenConfig.playLevel1Screen);
+        screenRegistry.put(ScreenType.GAME_OVER, screenConfig.gameOverScreen);
+        screenRegistry.put(ScreenType.GAME_WIN, screenConfig.gameWinScreen);
     }
 
     public void push(ScreenType screenType) {
@@ -56,6 +58,10 @@ public class ScreenManager {
                 return new SelectScreen((SelectScreen) baseScreen);
             case PLAY_LEVEL1:
                 return new PlayScreen((PlayScreen) baseScreen);
+            case GAME_OVER:
+                return new GameOverScreen((GameOverScreen) baseScreen);
+            case GAME_WIN:
+                return new GameWinScreen((GameWinScreen) baseScreen);
             default:
                 return baseScreen;
         }

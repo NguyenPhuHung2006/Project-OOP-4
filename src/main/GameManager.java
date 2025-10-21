@@ -54,6 +54,14 @@ public class GameManager extends JPanel implements Runnable {
             ExceptionHandler.handle(new InvalidGameStateException("the window size is too small", null));
         }
 
+        if(width % 100 != 0) {
+            ExceptionHandler.handle(new InvalidGameStateException("the window width has to be divisible by 100", null));
+        }
+
+        if(height % 100 != 0) {
+            ExceptionHandler.handle(new InvalidGameStateException("the window height has to be divisible by 100", null));
+        }
+
         this.setPreferredSize(new Dimension(width, height));
 
         Color backgroundColor = Color.white;

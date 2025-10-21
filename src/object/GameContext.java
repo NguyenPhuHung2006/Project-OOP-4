@@ -1,6 +1,5 @@
 package object;
 
-import config.GameConfig;
 import config.LevelConfig;
 import object.movable.Ball;
 import object.movable.Paddle;
@@ -11,6 +10,12 @@ public class GameContext {
     private int windowHeight;
     private Paddle paddle;
     private Ball ball;
+
+    private boolean gameWin;
+    private boolean gameOver;
+
+    private int paddingX;
+    private int paddingY;
 
     private GameContext() {
     }
@@ -29,14 +34,26 @@ public class GameContext {
 
         Ball ball = new Ball(levelConfig.ball);
         gameContext.setBall(ball);
+
+        gameOver = false;
+        gameWin = false;
+    }
+
+    public void updateContext() {
+        paddle.update();
+        ball.update();
     }
 
     public void setWindowWidth(int windowWidth) {
+
         this.windowWidth = windowWidth;
+        paddingX = windowWidth / 100;
     }
 
     public void setWindowHeight(int windowHeight) {
+
         this.windowHeight = windowHeight;
+        paddingY = windowHeight / 100;
     }
 
     public void setPaddle(Paddle paddle) {
@@ -45,6 +62,14 @@ public class GameContext {
 
     public void setBall(Ball ball) {
         this.ball = ball;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public void setGameWin(boolean gameWin) {
+        this.gameWin = gameWin;
     }
 
     public int getWindowWidth() {
@@ -61,6 +86,22 @@ public class GameContext {
 
     public Ball getBall() {
         return ball;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public boolean isGameWin() {
+        return gameWin;
+    }
+
+    public int getPaddingX() {
+        return paddingX;
+    }
+
+    public int getPaddingY() {
+        return paddingY;
     }
 
 }

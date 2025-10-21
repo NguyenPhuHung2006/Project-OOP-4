@@ -2,6 +2,7 @@ package object.movable;
 
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
+import object.GameContext;
 import object.GameObject;
 import object.brick.Brick;
 
@@ -37,6 +38,8 @@ public class Ball extends MovableObject {
         moveAndCollide();
 
         handleWindowCollision();
+
+        checkGameState();
     }
 
     @Override
@@ -71,6 +74,13 @@ public class Ball extends MovableObject {
             } else {
                 x = paddle.getX() - width;
             }
+        }
+    }
+
+    private void checkGameState() {
+
+        if(y + height >= gameContext.getWindowHeight()) {
+            gameContext.setGameOver(true);
         }
     }
 

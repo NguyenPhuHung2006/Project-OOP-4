@@ -55,7 +55,7 @@ public class MenuScreen implements Screen {
         menuScreen.playButton.setWidth(buttonWidth);
         menuScreen.playButton.setHeight(buttonHeight);
         menuScreen.playButton.setX((windowWidth - buttonWidth) / 2f);
-        menuScreen.playButton.setY(menuScreen.title.getY());
+        menuScreen.playButton.setY(menuScreen.title.getY() + GameContext.getInstance().getPaddingY());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class MenuScreen implements Screen {
 
         MouseManager mouseManager = MouseManager.getInstance();
 
-        if(playButton.isClicked(mouseManager)) {
+        if(mouseManager.isLeftClicked() && playButton.isClicked(mouseManager)) {
             ScreenManager screenManager = ScreenManager.getInstance();
             screenManager.push(ScreenType.SELECT);
         }

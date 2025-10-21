@@ -38,13 +38,13 @@ public class SelectScreen implements Screen {
         GameText baseLevel1Text = selectScreen.level1Text;
         GameButton baseLevel1Button = selectScreen.level1Button;
 
-        Font baseFont = TextUtils.toFont(baseLevel1Text.getFontData());
-        if (baseFont == null) {
+        Font baseLevel1Font = TextUtils.toFont(baseLevel1Text.getFontData());
+        if (baseLevel1Font == null) {
             ExceptionHandler.handle(new InvalidGameStateException("Can't load the level 1 text font", null));
             return;
         }
 
-        Font level1TextFont = TextUtils.derivedFont(baseLevel1Text.getRelativeSize(), windowHeight, baseFont);
+        Font level1TextFont = TextUtils.derivedFont(baseLevel1Text.getRelativeSize(), windowHeight, baseLevel1Font);
         Dimension level1TextSize = TextUtils.getTextSize(baseLevel1Text.getContent(), level1TextFont);
 
         baseLevel1Text.setFont(level1TextFont);
@@ -66,7 +66,7 @@ public class SelectScreen implements Screen {
     public void update() {
         MouseManager mouseManager = MouseManager.getInstance();
 
-        if(level1Button.isClicked(mouseManager)) {
+        if(mouseManager.isLeftClicked() && level1Button.isClicked(mouseManager)) {
             ScreenManager screenManager = ScreenManager.getInstance();
             screenManager.push(ScreenType.PLAY_LEVEL1);
         }

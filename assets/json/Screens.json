@@ -21,7 +21,7 @@
 
   "selectScreen": {
     "level1Text": {
-      "content": "LEVEL 1  ",
+      "content": "LEVEL 1   ",
       "relativeSize": 0.05,
       "relativeX": 0.04, "relativeY": 0.2,
       "colorData": {"r":255,"g":0,"b":0,"a":255},
@@ -65,5 +65,59 @@
       "numberOfFrames": 1
     },
     "levelPath": "assets/json/levels/Level1.json"
+  },
+
+  "gameOverScreen": {
+    "gameEndText":{
+      "content": "GAME OVER",
+      "relativeSize": 0.1,
+      "colorData": {"r":225,"g":0,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":48}
+    },
+    "escapeButton": {
+      "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "playAgainButton": {
+      "textureX": 48, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "saveProgressButton": {
+      "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    }
+  },
+
+  "gameWinScreen": {
+    "gameEndText":{
+      "content": "YOU WIN!",
+      "relativeSize": 0.1,
+      "colorData": {"r":0,"g":255,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":48}
+    },
+    "escapeButton": {
+      "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "playAgainButton": {
+      "textureX": 48, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "saveProgressButton": {
+      "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    }
   }
 }

@@ -23,9 +23,9 @@ public class BrickManager {
 
     private final Map<BrickType, Brick> brickRegistry = new EnumMap<>(BrickType.class);
 
-    private HashSet<Integer> normalBrickTextureSet;
-    private HashSet<Integer> strongBrickTextureSet;
-    private HashSet<Integer> powerUpBrickTextureSet;
+    private HashSet<Integer> normalBrickTextureSet = new HashSet<>();
+    private HashSet<Integer> strongBrickTextureSet = new HashSet<>();
+    private HashSet<Integer> powerUpBrickTextureSet = new HashSet<>();
 
     private int framePerRow;
 
@@ -45,6 +45,7 @@ public class BrickManager {
     }
 
     public void loadFromJson(LevelConfig levelConfig) {
+        refresh();
         initBricks(levelConfig);
         loadBricks(levelConfig);
     }
@@ -52,10 +53,6 @@ public class BrickManager {
     private void initBricks(LevelConfig levelConfig) {
 
         framePerRow = levelConfig.framePerRow;
-
-        normalBrickTextureSet = new HashSet<>();
-        strongBrickTextureSet = new HashSet<>();
-        powerUpBrickTextureSet = new HashSet<>();
 
         for (int normalBrickTextureIndex : levelConfig.normalBrickTextureIndices) {
             normalBrickTextureSet.add(normalBrickTextureIndex);
@@ -178,6 +175,27 @@ public class BrickManager {
                 }
             }
         }
+    }
+
+    private void refresh() {
+
+        for(int y = 0; y < brickCountY; y++) {
+            for(int x = 0; x < brickCountX; x++) {
+                bricks[y][x] = null;
+            }
+        }
+        brickWidth = 0;
+        brickHeight = 0;
+        brickCountX = 0;
+        brickCountY = 0;
+        brickRegistry.clear();
+        normalBrickTextureSet.clear();
+        strongBrickTextureSet.clear();
+        powerUpBrickTextureSet.clear();
+        framePerRow = 0;
+        destroyedBricksCount = 0;
+        totalBricksCount = 0;
+        isIncremented = false;
     }
 
     public void setDestroyedBricksCount(int destroyedBricksCount) {

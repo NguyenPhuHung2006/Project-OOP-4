@@ -33,7 +33,7 @@ public class PowerUpManager {
 
     public void loadFromJson(LevelConfig levelConfig) {
 
-        refreshPowerUps();
+        refresh();
         powerUpsRegistry.put(PowerUpType.SLOW_BALL, levelConfig.slowPowerUp);
         powerUpsRegistry.put(PowerUpType.EXPAND_PADDLE, levelConfig.expandPaddleWidthPowerUp);
     }
@@ -96,7 +96,7 @@ public class PowerUpManager {
         }
     }
 
-    private void refreshPowerUps() {
+    private void refresh() {
 
         for (ScheduledFuture<?> future : scheduledFutures.values()) {
             future.cancel(false);

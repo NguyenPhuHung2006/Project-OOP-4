@@ -30,6 +30,7 @@ public class GameContext {
 
     public void loadFromJson(LevelConfig levelConfig) {
 
+        refresh();
         Paddle paddle = new Paddle(levelConfig.paddle);
         gameContext.setPaddle(paddle);
 
@@ -43,6 +44,13 @@ public class GameContext {
     public void updateContext() {
         paddle.update();
         ball.update();
+    }
+
+    private void refresh() {
+        paddle = null;
+        ball = null;
+        gameOver = false;
+        gameWin = false;
     }
 
     public void setWindowWidth(int windowWidth) {

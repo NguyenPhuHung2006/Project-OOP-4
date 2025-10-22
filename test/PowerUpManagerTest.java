@@ -1,7 +1,6 @@
 import config.GameConfig;
 import config.LevelConfig;
 import object.GameContext;
-import object.brick.BrickManager;
 import object.movable.powerup.*;
 import org.junit.jupiter.api.*;
 import utils.JsonLoaderUtils;
@@ -19,21 +18,18 @@ public class PowerUpManagerTest {
     void setup() {
 
         GameConfig gameConfig = JsonLoaderUtils.loadFromJson("assets/json/GameConfig.json", GameConfig.class);
-        GameContext gameContext = GameContext.getInstance();
 
+        GameContext gameContext = GameContext.getInstance();
+        assertNotNull(gameConfig);
         gameContext.setWindowWidth(gameConfig.windowWidth);
         gameContext.setWindowHeight(gameConfig.windowHeight);
 
         powerUpManager = PowerUpManager.getInstance();
         testPowerUp = JsonLoaderUtils.loadFromJson("assets/json/junit_json/PowerUpManagerTest.json", TestPowerUp.class);
 
+        assertNotNull(testPowerUp);
         testPowerUp.setWidth(1);
         testPowerUp.setHeight(1);
-
-        LevelConfig levelConfig = JsonLoaderUtils.loadFromJson("assets/json/levels/Level2.json", LevelConfig.class);
-
-        BrickManager brickManager = BrickManager.getInstance();
-        brickManager.loadFromJson(levelConfig);
     }
 
     @Test

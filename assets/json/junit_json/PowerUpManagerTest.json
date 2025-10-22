@@ -3,6 +3,7 @@
   "textureY": 0,
   "textureWidth": 14,
   "textureHeight": 20,
+  "relativeSize": 0.05,
   "texturePath": "/textures/slow_ball.png",
   "numberOfFrames": 1,
   "speed": 3,

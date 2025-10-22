@@ -1,0 +1,10 @@
+{
+  "textureX": 0,
+  "textureY": 0,
+  "textureWidth": 14,
+  "textureHeight": 20,
+  "texturePath": "/textures/slow_ball.png",
+  "numberOfFrames": 1,
+  "speed": 3,
+  "durationMs": 5000
+}

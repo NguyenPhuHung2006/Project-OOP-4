@@ -8,7 +8,6 @@ import object.movable.MovableObject;
 
 public abstract class PowerUp extends MovableObject {
 
-    private boolean isActive = false;
     private boolean isFalling = false;
     private boolean isRemoved = false;
     protected int durationMs;
@@ -85,10 +84,6 @@ public abstract class PowerUp extends MovableObject {
 
     public void setDurationMs(int durationMs) {
         this.durationMs = durationMs;
-    }
-
-    public void setActive(boolean isActive) {
-        this.isActive = isActive;
     }
 
     public boolean isRemoved() {

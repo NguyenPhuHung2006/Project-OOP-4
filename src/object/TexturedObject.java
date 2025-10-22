@@ -48,7 +48,7 @@ public abstract class TexturedObject extends GameObject {
                     texturePath, width, height));
         }
         if (frames.isEmpty()) {
-            ExceptionHandler.handle(new InvalidGameStateException("The number of frames is not valid", null));
+            ExceptionHandler.handle(new InvalidGameStateException("The number of frames " + numberOfFrames + " is not valid", null));
         }
         currentTexture = frames.getLast();
     }

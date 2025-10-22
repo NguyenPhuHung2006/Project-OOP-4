@@ -25,4 +25,13 @@ public final class RandomUtils {
     public static boolean nextBoolean() {
         return random.nextBoolean();
     }
+
+    public static <T extends Enum<?>> T nextEnum(Class<T> enumClass) {
+        T[] constants = enumClass.getEnumConstants();
+        if (constants == null || constants.length == 0) {
+            throw new IllegalArgumentException("Enum class has no constants: " + enumClass);
+        }
+        int index = random.nextInt(constants.length);
+        return constants[index];
+    }
 }

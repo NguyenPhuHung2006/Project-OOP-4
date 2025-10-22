@@ -2,6 +2,7 @@ package object.brick;
 
 import audio.SoundType;
 import object.movable.powerup.PowerUpType;
+import utils.RandomUtils;
 
 public class PowerUpBrick extends Brick {
 
@@ -15,7 +16,7 @@ public class PowerUpBrick extends Brick {
         soundManager.play(SoundType.POWERUP_BRICK);
         destroyed = true;
 
-        powerUpManager.addPowerUp(PowerUpType.EXPAND_PADDLE, this);
+        powerUpManager.addPowerUp(RandomUtils.nextEnum(PowerUpType.class), this);
     }
 
     @Override

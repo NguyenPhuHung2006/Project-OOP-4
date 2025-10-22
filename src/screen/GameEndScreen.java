@@ -42,14 +42,14 @@ public abstract class GameEndScreen implements Screen {
         baseGameEndText.updateSizeFromFontData();
         baseGameEndText.center();
 
-        basePlayAgainButton.applyRelativeSize(basePlayAgainButton);
+        basePlayAgainButton.applyRelativeSize();
         basePlayAgainButton.alignBelow(baseGameEndText);
         basePlayAgainButton.centerHorizontally();
 
-        baseEscapeButton.applyRelativeSize(baseEscapeButton);
+        baseEscapeButton.applyRelativeSize();
         baseEscapeButton.alignRightOf(basePlayAgainButton);
 
-        baseSaveProgressButton.applyRelativeSize(baseSaveProgressButton);
+        baseSaveProgressButton.applyRelativeSize();
         baseSaveProgressButton.alignLeftOf(basePlayAgainButton);
 
     }

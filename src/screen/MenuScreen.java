@@ -45,7 +45,7 @@ public class MenuScreen implements Screen {
         baseLevel1Text.updateSizeFromFontData();
         baseLevel1Text.applyRelativePosition();
 
-        baseLevel1Button.applyRelativeSize(baseLevel1Button);
+        baseLevel1Button.applyRelativeSize();
         baseLevel1Button.alignRightOf(baseLevel1Text);
         baseLevel1Button.centerVerticallyTo(baseLevel1Text);
 
@@ -53,7 +53,7 @@ public class MenuScreen implements Screen {
         baseLevel2Text.alignBelow(baseLevel1Text);
         baseLevel2Text.translateY(paddingY * 10);
 
-        baseLevel2Button.applyRelativeSize(baseLevel2Button);
+        baseLevel2Button.applyRelativeSize();
         baseLevel2Button.alignRightOf(baseLevel2Text);
         baseLevel2Button.centerVerticallyTo(baseLevel2Text);
 

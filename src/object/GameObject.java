@@ -3,7 +3,9 @@ package object;
 import audio.SoundManager;
 import input.KeyboardManager;
 import object.brick.BrickManager;
+import object.movable.powerup.PowerUp;
 import object.movable.powerup.PowerUpManager;
+import object.movable.powerup.PowerUpType;
 
 import java.awt.*;
 
@@ -96,15 +98,6 @@ public abstract class GameObject implements Cloneable {
 
         centerHorizontally();
         centerVertically();
-    }
-
-    public void applyRelativeSize(TexturedObject texturedObject) {
-
-        int textureWidth = texturedObject.getTextureWidth();
-        int textureHeight = texturedObject.getTextureHeight();
-
-        this.width = windowWidth * relativeSize;
-        this.height = textureHeight * width / textureWidth;
     }
 
     public void applyRelativePositionX() {

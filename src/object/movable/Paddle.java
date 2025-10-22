@@ -27,7 +27,9 @@ public class Paddle extends MovableObject {
 
         initTextureBounds(gameObject);
 
-        gameObject.applyRelativeSize((TexturedObject) gameObject);
+        TexturedObject texturedObject = (TexturedObject) gameObject;
+
+        texturedObject.applyRelativeSize();
         gameObject.applyRelativePositionY();
         gameObject.centerHorizontally();
 

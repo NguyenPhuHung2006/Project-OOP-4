@@ -55,7 +55,9 @@ public class Ball extends MovableObject {
 
         initTextureBounds(gameObject);
 
-        gameObject.applyRelativeSize((TexturedObject) gameObject);
+        TexturedObject texturedObject = (TexturedObject) gameObject;
+
+        texturedObject.applyRelativeSize();
         gameObject.alignAbove(paddle);
         gameObject.centerHorizontallyTo(paddle);
         gameObject.translateY(paddingY);

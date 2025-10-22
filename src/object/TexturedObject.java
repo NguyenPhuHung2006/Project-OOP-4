@@ -2,6 +2,7 @@ package object;
 
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
+import object.movable.powerup.PowerUp;
 import utils.RendererUtils;
 import utils.TextureLoaderUtils;
 
@@ -60,6 +61,12 @@ public abstract class TexturedObject extends GameObject {
         textureY = texturedObject.getTextureY();
         textureHeight = texturedObject.getTextureHeight();
         textureWidth = texturedObject.getTextureWidth();
+    }
+
+    public void applyRelativeSize() {
+
+        this.width = windowWidth * relativeSize;
+        this.height = textureHeight * width / textureWidth;
     }
 
     @Override

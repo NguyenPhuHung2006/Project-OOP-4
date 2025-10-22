@@ -41,6 +41,7 @@ public class TextureLoaderUtils {
         Graphics2D graphics2D = scaledTexture.createGraphics();
 
         try {
+            assert originalTexture != null;
             graphics2D.drawImage(originalTexture.getScaledInstance((int)scaledWidth, (int)scaledHeight, Image.SCALE_SMOOTH), 0, 0, null);
         } catch (NullPointerException e) {
             ExceptionHandler.handle(e);

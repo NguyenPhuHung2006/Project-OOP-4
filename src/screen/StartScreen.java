@@ -32,7 +32,7 @@ public class StartScreen implements Screen {
         baseTitleText.updateSizeFromFontData();
         baseTitleText.center();
 
-        basePlayButton.applyRelativeSize(basePlayButton);
+        basePlayButton.applyRelativeSize();
         basePlayButton.alignBelow(baseTitleText);
         basePlayButton.centerHorizontallyTo(baseTitleText);
 

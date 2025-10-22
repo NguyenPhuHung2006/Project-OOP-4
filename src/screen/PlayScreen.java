@@ -60,7 +60,7 @@ public class PlayScreen implements Screen {
         baseNumScoreText.updateSizeFromFontData();
         baseNumScoreText.alignRightOf(baseScoreText);
 
-        basePauseButton.applyRelativeSize(basePauseButton);
+        basePauseButton.applyRelativeSize();
         basePauseButton.centerHorizontally();
         basePauseButton.alignBottom();
 

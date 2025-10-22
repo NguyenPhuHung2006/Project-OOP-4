@@ -37,6 +37,7 @@
   "slowPowerUp": {
     "textureWidth": 14, "textureHeight": 20,
     "texturePath": "/textures/slow_ball.png",
+    "relativeSize": 0.05,
     "numberOfFrames": 1,
     "speed": 3,
     "durationMs": 5000,
@@ -46,6 +47,7 @@
   "expandPaddleWidthPowerUp": {
     "textureWidth": 25, "textureHeight": 6,
     "texturePath": "/textures/expand_paddle.png",
+    "relativeSize": 0.1,
     "numberOfFrames": 1,
     "speed": 3,
     "durationMs": 5000,

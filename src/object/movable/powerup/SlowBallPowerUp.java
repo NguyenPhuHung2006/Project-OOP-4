@@ -9,9 +9,11 @@ public class SlowBallPowerUp extends PowerUp {
     private final float slowedSpeed;
     private final Ball ball;
 
-    public SlowBallPowerUp(SlowBallPowerUp slowBallPowerUp) {
+    public SlowBallPowerUp(PowerUp powerUp) {
 
-        super(slowBallPowerUp);
+        super(powerUp);
+
+        SlowBallPowerUp slowBallPowerUp = (SlowBallPowerUp) powerUp;
 
         this.slowMultiplier = slowBallPowerUp.slowMultiplier;
         this.ball = gameContext.getBall();

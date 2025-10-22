@@ -1,6 +1,8 @@
 package object.movable.powerup;
 
 import config.LevelConfig;
+import exception.ExceptionHandler;
+import exception.InvalidGameStateException;
 import object.brick.Brick;
 
 import java.awt.*;
@@ -32,13 +34,18 @@ public class PowerUpManager {
     public void loadFromJson(LevelConfig levelConfig) {
 
         refreshPowerUps();
-        powerUpsRegistry.put(PowerUpType.SLOW_BALL, new SlowBallPowerUp(levelConfig.slowPowerUp));
-        powerUpsRegistry.put(PowerUpType.EXPAND_PADDLE, new ExpandPaddleWidthPowerUp(levelConfig.expandPaddleWidthPowerUp));
+        powerUpsRegistry.put(PowerUpType.SLOW_BALL, levelConfig.slowPowerUp);
+        powerUpsRegistry.put(PowerUpType.EXPAND_PADDLE, levelConfig.expandPaddleWidthPowerUp);
     }
 
     public void addPowerUp(PowerUpType powerUpType, Brick brick) {
 
-        PowerUp newPowerUp = powerUpsRegistry.get(powerUpType).clone();
+        PowerUp basePowerUp = powerUpsRegistry.get(powerUpType).clone();
+        if(basePowerUp == null) {
+            ExceptionHandler.handle(new InvalidGameStateException("the power up: " + powerUpType + " has not been registered", null));
+        }
+
+        PowerUp newPowerUp = powerUpType.create(basePowerUp);
         newPowerUp.setInitialPosition(brick);
         newPowerUp.setPowerUpType(powerUpType);
         fallingPowerUps.add(newPowerUp);

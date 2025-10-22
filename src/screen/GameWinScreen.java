@@ -2,9 +2,9 @@ package screen;
 
 public class GameWinScreen extends GameEndScreen {
 
-    public GameWinScreen(GameWinScreen gameWinScreen) {
+    public GameWinScreen(Screen screen) {
 
-        super(gameWinScreen);
+        super(screen);
 
     }
 

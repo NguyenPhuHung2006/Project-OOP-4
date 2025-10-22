@@ -13,8 +13,11 @@ public class StartScreen implements Screen {
     private GameText title;
     private Background background;
 
-    public StartScreen(StartScreen startScreen) {
-        init(startScreen);
+    public StartScreen(Screen screen) {
+        init(screen);
+
+        StartScreen startScreen = (StartScreen) screen;
+
         playButton = new GameButton(startScreen.playButton);
         title = new GameText(startScreen.title);
         background = new Background(startScreen.background);

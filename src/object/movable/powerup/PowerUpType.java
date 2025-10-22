@@ -1,6 +1,18 @@
 package object.movable.powerup;
 
 public enum PowerUpType {
-    SLOW_BALL,
-    EXPAND_PADDLE
+    SLOW_BALL {
+        @Override
+        public PowerUp create(PowerUp powerUp) {
+            return new SlowBallPowerUp(powerUp);
+        }
+    },
+    EXPAND_PADDLE {
+        @Override
+        public PowerUp create(PowerUp powerUp) {
+            return new ExpandPaddleWidthPowerUp(powerUp);
+        }
+    };
+
+    public abstract PowerUp create(PowerUp powerUp);
 }

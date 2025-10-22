@@ -25,13 +25,15 @@ public class PlayScreen implements Screen {
     private Background background;
     private String levelPath;
 
-    public PlayScreen(PlayScreen playScreen) {
+    public PlayScreen(Screen screen) {
 
         gameContext = GameContext.getInstance();
         brickManager = BrickManager.getInstance();
         powerUpManager = PowerUpManager.getInstance();
 
-        init(playScreen);
+        init(screen);
+
+        PlayScreen playScreen = (PlayScreen) screen;
 
         scoreText = new GameText(playScreen.scoreText);
         numScoreText = new GameText(playScreen.numScoreText);

@@ -9,9 +9,11 @@ public class ExpandPaddleWidthPowerUp extends PowerUp {
     private final float originalWidth;
     private final float scaledWidth;
 
-    public ExpandPaddleWidthPowerUp(ExpandPaddleWidthPowerUp expandPaddleWidthPowerUp) {
+    public ExpandPaddleWidthPowerUp(PowerUp powerUp) {
 
-        super(expandPaddleWidthPowerUp);
+        super(powerUp);
+
+        ExpandPaddleWidthPowerUp expandPaddleWidthPowerUp = (ExpandPaddleWidthPowerUp) powerUp;
 
         this.widthMultiplier = expandPaddleWidthPowerUp.widthMultiplier;
         this.paddle = gameContext.getPaddle();

@@ -45,27 +45,10 @@ public class ScreenManager {
             ExceptionHandler.handle(new InvalidGameStateException("the screen: " + screenType + " has not been registered", null));
         }
 
-        Screen newScreen = getScreenByType(screenType, baseScreen);
+        Screen newScreen = screenType.create(baseScreen);
 
         screens.push(newScreen);
         newScreen.onEnter();
-    }
-
-    private Screen getScreenByType(ScreenType type, Screen baseScreen) {
-        switch (type) {
-            case START:
-                return new StartScreen((StartScreen) baseScreen);
-            case MENU:
-                return new MenuScreen((MenuScreen) baseScreen);
-            case PLAY_LEVEL1, PLAY_LEVEL2:
-                return new PlayScreen((PlayScreen) baseScreen);
-            case GAME_OVER:
-                return new GameOverScreen((GameOverScreen) baseScreen);
-            case GAME_WIN:
-                return new GameWinScreen((GameWinScreen) baseScreen);
-            default:
-                return baseScreen;
-        }
     }
 
     public void pop() {

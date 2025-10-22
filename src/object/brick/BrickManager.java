@@ -114,7 +114,8 @@ public class BrickManager {
                 baseBrick.setTextureX(0);
                 baseBrick.setTextureY(brickTextureIndex * baseBrick.getTextureHeight());
 
-                Brick currentBrick = createBrickByType(brickType, baseBrick);
+                assert brickType != null;
+                Brick currentBrick = brickType.create(baseBrick);
 
                 if (brickType == BrickType.POWERUP_BRICK ||
                         brickType == BrickType.NORMAL_BRICK) {
@@ -123,19 +124,6 @@ public class BrickManager {
 
                 bricks[y][x] = currentBrick;
             }
-        }
-    }
-
-    private Brick createBrickByType(BrickType type, Brick baseBrick) {
-        switch (type) {
-            case NORMAL_BRICK:
-                return new NormalBrick(baseBrick);
-            case STRONG_BRICK:
-                return new StrongBrick(baseBrick);
-            case POWERUP_BRICK:
-                return new PowerUpBrick(baseBrick);
-            default:
-                return baseBrick;
         }
     }
 

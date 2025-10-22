@@ -18,9 +18,12 @@ public class MenuScreen implements Screen {
 
     Background background;
 
-    public MenuScreen(MenuScreen menuScreen) {
+    public MenuScreen(Screen screen) {
         
-        init(menuScreen);
+        init(screen);
+
+        MenuScreen menuScreen = (MenuScreen) screen;
+
         level1Button = new GameButton(menuScreen.level1Button);
         level1Text = new GameText(menuScreen.level1Text);
 

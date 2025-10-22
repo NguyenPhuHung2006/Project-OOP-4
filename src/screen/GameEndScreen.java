@@ -15,9 +15,11 @@ public abstract class GameEndScreen implements Screen {
     private GameButton saveProgressButton;
     private Background background;
 
-    public GameEndScreen(GameEndScreen gameEndScreen) {
+    public GameEndScreen(Screen screen) {
 
-        init(gameEndScreen);
+        init(screen);
+
+        GameEndScreen gameEndScreen = (GameEndScreen) screen;
 
         gameEndText = new GameText(gameEndScreen.gameEndText);
         escapeButton = new GameButton(gameEndScreen.escapeButton);

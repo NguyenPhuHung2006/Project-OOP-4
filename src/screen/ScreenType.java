@@ -1,11 +1,11 @@
 package screen;
 
 public enum ScreenType {
+    START,
     MENU,
     PLAY_LEVEL1,
     PAUSE,
     LOADING,
-    SELECT,
     GAME_OVER,
     GAME_WIN
 }

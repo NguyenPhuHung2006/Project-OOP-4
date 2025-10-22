@@ -1,7 +1,6 @@
 package object.movable.powerup;
 
 import object.movable.Ball;
-import object.movable.Paddle;
 
 public class SlowBallPowerUp extends PowerUp {
 

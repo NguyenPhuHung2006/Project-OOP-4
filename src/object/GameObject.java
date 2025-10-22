@@ -84,6 +84,14 @@ public abstract class GameObject implements Cloneable {
         this.y = (windowHeight - this.height) / 2f;
     }
 
+    public void centerHorizontallyTo(GameObject target) {
+        this.x = target.x + (target.width - this.width) / 2f;
+    }
+
+    public void centerVerticallyTo(GameObject target) {
+        this.y = target.y + (target.height - this.height) / 2f;
+    }
+
     public void center() {
 
         centerHorizontally();

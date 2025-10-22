@@ -158,7 +158,7 @@ public class GameManager extends JPanel implements Runnable {
         assert screenConfig != null;
         screenManager.loadFromJson(screenConfig);
 
-        screenManager.push(ScreenType.MENU);
+        screenManager.push(ScreenType.START);
 
         initialized = true;
     }

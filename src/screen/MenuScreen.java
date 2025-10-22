@@ -8,15 +8,16 @@ import object.UI.Text.GameText;
 import java.awt.*;
 
 public class MenuScreen implements Screen {
-    
-    private GameButton playButton;
-    private GameText title;
-    private Background background;
+
+    GameText level1Text;
+    GameButton level1Button;
+    Background background;
 
     public MenuScreen(MenuScreen menuScreen) {
+        
         init(menuScreen);
-        playButton = new GameButton(menuScreen.playButton);
-        title = new GameText(menuScreen.title);
+        level1Button = new GameButton(menuScreen.level1Button);
+        level1Text = new GameText(menuScreen.level1Text);
         background = new Background(menuScreen.background);
     }
 
@@ -25,41 +26,43 @@ public class MenuScreen implements Screen {
         if (!(screen instanceof MenuScreen menuScreen)) {
             return;
         }
+        
+        GameText baseLevel1Text = menuScreen.level1Text;
+        GameButton baseLevel1Button = menuScreen.level1Button;
 
-        GameButton basePlayButton = menuScreen.playButton;
-        GameText baseTitleText = menuScreen.title;
+        baseLevel1Text.updateSizeFromFontData();
+        baseLevel1Text.applyRelativePosition();
 
-        baseTitleText.updateSizeFromFontData();
-        baseTitleText.center();
-
-        basePlayButton.applyRelativeSize(basePlayButton);
-        basePlayButton.alignBelow(baseTitleText);
-        basePlayButton.centerHorizontally();
+        baseLevel1Button.applyRelativeSize(baseLevel1Button);
+        baseLevel1Button.alignRightOf(baseLevel1Text);
+        baseLevel1Button.centerVerticallyTo(baseLevel1Text);
 
     }
 
     @Override
     public void update() {
-
         MouseManager mouseManager = MouseManager.getInstance();
 
-        if(mouseManager.isLeftClicked() && playButton.isClicked(mouseManager)) {
+        if(mouseManager.isLeftClicked() && level1Button.isClicked(mouseManager)) {
             ScreenManager screenManager = ScreenManager.getInstance();
-            screenManager.push(ScreenType.SELECT);
+            screenManager.push(ScreenType.PLAY_LEVEL1);
         }
     }
 
     @Override
     public void render(Graphics2D graphics2D) {
         background.render(graphics2D);
-        title.render(graphics2D);
-        playButton.render(graphics2D);
+        level1Text.render(graphics2D);
+        level1Button.render(graphics2D);
     }
 
     @Override
-    public void onEnter() {}
+    public void onEnter() {
+
+    }
 
     @Override
-    public void onExit() {}
+    public void onExit() {
 
+    }
 }

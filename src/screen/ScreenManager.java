@@ -26,8 +26,8 @@ public class ScreenManager {
     }
 
     public void loadFromJson(ScreenConfig screenConfig) {
+        screenRegistry.put(ScreenType.START, screenConfig.startScreen);
         screenRegistry.put(ScreenType.MENU, screenConfig.menuScreen);
-        screenRegistry.put(ScreenType.SELECT, screenConfig.selectScreen);
         screenRegistry.put(ScreenType.PLAY_LEVEL1, screenConfig.playLevel1Screen);
         screenRegistry.put(ScreenType.GAME_OVER, screenConfig.gameOverScreen);
         screenRegistry.put(ScreenType.GAME_WIN, screenConfig.gameWinScreen);
@@ -52,10 +52,10 @@ public class ScreenManager {
 
     private Screen getScreenByType(ScreenType type, Screen baseScreen) {
         switch (type) {
+            case START:
+                return new StartScreen((StartScreen) baseScreen);
             case MENU:
                 return new MenuScreen((MenuScreen) baseScreen);
-            case SELECT:
-                return new SelectScreen((SelectScreen) baseScreen);
             case PLAY_LEVEL1:
                 return new PlayScreen((PlayScreen) baseScreen);
             case GAME_OVER:

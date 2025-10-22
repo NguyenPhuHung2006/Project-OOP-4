@@ -2,7 +2,6 @@ package screen;
 
 import config.LevelConfig;
 import exception.ExceptionHandler;
-import exception.InvalidGameStateException;
 import exception.ResourceLoadException;
 import object.GameContext;
 import object.UI.Background;
@@ -11,7 +10,6 @@ import object.UI.Text.GameText;
 import object.brick.BrickManager;
 import object.movable.powerup.PowerUpManager;
 import utils.JsonLoaderUtils;
-import utils.TextUtils;
 
 import java.awt.*;
 
@@ -89,7 +87,7 @@ public class PlayScreen implements Screen {
         ScreenManager screenManager = ScreenManager.getInstance();
 
         boolean isGameOver = gameContext.isGameOver();
-        boolean isGameWin = gameContext.isGameWin();
+        boolean isGameWin = brickManager.isCleared();
 
         if(isGameOver || isGameWin) {
             screenManager.pop();

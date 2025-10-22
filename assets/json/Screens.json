@@ -33,6 +33,18 @@
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1
     },
+    "level2Text": {
+      "content": "LEVEL 2   ",
+      "relativeSize": 0.05,
+      "colorData": {"r":255,"g":0,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
+    "level2Button": {
+      "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
       "texturePath": "/textures/background.png",
@@ -65,6 +77,33 @@
       "numberOfFrames": 1
     },
     "levelPath": "assets/json/levels/Level1.json"
+  },
+
+  "playLevel2Screen": {
+    "scoreText": {
+      "content": "Score: ",
+      "relativeSize": 0.05,
+      "colorData": {"r":255,"g":255,"b":255,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
+    "numScoreText": {
+      "content": "0",
+      "relativeSize": 0.05,
+      "colorData": {"r":255,"g":255,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
+    "pauseButton": {
+      "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "background": {
+      "textureWidth": 1000, "textureHeight": 1000,
+      "texturePath": "/textures/background.png",
+      "numberOfFrames": 1
+    },
+    "levelPath": "assets/json/levels/Level2.json"
   },
 
   "gameOverScreen": {

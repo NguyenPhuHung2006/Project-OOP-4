@@ -4,6 +4,7 @@ public enum ScreenType {
     START,
     MENU,
     PLAY_LEVEL1,
+    PLAY_LEVEL2,
     PAUSE,
     LOADING,
     GAME_OVER,

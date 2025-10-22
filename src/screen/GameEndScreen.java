@@ -1,5 +1,6 @@
 package screen;
 
+import input.MouseManager;
 import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
@@ -56,6 +57,16 @@ public abstract class GameEndScreen implements Screen {
     @Override
     public void update() {
 
+        MouseManager mouseManager = MouseManager.getInstance();
+
+        if(mouseManager.isLeftClicked()) {
+            ScreenManager screenManager = ScreenManager.getInstance();
+            if(escapeButton.isClicked(mouseManager)) {
+                screenManager.pop();
+                screenManager.pop();
+                screenManager.push(ScreenType.MENU);
+            }
+        }
     }
 
     @Override

@@ -223,4 +223,20 @@ public abstract class GameObject implements Cloneable {
         this.relativeY = relativeY;
     }
 
+    public void translateX(float deltaX) {
+        this.x += deltaX;
+    }
+    
+    public void translateY(float deltaY) {
+        this.y += deltaY;
+    }
+    
+    public void addWidth(float deltaWidth) {
+        this.width += deltaWidth;
+    }
+    
+    public void addHeight(float deltaHeight) {
+        this.height += deltaHeight;
+    }
+
 }

@@ -36,11 +36,20 @@
 
   "slowPowerUp": {
     "textureWidth": 14, "textureHeight": 20,
-    "texturePath": "/textures/slow_powerup.png",
+    "texturePath": "/textures/slow_ball.png",
     "numberOfFrames": 1,
     "speed": 3,
     "durationMs": 5000,
     "slowMultiplier": 0.5
+  },
+
+  "expandPaddleWidthPowerUp": {
+    "textureWidth": 25, "textureHeight": 6,
+    "texturePath": "/textures/expand_paddle.png",
+    "numberOfFrames": 1,
+    "speed": 3,
+    "durationMs": 5000,
+    "widthMultiplier": 2
   },
 
   "normalBrickTextureIndices": [0, 1, 2, 3, 4, 5],

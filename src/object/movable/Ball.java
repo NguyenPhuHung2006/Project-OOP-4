@@ -4,6 +4,7 @@ import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
 import object.GameContext;
 import object.GameObject;
+import object.TexturedObject;
 import object.brick.Brick;
 
 import utils.PhysicsUtils;
@@ -44,17 +45,24 @@ public class Ball extends MovableObject {
 
     @Override
     protected void initBounds(GameObject gameObject) {
-        if(gameContext.getPaddle() == null) {
+
+        Paddle paddle = gameContext.getPaddle();
+
+        if(paddle == null) {
             ExceptionHandler.handle(new InvalidGameStateException("the paddle should be initialized before the ball", null));
         }
 
         initTextureBounds(gameObject);
 
-        Paddle paddle = gameContext.getPaddle();
-        width = paddle.getHeight();
-        height = paddle.getHeight();
-        x = paddle.getX() + (paddle.getWidth() - width) / 2;
-        y = paddle.getY() - height;
+        gameObject.applyRelativeSize((TexturedObject) gameObject);
+        gameObject.alignAbove(paddle);
+        gameObject.centerHorizontallyTo(paddle);
+
+        this.width = gameObject.getWidth();
+        this.height = gameObject.getHeight();
+        this.x = gameObject.getX();
+        this.y = gameObject.getY();
+
     }
 
     private void handleInitialMovement(Paddle paddle) {

@@ -30,6 +30,7 @@ public class PowerUpManager {
 
         refreshPowerUps();
         powerUpsRegistry.put(PowerUpType.SLOW_BALL, new SlowBallPowerUp(levelConfig.slowPowerUp));
+        powerUpsRegistry.put(PowerUpType.EXPAND_PADDLE, new ExpandPaddleWidthPowerUp(levelConfig.expandPaddleWidthPowerUp));
     }
 
     public void addPowerUp(PowerUpType powerUpType, Brick brick) {
@@ -52,7 +53,6 @@ public class PowerUpManager {
                 return;
             }
 
-            // New activation
             powerUp.applyEffect();
             activePowerUps.put(powerUpType, powerUp);
             scheduleRevert(powerUp, powerUpType, powerUp.getDurationMs());

@@ -1,17 +1,16 @@
 package config;
 
-import object.UI.Background;
 import object.brick.NormalBrick;
 import object.brick.PowerUpBrick;
 import object.brick.StrongBrick;
 import object.movable.Ball;
 import object.movable.Paddle;
+import object.movable.powerup.ExpandPaddleWidthPowerUp;
 import object.movable.powerup.SlowBallPowerUp;
 
 public class LevelConfig {
     public Paddle paddle;
     public Ball ball;
-    public Background background;
 
     public int[][] brickLayout;
 
@@ -26,5 +25,6 @@ public class LevelConfig {
     public int framePerRow;
 
     public SlowBallPowerUp slowPowerUp;
+    public ExpandPaddleWidthPowerUp expandPaddleWidthPowerUp;
 
 }

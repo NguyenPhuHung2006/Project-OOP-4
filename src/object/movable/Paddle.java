@@ -1,6 +1,7 @@
 package object.movable;
 
 import object.GameObject;
+import object.TexturedObject;
 
 import java.awt.event.KeyEvent;
 
@@ -22,11 +23,14 @@ public class Paddle extends MovableObject {
 
         initTextureBounds(gameObject);
 
-        width = gameContext.getWindowWidth() * gameObject.getRelativeSize();
-        height = width * (1.0f * textureHeight / textureWidth);
+        gameObject.applyRelativeSize((TexturedObject) gameObject);
+        gameObject.applyRelativePositionY();
+        gameObject.centerHorizontally();
 
-        y = gameContext.getWindowHeight() * gameObject.getRelativeY();
-        x = (gameContext.getWindowWidth() - width) / 2;
+        this.width = gameObject.getWidth();
+        this.height = gameObject.getHeight();
+        this.x = gameObject.getX();
+        this.y = gameObject.getY();
     }
 
     @Override

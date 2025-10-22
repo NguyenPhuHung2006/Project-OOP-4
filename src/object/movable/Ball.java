@@ -2,7 +2,6 @@ package object.movable;
 
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
-import object.GameContext;
 import object.GameObject;
 import object.TexturedObject;
 import object.brick.Brick;
@@ -14,11 +13,13 @@ import java.awt.event.KeyEvent;
 
 public class Ball extends MovableObject {
 
-    boolean isMoving;
+    private boolean isMoving;
+    private final float originalSpeed;
 
     public Ball(Ball ball) {
         super(ball);
         isMoving = false;
+        this.originalSpeed = ball.getSpeed();
     }
 
     @Override
@@ -173,5 +174,9 @@ public class Ball extends MovableObject {
     public void stop() {
         dx = 0;
         dy = 0;
+    }
+
+    public float getOriginSpeed() {
+        return originalSpeed;
     }
 }

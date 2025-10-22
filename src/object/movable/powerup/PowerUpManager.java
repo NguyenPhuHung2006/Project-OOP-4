@@ -6,6 +6,7 @@ import object.brick.Brick;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.*;
 
 public class PowerUpManager {
     private static PowerUpManager powerUpManager;
@@ -14,7 +15,9 @@ public class PowerUpManager {
     private final List<PowerUp> fallingPowerUps = new ArrayList<>();
 
     private final Object lock = new Object();
-    private final Timer timer = new Timer(true);
+
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private final Map<PowerUpType, ScheduledFuture<?>> scheduledFutures = new EnumMap<>(PowerUpType.class);
 
     private PowerUpManager() {
     }
@@ -44,34 +47,33 @@ public class PowerUpManager {
     public void applyPowerUp(PowerUpType powerUpType, PowerUp powerUp) {
 
         synchronized (lock) {
-            PowerUp existing = activePowerUps.get(powerUpType);
 
-            if (existing != null) {
-                existing.revertEffect();
-                existing.applyEffect();
-                scheduleRevert(existing, powerUpType, existing.getDurationMs());
-                return;
+            ScheduledFuture<?> prevFuture = scheduledFutures.remove(powerUpType);
+            if (prevFuture != null) {
+                prevFuture.cancel(false);
             }
 
             powerUp.applyEffect();
             activePowerUps.put(powerUpType, powerUp);
-            scheduleRevert(powerUp, powerUpType, powerUp.getDurationMs());
+
+            ScheduledFuture<?> future = scheduleRevert(powerUp, powerUpType);
+            scheduledFutures.put(powerUpType, future);
         }
     }
 
-    private void scheduleRevert(PowerUp powerUp, PowerUpType type, int durationMs) {
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                synchronized (lock) {
-                    PowerUp active = activePowerUps.get(type);
-                    if (active == powerUp) {
-                        active.revertEffect();
-                        activePowerUps.remove(type);
-                    }
+    private ScheduledFuture<?> scheduleRevert(PowerUp powerUp, PowerUpType powerUpType) {
+
+        return scheduler.schedule(() -> {
+            synchronized (lock) {
+                PowerUp active = activePowerUps.get(powerUpType);
+                if (active == powerUp) {
+                    active.revertEffect();
+                    activePowerUps.remove(powerUpType);
+                    scheduledFutures.remove(powerUpType);
                 }
             }
-        }, durationMs);
+        }, powerUp.getDurationMs(), TimeUnit.MILLISECONDS);
+
     }
 
     public void updateFallingPowerUps() {
@@ -89,6 +91,9 @@ public class PowerUpManager {
 
     private void refreshPowerUps() {
 
+        for (ScheduledFuture<?> future : scheduledFutures.values()) {
+            future.cancel(false);
+        }
         activePowerUps.clear();
         powerUpsRegistry.clear();
         fallingPowerUps.clear();

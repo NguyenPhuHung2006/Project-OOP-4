@@ -34,10 +34,6 @@ public class SlowBallPowerUp extends PowerUp {
     @Override
     public void revertEffect() {
 
-        if(ball.getSpeed() != originalSpeed) {
-            return;
-        }
-
         ball.setSpeed(originalSpeed);
     }
 

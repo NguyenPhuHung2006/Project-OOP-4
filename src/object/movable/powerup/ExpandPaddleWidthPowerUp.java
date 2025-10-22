@@ -37,9 +37,6 @@ public class ExpandPaddleWidthPowerUp extends PowerUp {
         paddle.setX(paddle.getX() - (originalWidth - scaledWidth) / 2f);
         paddle.setWidth(originalWidth);
         paddle.setScaled(false);
-        if(paddle.getWidth() == 0) {
-            System.out.println("error");
-        }
     }
 
     @Override

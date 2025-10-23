@@ -5,6 +5,7 @@ import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class PauseScreen implements Screen {
@@ -61,6 +62,38 @@ public class PauseScreen implements Screen {
             if(resumeButton.isClicked(mouseManager)) {
                 screenManager.pop();
             }
+
+            if(playAgainButton.isClicked(mouseManager)) {
+                int option = JOptionPane.showConfirmDialog(
+                        null,
+                        "Your game process will not be saved",
+                        "WARNING",
+                        JOptionPane.OK_CANCEL_OPTION
+                );
+                if(option == JOptionPane.OK_OPTION) {
+                    screenManager.pop();
+                    PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
+                    ScreenType previousLevelId = previousPlayScreen.getLevelId();
+                    screenManager.pop();
+                    screenManager.push(previousLevelId);
+                }
+            }
+
+            if(escapeButton.isClicked(mouseManager)) {
+                int option = JOptionPane.showConfirmDialog(
+                        null,
+                        "Do you want to save the game progress",
+                        "WARNING",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (option == JOptionPane.YES_OPTION) {
+
+                } else if(option == JOptionPane.NO_OPTION) {
+                    screenManager.pop();
+                    screenManager.pop();
+                }
+            }
+
         }
     }
 

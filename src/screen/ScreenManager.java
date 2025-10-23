@@ -61,6 +61,13 @@ public class ScreenManager {
         }
     }
 
+    public Screen top() {
+        if(screens.isEmpty()) {
+            return null;
+        }
+        return screens.peek();
+    }
+
     public void update() {
         if (!screens.isEmpty()) {
             screens.peek().update();

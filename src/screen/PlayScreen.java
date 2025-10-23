@@ -21,6 +21,7 @@ public class PlayScreen implements Screen {
     private transient GameContext gameContext;
     private transient BrickManager brickManager;
     private transient PowerUpManager powerUpManager;
+    private transient ScreenType levelId;
 
     private GameText scoreText;
     private GameText numScoreText;
@@ -28,11 +29,12 @@ public class PlayScreen implements Screen {
     private Background background;
     private String levelPath;
 
-    public PlayScreen(Screen screen) {
+    public PlayScreen(Screen screen, ScreenType screenType) {
 
         gameContext = GameContext.getInstance();
         brickManager = BrickManager.getInstance();
         powerUpManager = PowerUpManager.getInstance();
+        this.levelId = screenType;
 
         init(screen);
 
@@ -146,5 +148,9 @@ public class PlayScreen implements Screen {
     @Override
     public void onExit() {
 
+    }
+
+    public ScreenType getLevelId() {
+        return levelId;
     }
 }

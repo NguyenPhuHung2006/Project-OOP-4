@@ -1,5 +1,6 @@
 package object.movable;
 
+import audio.SoundType;
 import object.GameObject;
 import object.TexturedObject;
 

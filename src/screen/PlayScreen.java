@@ -97,7 +97,6 @@ public class PlayScreen implements Screen {
         boolean isGameWin = brickManager.isCleared();
 
         if(isGameOver || isGameWin) {
-            screenManager.pop();
             if(isGameOver) {
                 screenManager.push(ScreenType.GAME_OVER);
             } else {

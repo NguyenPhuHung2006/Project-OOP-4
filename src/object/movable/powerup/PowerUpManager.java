@@ -21,6 +21,10 @@ public class PowerUpManager {
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private final Map<PowerUpType, ScheduledFuture<?>> scheduledFutures = new EnumMap<>(PowerUpType.class);
 
+    private final Map<PowerUpType, Long> startTimes = new EnumMap<>(PowerUpType.class);
+    private final Map<PowerUpType, Long> remainingTimes = new EnumMap<>(PowerUpType.class);
+    private boolean paused = false;
+
     private PowerUpManager() {
     }
 
@@ -60,15 +64,19 @@ public class PowerUpManager {
                 prevFuture.cancel(false);
             }
 
+            long duration = powerUp.getDurationMs();
+            startTimes.put(powerUpType, System.currentTimeMillis());
+            remainingTimes.put(powerUpType, duration);
+
             powerUp.applyEffect();
             activePowerUps.put(powerUpType, powerUp);
 
-            ScheduledFuture<?> future = scheduleRevert(powerUp, powerUpType);
+            ScheduledFuture<?> future = scheduleRevert(powerUp, powerUpType, duration);
             scheduledFutures.put(powerUpType, future);
         }
     }
 
-    private ScheduledFuture<?> scheduleRevert(PowerUp powerUp, PowerUpType powerUpType) {
+    private ScheduledFuture<?> scheduleRevert(PowerUp powerUp, PowerUpType powerUpType, long delayMs) {
 
         return scheduler.schedule(() -> {
             synchronized (lock) {
@@ -77,10 +85,55 @@ public class PowerUpManager {
                     active.revertEffect();
                     activePowerUps.remove(powerUpType);
                     scheduledFutures.remove(powerUpType);
+                    startTimes.remove(powerUpType);
+                    remainingTimes.remove(powerUpType);
                 }
             }
-        }, powerUp.getDurationMs(), TimeUnit.MILLISECONDS);
+        }, delayMs, TimeUnit.MILLISECONDS);
+    }
 
+    public void pauseTimers() {
+        synchronized (lock) {
+            if (paused) {
+                return;
+            }
+            paused = true;
+
+            long now = System.currentTimeMillis();
+            for (var entry : activePowerUps.entrySet()) {
+                PowerUpType type = entry.getKey();
+                ScheduledFuture<?> future = scheduledFutures.remove(type);
+                if (future != null) future.cancel(false);
+
+                Long start = startTimes.get(type);
+                Long duration = remainingTimes.get(type);
+                if (start != null && duration != null) {
+                    long elapsed = now - start;
+                    long remaining = Math.max(duration - elapsed, 0);
+                    remainingTimes.put(type, remaining);
+                }
+            }
+        }
+    }
+
+    public void resumeTimers() {
+        synchronized (lock) {
+            if (!paused) {
+                return;
+            }
+            paused = false;
+
+            for (var entry : activePowerUps.entrySet()) {
+                PowerUpType type = entry.getKey();
+                PowerUp powerUp = entry.getValue();
+                Long remaining = remainingTimes.get(type);
+                if (remaining != null && remaining > 0) {
+                    startTimes.put(type, System.currentTimeMillis());
+                    ScheduledFuture<?> future = scheduleRevert(powerUp, type, remaining);
+                    scheduledFutures.put(type, future);
+                }
+            }
+        }
     }
 
     public void updateFallingPowerUps() {

@@ -91,6 +91,8 @@ public class PlayScreen implements Screen {
     @Override
     public void update() {
 
+        powerUpManager.resumeTimers();
+
         boolean isGameOver = gameContext.isGameOver();
         boolean isGameWin = brickManager.isCleared();
 
@@ -108,6 +110,7 @@ public class PlayScreen implements Screen {
             soundManager.play(SoundType.CLICK_BUTTON);
             if(pauseButton.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PAUSE);
+                powerUpManager.pauseTimers();
                 return;
             }
         }

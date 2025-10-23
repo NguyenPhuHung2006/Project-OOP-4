@@ -106,6 +106,38 @@
     "levelPath": "assets/json/levels/Level2.json"
   },
 
+  "pauseScreen": {
+    "pauseText": {
+      "content": "PAUSE",
+      "relativeSize": 0.1,
+      "colorData": {"r":0,"g":255,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":48}
+    },
+    "resumeButton": {
+      "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "playAgainButton": {
+      "textureX": 48, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "escapeButton": {
+      "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "background": {
+      "textureWidth": 1000, "textureHeight": 1000,
+      "texturePath": "/textures/background.png",
+      "numberOfFrames": 1
+    }
+  },
+
   "gameOverScreen": {
     "gameEndText":{
       "content": "GAME OVER",

@@ -28,7 +28,7 @@ public enum ScreenType {
     PAUSE {
         @Override
         public Screen create(Screen screen) {
-            return new PauseScreen();
+            return new PauseScreen(screen);
         }
     },
     LOADING {

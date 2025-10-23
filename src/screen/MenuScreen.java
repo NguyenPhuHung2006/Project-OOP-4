@@ -1,5 +1,7 @@
 package screen;
 
+import audio.SoundManager;
+import audio.SoundType;
 import input.MouseManager;
 import object.GameContext;
 import object.UI.Background;
@@ -64,10 +66,9 @@ public class MenuScreen implements Screen {
 
     @Override
     public void update() {
-        MouseManager mouseManager = MouseManager.getInstance();
 
         if(mouseManager.isLeftClicked()) {
-            ScreenManager screenManager = ScreenManager.getInstance();
+            soundManager.play(SoundType.CLICK_BUTTON);
             if(level1Button.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PLAY_LEVEL1);
             }

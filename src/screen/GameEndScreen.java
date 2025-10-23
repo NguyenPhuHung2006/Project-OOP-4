@@ -1,5 +1,7 @@
 package screen;
 
+import audio.SoundManager;
+import audio.SoundType;
 import input.MouseManager;
 import object.UI.Background;
 import object.UI.GameButton;
@@ -59,10 +61,9 @@ public abstract class GameEndScreen implements Screen {
     @Override
     public void update() {
 
-        MouseManager mouseManager = MouseManager.getInstance();
 
         if(mouseManager.isLeftClicked()) {
-            ScreenManager screenManager = ScreenManager.getInstance();
+            soundManager.play(SoundType.CLICK_BUTTON);
             if(escapeButton.isClicked(mouseManager)) {
                 screenManager.pop();
                 screenManager.pop();

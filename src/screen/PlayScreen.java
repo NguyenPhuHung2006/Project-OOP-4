@@ -1,8 +1,11 @@
 package screen;
 
+import audio.SoundManager;
+import audio.SoundType;
 import config.LevelConfig;
 import exception.ExceptionHandler;
 import exception.ResourceLoadException;
+import input.MouseManager;
 import object.GameContext;
 import object.UI.Background;
 import object.UI.GameButton;
@@ -86,8 +89,6 @@ public class PlayScreen implements Screen {
     @Override
     public void update() {
 
-        ScreenManager screenManager = ScreenManager.getInstance();
-
         boolean isGameOver = gameContext.isGameOver();
         boolean isGameWin = brickManager.isCleared();
 
@@ -99,6 +100,14 @@ public class PlayScreen implements Screen {
                 screenManager.push(ScreenType.GAME_WIN);
             }
             return;
+        }
+
+        if(mouseManager.isLeftClicked()) {
+            soundManager.play(SoundType.CLICK_BUTTON);
+            if(pauseButton.isClicked(mouseManager)) {
+                screenManager.push(ScreenType.PAUSE);
+                return;
+            }
         }
 
         gameContext.updateContext();

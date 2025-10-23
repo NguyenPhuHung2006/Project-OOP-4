@@ -39,6 +39,7 @@ public class SoundManager {
         loadSound(SoundType.NORMAL_BRICK, soundConfig.normalBrickSoundPath);
         loadSound(SoundType.STRONG_BRICK, soundConfig.strongBrickSoundPath);
         loadSound(SoundType.POWERUP_BRICK, soundConfig.powerUpBrickSoundPath);
+        loadSound(SoundType.CLICK_BUTTON, soundConfig.clickButtonSoundPath);
         setGlobalVolume(0.6f);
     }
 

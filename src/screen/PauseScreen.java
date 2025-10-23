@@ -42,16 +42,15 @@ public class PauseScreen implements Screen {
         basePauseText.updateSizeFromFontData();
         basePauseText.center();
 
-        basePlayAgainButton.applyRelativeSize();
-        basePlayAgainButton.alignBelow(basePauseText);
-        basePlayAgainButton.centerHorizontallyTo(basePauseText);
-
         baseResumeButton.applyRelativeSize();
-        baseResumeButton.alignRightOf(basePlayAgainButton);
+        baseResumeButton.alignBelow(basePauseText);
+        baseResumeButton.centerHorizontallyTo(basePauseText);
+
+        basePlayAgainButton.applyRelativeSize();
+        basePlayAgainButton.alignLeftOf(baseResumeButton);
 
         baseEscapeButton.applyRelativeSize();
-        baseEscapeButton.alignLeftOf(basePlayAgainButton);
-
+        baseEscapeButton.alignRightOf(baseResumeButton);
     }
 
     @Override

@@ -26,11 +26,9 @@ public class SlowBallPowerUp extends PowerUp {
 
         float currentSpeed = ball.getSpeed();
 
-        if(currentSpeed == slowedSpeed) {
-            return;
+        if(currentSpeed >= slowedSpeed) {
+            ball.setSpeed(slowedSpeed);
         }
-
-        ball.setSpeed(originalSpeed * slowMultiplier);
     }
 
     @Override

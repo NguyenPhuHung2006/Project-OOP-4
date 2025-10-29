@@ -2,5 +2,6 @@
   "normalBrickSoundPath": "/sounds/normalBrick.wav",
   "strongBrickSoundPath": "/sounds/strongBrick.wav",
   "powerUpBrickSoundPath": "/sounds/powerUpBrick.wav",
-  "clickButtonSoundPath": "/sounds/clickButton.wav"
+  "clickButtonSoundPath": "/sounds/clickButton.wav",
+  "playThemeMusicPath": "/sounds/background_theme.wav"
 }

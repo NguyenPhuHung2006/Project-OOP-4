@@ -12,16 +12,40 @@ public class GameMusic {
     }
 
     public void playLoop() {
-        if (music != null) music.play(true, volume); // loop=true
+        if (music != null) {
+            music.play(true, volume);
+        }
+    }
+
+    public void playOnce() {
+        if(music != null) {
+            music.play(false, volume);
+        }
     }
 
     public void stop() {
-        if (music != null) music.stop();
+        if (music != null) {
+            music.stop();
+        }
+    }
+
+    public void pause() {
+        if (music != null) {
+            music.pause();
+        }
+    }
+
+    public void resume() {
+        if (music != null) {
+            music.resume();
+        }
     }
 
     public void setVolume(double v) {
         volume = Math.max(0.0, Math.min(1.0, v));
-        if (music != null) music.setVolume(volume);
+        if (music != null) {
+            music.setVolume(volume);
+        }
     }
 }
 

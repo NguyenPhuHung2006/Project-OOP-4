@@ -1,5 +1,6 @@
 package screen;
 
+import audio.MusicType;
 import audio.SoundType;
 import config.LevelConfig;
 import exception.ExceptionHandler;
@@ -159,12 +160,19 @@ public class PlayScreen implements Screen {
 
     @Override
     public void onEnter() {
-
+        if(gameContext.isGameOver() || gameContext.isGameWin()) {
+            return;
+        }
+        soundManager.playMusic(MusicType.PLAY_THEME, true);
     }
 
     @Override
     public void onExit() {
-
+        if(gameContext.isGameOver() || gameContext.isGameWin()) {
+            soundManager.stopMusic(MusicType.PLAY_THEME);
+        } else {
+            soundManager.pauseMusic(MusicType.PLAY_THEME);
+        }
     }
 
     public ScreenType getLevelId() {

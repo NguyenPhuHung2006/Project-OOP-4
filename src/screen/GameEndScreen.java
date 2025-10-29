@@ -1,9 +1,12 @@
 package screen;
 
 import audio.SoundType;
+import config.PlayerStatusData;
 import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
+import object.brick.BrickManager;
+import utils.JsonLoaderUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,11 +64,11 @@ public abstract class GameEndScreen implements Screen {
     @Override
     public void update() {
 
-        if(mouseManager.isLeftClicked()) {
+        if (mouseManager.isLeftClicked()) {
             soundManager.play(SoundType.CLICK_BUTTON);
 
-            if(escapeButton.isClicked(mouseManager)) {
-                if(hasSavedGameProgress) {
+            if (escapeButton.isClicked(mouseManager)) {
+                if (hasSavedGameProgress) {
                     goToMenu();
                     return;
                 }
@@ -75,26 +78,28 @@ public abstract class GameEndScreen implements Screen {
                         "WARNING",
                         JOptionPane.OK_CANCEL_OPTION
                 );
-                if(option == JOptionPane.OK_OPTION) {
+                if (option == JOptionPane.OK_OPTION) {
                     goToMenu();
                 }
-            } else if(playAgainButton.isClicked(mouseManager)) {
-                if(hasSavedGameProgress) {
+            } else if (playAgainButton.isClicked(mouseManager)) {
+                if (hasSavedGameProgress) {
                     playAgain();
                     return;
                 }
                 int option = JOptionPane.showConfirmDialog(
                         null,
-                        "Your game status will not be saved. Please save the game progress first",
+                        "Your game status will not be saved",
                         "WARNING",
                         JOptionPane.OK_CANCEL_OPTION
                 );
-                if(option == JOptionPane.OK_OPTION) {
+                if (option == JOptionPane.OK_OPTION) {
                     playAgain();
                 }
-            } else if(saveProgressButton.isClicked(mouseManager)) {
-                saveGameStatus();
-                hasSavedGameProgress = true;
+            } else if (saveProgressButton.isClicked(mouseManager)) {
+                if (!hasSavedGameProgress) {
+                    saveGameStatus();
+                    hasSavedGameProgress = true;
+                }
             }
         }
     }
@@ -108,8 +113,9 @@ public abstract class GameEndScreen implements Screen {
     }
 
     private void goToMenu() {
-        screenManager.pop();
-        screenManager.pop();
+        while (!(screenManager.top() instanceof MenuScreen)) {
+            screenManager.pop();
+        }
     }
 
     @Override
@@ -122,7 +128,31 @@ public abstract class GameEndScreen implements Screen {
         saveProgressButton.render(graphics2D);
     }
 
-    public abstract void saveGameStatus();
+    public void saveGameStatus() {
+
+        PlayerStatusData playerStatusData = JsonLoaderUtils.loadFromJson(JsonLoaderUtils.playerStatusDataPath, PlayerStatusData.class);
+
+        assert playerStatusData != null;
+
+        saveGameResultCount(playerStatusData);
+
+        int numberOfBrickDestroyed = BrickManager.getInstance().getDestroyedBricksCount();
+        playerStatusData.numberOfBricksDestroyed += numberOfBrickDestroyed;
+
+        GameOverScreen currentGameOverScreen = (GameOverScreen) screenManager.top();
+        screenManager.pop();
+        PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
+        long totalTimePlayed = previousPlayScreen.getTotalTimePlayed();
+
+        playerStatusData.totalTimePlayed += totalTimePlayed;
+
+        screenManager.push(currentGameOverScreen);
+
+        JsonLoaderUtils.saveToJson(JsonLoaderUtils.playerStatusDataPath, playerStatusData);
+
+    }
+
+    protected abstract void saveGameResultCount(PlayerStatusData playerStatusData);
 
     @Override
     public void onEnter() {

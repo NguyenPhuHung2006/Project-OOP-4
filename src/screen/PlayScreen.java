@@ -16,21 +16,21 @@ import java.awt.*;
 
 public class PlayScreen implements Screen {
 
-    private transient GameContext gameContext;
-    private transient BrickManager brickManager;
-    private transient PowerUpManager powerUpManager;
-    private transient ScreenType levelId;
+    private final transient GameContext gameContext;
+    private final transient BrickManager brickManager;
+    private final transient PowerUpManager powerUpManager;
+    private final transient ScreenType levelId;
 
-    private GameText scoreText;
-    private GameText numScoreText;
-    private GameButton pauseButton;
-    private Background background;
-    private String levelPath;
+    private final GameText scoreText;
+    private final GameText numScoreText;
+    private final GameButton pauseButton;
+    private final Background background;
+    private final String levelPath;
 
     private long startTime;
     private long pauseStartTime;
     private long pauseTime;
-    private long totalTimePlayed;
+    private long endTime;
     private boolean hasPaused;
 
     public PlayScreen(Screen screen, ScreenType screenType) {
@@ -109,6 +109,7 @@ public class PlayScreen implements Screen {
         boolean isGameWin = brickManager.isCleared();
 
         if(isGameOver || isGameWin) {
+            endTime = System.currentTimeMillis();
             if(isGameOver) {
                 screenManager.push(ScreenType.GAME_OVER);
             } else {
@@ -172,5 +173,9 @@ public class PlayScreen implements Screen {
 
     public long getPauseTime() {
         return pauseTime;
+    }
+
+    public long getTotalTimePlayed() {
+        return endTime - startTime - pauseTime;
     }
 }

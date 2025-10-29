@@ -52,6 +52,10 @@ public class ScreenManager {
         newScreen.onEnter();
     }
 
+    public void push(Screen screen) {
+        screens.push(screen);
+    }
+
     public void pop() {
         if (!screens.isEmpty()) {
             screens.pop().onExit();

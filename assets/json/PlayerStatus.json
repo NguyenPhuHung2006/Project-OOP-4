@@ -1,7 +1,6 @@
 {
-  "numberOfBricksDestroyed": 0,
-  "totalCollision": 0,
-  "totalTimePlayed": 0,
-  "numberOfWinGames": 1,
-  "numberOfLoseGames": 13
+  "numberOfBricksDestroyed": 11,
+  "totalTimePlayed": 46642,
+  "numberOfWinGames": 2,
+  "numberOfLoseGames": 20
 }

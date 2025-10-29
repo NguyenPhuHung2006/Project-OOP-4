@@ -15,7 +15,6 @@ public class Ball extends MovableObject {
 
     private boolean isMoving;
     private final float originalSpeed;
-    private boolean hasIntersectedWithPaddle = false;
 
     private Paddle paddle;
 
@@ -105,7 +104,6 @@ public class Ball extends MovableObject {
         if (isIntersect(paddle)) {
             handleObjectCollisionX(paddle);
             PhysicsUtils.bounceOffPaddle(this, paddle);
-            hasIntersectedWithPaddle = true;
         }
         handleBricksCollisionX(bricks, tileWidth, tileHeight);
 
@@ -113,7 +111,6 @@ public class Ball extends MovableObject {
         if (isIntersect(paddle)) {
             handleObjectCollisionY(paddle);
             PhysicsUtils.bounceOffPaddle(this, paddle);
-            hasIntersectedWithPaddle = true;
         }
         handleBricksCollisionY(bricks, tileWidth, tileHeight);
     }
@@ -177,12 +174,11 @@ public class Ball extends MovableObject {
             gameContext.setGameOver(true);
         }
 
-        if(hasIntersectedWithPaddle
-                && (x == 0 || x + width >= windowWidth)) {
+        if(isIntersect(paddle)) {
             y = paddle.getY() + paddle.getHeight() + 1;
             dy = Math.abs(dy);
         }
-        hasIntersectedWithPaddle = false;
+
     }
 
     public void stop() {

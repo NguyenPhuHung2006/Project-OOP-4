@@ -15,6 +15,9 @@ public class Ball extends MovableObject {
 
     private boolean isMoving;
     private final float originalSpeed;
+    private boolean hasIntersectedWithPaddle = false;
+
+    private Paddle paddle;
 
     public Ball(Ball ball) {
         super(ball);
@@ -41,13 +44,13 @@ public class Ball extends MovableObject {
 
         handleWindowCollision();
 
-        checkGameState();
+        checkBallState();
     }
 
     @Override
     protected void initBounds(GameObject gameObject) {
 
-        Paddle paddle = gameContext.getPaddle();
+        paddle = gameContext.getPaddle();
 
         if(paddle == null) {
             ExceptionHandler.handle(new InvalidGameStateException("the paddle should be initialized before the ball", null));
@@ -89,17 +92,9 @@ public class Ball extends MovableObject {
         }
     }
 
-    private void checkGameState() {
-
-        if(y + height >= gameContext.getWindowHeight()) {
-            gameContext.setGameOver(true);
-        }
-    }
-
     @Override
     public void moveAndCollide() {
 
-        Paddle paddle = gameContext.getPaddle();
         Brick[][] bricks = brickManager.getBricks();
         int tileWidth = brickManager.getBrickWidth();
         int tileHeight = brickManager.getBrickHeight();
@@ -110,6 +105,7 @@ public class Ball extends MovableObject {
         if (isIntersect(paddle)) {
             handleObjectCollisionX(paddle);
             PhysicsUtils.bounceOffPaddle(this, paddle);
+            hasIntersectedWithPaddle = true;
         }
         handleBricksCollisionX(bricks, tileWidth, tileHeight);
 
@@ -117,6 +113,7 @@ public class Ball extends MovableObject {
         if (isIntersect(paddle)) {
             handleObjectCollisionY(paddle);
             PhysicsUtils.bounceOffPaddle(this, paddle);
+            hasIntersectedWithPaddle = true;
         }
         handleBricksCollisionY(bricks, tileWidth, tileHeight);
     }
@@ -172,6 +169,20 @@ public class Ball extends MovableObject {
 
     private void handleBricksCollisionY(Brick[][] bricks, int tileWidth, int tileHeight) {
         handleBricksCollision(bricks, tileWidth, tileHeight, false);
+    }
+
+    private void checkBallState() {
+
+        if(y + height >= gameContext.getWindowHeight()) {
+            gameContext.setGameOver(true);
+        }
+
+        if(hasIntersectedWithPaddle
+                && (x == 0 || x + width >= windowWidth)) {
+            y = paddle.getY() + paddle.getHeight() + 1;
+            dy = Math.abs(dy);
+        }
+        hasIntersectedWithPaddle = false;
     }
 
     public void stop() {

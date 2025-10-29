@@ -15,6 +15,8 @@ public class MenuScreen implements Screen {
     GameText level2Text;
     GameButton level2Button;
 
+    GameButton playerStatusButton;
+
     Background background;
 
     public MenuScreen(Screen screen) {
@@ -28,6 +30,8 @@ public class MenuScreen implements Screen {
 
         level2Button = new GameButton(menuScreen.level2Button);
         level2Text = new GameText(menuScreen.level2Text);
+
+        playerStatusButton = new GameButton(menuScreen.playerStatusButton);
 
         background = new Background(menuScreen.background);
     }
@@ -44,6 +48,8 @@ public class MenuScreen implements Screen {
         GameText baseLevel2Text = menuScreen.level2Text;
         GameButton baseLevel2Button = menuScreen.level2Button;
 
+        GameButton basePlayerStatusButton = menuScreen.playerStatusButton;
+
         baseLevel1Text.updateSizeFromFontData();
         baseLevel1Text.applyRelativePosition();
 
@@ -53,11 +59,14 @@ public class MenuScreen implements Screen {
 
         baseLevel2Text.updateSizeFromFontData();
         baseLevel2Text.alignBelow(baseLevel1Text);
-        baseLevel2Text.translateY(paddingY * 10);
+        baseLevel2Text.translateY(spacingY);
 
         baseLevel2Button.applyRelativeSize();
         baseLevel2Button.alignRightOf(baseLevel2Text);
         baseLevel2Button.centerVerticallyTo(baseLevel2Text);
+
+        basePlayerStatusButton.applyRelativeSize();
+        basePlayerStatusButton.alignTopRight();
 
     }
 
@@ -68,9 +77,10 @@ public class MenuScreen implements Screen {
             soundManager.play(SoundType.CLICK_BUTTON);
             if(level1Button.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PLAY_LEVEL1);
-            }
-            else if(level2Button.isClicked(mouseManager)) {
+            } else if(level2Button.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PLAY_LEVEL2);
+            } else if(playerStatusButton.isClicked(mouseManager)) {
+                screenManager.push(ScreenType.PLAYER_STATUS);
             }
         }
     }
@@ -82,6 +92,7 @@ public class MenuScreen implements Screen {
         level1Button.render(graphics2D);
         level2Text.render(graphics2D);
         level2Button.render(graphics2D);
+        playerStatusButton.render(graphics2D);
     }
 
     @Override

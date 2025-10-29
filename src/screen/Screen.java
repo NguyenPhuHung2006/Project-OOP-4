@@ -12,6 +12,8 @@ public interface Screen {
     int windowHeight = GameContext.getInstance().getWindowHeight();
     int paddingX = GameContext.getInstance().getPaddingX();
     int paddingY = GameContext.getInstance().getPaddingY();
+    int spacingX = paddingX * 10;
+    int spacingY = paddingY * 10;
 
     MouseManager mouseManager = MouseManager.getInstance();
     SoundManager soundManager = SoundManager.getInstance();

@@ -1,11 +1,12 @@
 package utils;
 
 import com.google.gson.Gson;
-import config.GameSave;
+import com.google.gson.GsonBuilder;
 import exception.ExceptionHandler;
 import exception.ResourceLoadException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class JsonLoaderUtils {
@@ -13,7 +14,13 @@ public class JsonLoaderUtils {
     private JsonLoaderUtils() {
     }
 
-    private static final Gson gson = new Gson();
+    public static String gameConfigPath = "assets/json/GameConfig.json";
+    public static String playerStatusDataPath = "assets/json/PlayerStatus.json";
+
+    private static final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .serializeNulls()
+            .create();
 
     public static <T> T loadFromJson(String path, Class<T> type) {
         try (FileReader reader = new FileReader(path)) {
@@ -24,9 +31,9 @@ public class JsonLoaderUtils {
         }
     }
 
-    public static void saveGameProgress(String path, GameSave saveData) {
-        try (java.io.FileWriter writer = new java.io.FileWriter(path)) {
-            gson.toJson(saveData, writer);
+    public static <T> void saveToJson(String path, T data) {
+        try (FileWriter writer = new FileWriter(path)) {
+            gson.toJson(data, writer);
         } catch (IOException e) {
             ExceptionHandler.handle(new ResourceLoadException(path, e));
         }

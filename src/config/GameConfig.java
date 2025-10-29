@@ -6,5 +6,4 @@ public class GameConfig {
     public int windowHeight;
     public String screenConfigPath;
     public String soundConfigPath;
-    public String gameSavePath;
 }

@@ -41,10 +41,10 @@ public class GameManager extends JPanel implements Runnable {
 
     private GameManager() {
 
-        gameConfig = JsonLoaderUtils.loadFromJson("assets/json/GameConfig.json", GameConfig.class);
+        gameConfig = JsonLoaderUtils.loadFromJson(JsonLoaderUtils.gameConfigPath, GameConfig.class);
 
         if(gameConfig == null) {
-            ExceptionHandler.handle(new ResourceLoadException("assets/json/GameConfig.json", null));
+            ExceptionHandler.handle(new ResourceLoadException(JsonLoaderUtils.gameConfigPath, null));
         }
 
         width = gameConfig.windowWidth;

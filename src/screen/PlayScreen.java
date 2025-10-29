@@ -1,11 +1,9 @@
 package screen;
 
-import audio.SoundManager;
 import audio.SoundType;
 import config.LevelConfig;
 import exception.ExceptionHandler;
 import exception.ResourceLoadException;
-import input.MouseManager;
 import object.GameContext;
 import object.UI.Background;
 import object.UI.GameButton;
@@ -29,6 +27,12 @@ public class PlayScreen implements Screen {
     private Background background;
     private String levelPath;
 
+    private long startTime;
+    private long pauseStartTime;
+    private long pauseTime;
+    private long totalTimePlayed;
+    private boolean hasPaused;
+
     public PlayScreen(Screen screen, ScreenType screenType) {
 
         gameContext = GameContext.getInstance();
@@ -47,6 +51,8 @@ public class PlayScreen implements Screen {
         levelPath = playScreen.levelPath;
 
         initObjects(levelPath);
+
+        startTime = System.currentTimeMillis();
 
     }
 
@@ -81,6 +87,7 @@ public class PlayScreen implements Screen {
             ExceptionHandler.handle(new ResourceLoadException(levelPath, null));
         }
 
+        assert levelConfig != null;
         gameContext.loadFromJson(levelConfig);
         brickManager.loadFromJson(levelConfig);
         powerUpManager.loadFromJson(levelConfig);
@@ -91,7 +98,12 @@ public class PlayScreen implements Screen {
     @Override
     public void update() {
 
-        powerUpManager.resumeTimers();
+        if(hasPaused) {
+            powerUpManager.resumeTimers();
+            long currentTime = System.currentTimeMillis();
+            pauseTime += currentTime - pauseStartTime;
+            hasPaused = false;
+        }
 
         boolean isGameOver = gameContext.isGameOver();
         boolean isGameWin = brickManager.isCleared();
@@ -110,6 +122,8 @@ public class PlayScreen implements Screen {
             if(pauseButton.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PAUSE);
                 powerUpManager.pauseTimers();
+                hasPaused = true;
+                pauseStartTime = System.currentTimeMillis();
                 return;
             }
         }
@@ -154,5 +168,9 @@ public class PlayScreen implements Screen {
 
     public ScreenType getLevelId() {
         return levelId;
+    }
+
+    public long getPauseTime() {
+        return pauseTime;
     }
 }

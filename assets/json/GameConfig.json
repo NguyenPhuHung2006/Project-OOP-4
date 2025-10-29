@@ -2,6 +2,5 @@
   "windowWidth": 600,
   "windowHeight": 600,
   "screenConfigPath": "assets/json/Screens.json",
-  "soundConfigPath": "assets/json/Sounds.json",
-  "gameSavePath": "assets/json/GameSave.json"
+  "soundConfigPath": "assets/json/Sounds.json"
 }

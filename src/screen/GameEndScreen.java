@@ -139,7 +139,7 @@ public abstract class GameEndScreen implements Screen {
         int numberOfBrickDestroyed = BrickManager.getInstance().getDestroyedBricksCount();
         playerStatusData.numberOfBricksDestroyed += numberOfBrickDestroyed;
 
-        GameOverScreen currentGameOverScreen = (GameOverScreen) screenManager.top();
+        GameEndScreen currentGameOverScreen = (GameEndScreen) screenManager.top();
         screenManager.pop();
         PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
         long totalTimePlayed = previousPlayScreen.getTotalTimePlayed();

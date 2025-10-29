@@ -197,7 +197,7 @@
       "numberOfFrames": 1
     },
     "saveProgressButton": {
-      "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "textureX": 48, "textureY": 16, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1

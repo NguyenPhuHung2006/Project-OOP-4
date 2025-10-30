@@ -15,6 +15,7 @@ public class NormalBrick extends Brick {
         if (!frames.isEmpty()) {
             frames.removeLast();
             currentTexture = frames.isEmpty() ? null : frames.getLast();
+            frameX += textureWidth;
         }
 
         if (frames.isEmpty()) {

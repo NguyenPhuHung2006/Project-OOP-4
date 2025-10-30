@@ -2,7 +2,6 @@ package object;
 
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
-import object.movable.powerup.PowerUp;
 import utils.RendererUtils;
 import utils.TextureLoaderUtils;
 
@@ -19,6 +18,8 @@ public abstract class TexturedObject extends GameObject {
     protected int textureWidth;
     protected int textureHeight;
     protected transient BufferedImage currentTexture;
+
+    protected int frameX = 0;
 
     protected final int numberOfFrames;
     protected transient List<BufferedImage> frames;
@@ -44,7 +45,7 @@ public abstract class TexturedObject extends GameObject {
     private void loadFrames() {
 
         frames = new ArrayList<>();
-        for (int i = numberOfFrames - 1; i >= 0; i--) {
+        for (int i = numberOfFrames - 1; i >= frameX; i--) {
             frames.add(TextureLoaderUtils.scaleTexture(textureX + i * textureWidth, textureY, textureWidth, textureHeight,
                     texturePath, width, height));
         }

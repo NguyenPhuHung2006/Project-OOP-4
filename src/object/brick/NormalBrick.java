@@ -10,16 +10,18 @@ public class NormalBrick extends Brick {
 
     @Override
     protected void handleHit() {
+
         hit = false;
         soundManager.play(SoundType.NORMAL_BRICK);
-        if (!frames.isEmpty()) {
-            frames.removeLast();
-            currentTexture = frames.isEmpty() ? null : frames.getLast();
-        }
 
-        if (frames.isEmpty()) {
+        indexFrame++;
+
+        if(indexFrame < frames.size()) {
+            currentTexture = frames.get(indexFrame);
+        } else {
             destroyed = true;
         }
+
     }
 
     @Override

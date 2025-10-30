@@ -1,7 +1,6 @@
 package object.movable;
 
 import object.GameObject;
-import object.TexturedObject;
 
 import java.awt.event.KeyEvent;
 
@@ -28,18 +27,26 @@ public class Paddle extends MovableObject {
     protected void initBounds(GameObject gameObject) {
 
         initTextureBounds(gameObject);
+        
+        Paddle basePaddle = (Paddle) gameObject;
 
-        TexturedObject texturedObject = (TexturedObject) gameObject;
+        relativeSize = basePaddle.getRelativeSize();
+        relativeY = basePaddle.getRelativeY();
+        
+        basePaddle.resetPaddleBound();
 
-        texturedObject.applyRelativeSize();
-        gameObject.applyRelativePositionY();
-        gameObject.centerHorizontally();
+        this.width = basePaddle.getWidth();
+        this.height = basePaddle.getHeight();
+        this.x = basePaddle.getX();
+        this.y = basePaddle.getY();
 
-        this.width = gameObject.getWidth();
-        this.height = gameObject.getHeight();
-        this.x = gameObject.getX();
-        this.y = gameObject.getY();
-
+    }
+    
+    public void resetPaddleBound() {
+        applyRelativeSize();
+        applyRelativePositionY();
+        applyRelativePositionY();
+        centerHorizontally();
     }
 
     @Override

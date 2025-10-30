@@ -57,7 +57,7 @@ public class SoundManager {
         loadMusic(MusicType.PLAY_THEME, soundConfig.playThemeMusicPath);
 
         setSoundGlobalVolume(0.6f);
-        setMusicGlobalVolume(0.8f);
+        setMusicGlobalVolume(0.3f);
     }
 
 

@@ -64,6 +64,13 @@
     "speedUpMultiplier": 2
   },
 
+  "lifeCounter": {
+    "textureWidth": 11, "textureHeight": 10,
+    "relativeSize": 0.1,
+    "texturePath": "/textures/hearts.png",
+    "numberOfFrames": 7
+  },
+
   "normalBrickTextureIndices": [0, 1, 2, 3, 4, 5],
   "strongBrickTextureIndices": [6, 7, 8, 9],
   "powerUpBrickTextureIndices": [10, 11, 12, 13, 14, 15, 16],

@@ -33,6 +33,7 @@ public class PlayScreen implements Screen {
     private long pauseTime;
     private long endTime;
     private boolean hasPaused;
+    private boolean exited;
 
     public PlayScreen(Screen screen, ScreenType screenType) {
 
@@ -169,7 +170,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void onExit() {
-        if(gameContext.isGameOver() || gameContext.isGameWin()) {
+        if(gameContext.isGameOver() || gameContext.isGameWin() || exited) {
             soundManager.stopMusic(MusicType.PLAY_THEME);
         } else {
             soundManager.pauseMusic(MusicType.PLAY_THEME);
@@ -186,5 +187,9 @@ public class PlayScreen implements Screen {
 
     public long getTotalTimePlayed() {
         return endTime - startTime - pauseTime;
+    }
+
+    public void setExited(boolean exited) {
+        this.exited = exited;
     }
 }

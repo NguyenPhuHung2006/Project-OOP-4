@@ -62,48 +62,65 @@ public class PauseScreen implements Screen {
             soundManager.play(SoundType.CLICK_BUTTON);
             if (resumeButton.isClicked(mouseManager)) {
                 screenManager.pop();
+                return;
             }
 
             if (playAgainButton.isClicked(mouseManager)) {
-                int option = JOptionPane.showConfirmDialog(
-                        null,
-                        "Your game process will not be saved",
-                        "WARNING",
-                        JOptionPane.OK_CANCEL_OPTION
-                );
-                if (option == JOptionPane.OK_OPTION) {
-                    playAgain();
-                }
+                handlePlayAgain();
             }
 
             if (escapeButton.isClicked(mouseManager)) {
-                int option = JOptionPane.showConfirmDialog(
-                        null,
-                        "Do you want to save the game progress",
-                        "WARNING",
-                        JOptionPane.YES_NO_OPTION
-                );
-                if (option == JOptionPane.YES_OPTION) {
-
-                } else if (option == JOptionPane.NO_OPTION) {
-                    screenManager.pop();
-                    screenManager.pop();
-                }
+                handleEscape();
             }
 
         }
     }
 
-    private void saveGameProgress() {
+    private void handlePlayAgain() {
+        int option = JOptionPane.showConfirmDialog(
+                null,
+                "Your game progress will not be saved.",
+                "WARNING",
+                JOptionPane.OK_CANCEL_OPTION
+        );
+        if (option == JOptionPane.OK_OPTION) {
+            playAgain();
+        }
+    }
 
+    private void handleEscape() {
+        int option = JOptionPane.showConfirmDialog(
+                null,
+                "Do you want to save the game progress?",
+                "WARNING",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (option == JOptionPane.YES_OPTION) {
+            saveGameProgress();
+        } else {
+            exitToMainMenu();
+        }
+    }
+
+    private void exitToMainMenu() {
+        screenManager.pop();
+        PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
+        previousPlayScreen.setExited(true);
+        screenManager.pop();
     }
 
     private void playAgain() {
         screenManager.pop();
         PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
+        previousPlayScreen.setExited(true);
         ScreenType previousLevelId = previousPlayScreen.getLevelId();
         screenManager.pop();
         screenManager.push(previousLevelId);
+    }
+
+    private void saveGameProgress() {
+
     }
 
     @Override

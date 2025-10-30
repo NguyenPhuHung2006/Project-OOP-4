@@ -27,19 +27,9 @@ public class GameManager extends JPanel implements Runnable {
     // the minimum nanosecond at each frame
     private final double frameTime = 1_000_000_000.0 / FPS;
 
-    public static GameManager getInstance() {
-        if (gameManager == null) {
-            synchronized (GameManager.class) {
-                if (gameManager == null)
-                    gameManager = new GameManager();
-            }
-        }
-        return gameManager;
-    }
-
     GameConfig gameConfig;
 
-    private GameManager() {
+    public GameManager() {
 
         gameConfig = JsonLoaderUtils.loadFromJson(JsonLoaderUtils.gameConfigPath, GameConfig.class);
 
@@ -47,6 +37,7 @@ public class GameManager extends JPanel implements Runnable {
             ExceptionHandler.handle(new ResourceLoadException(JsonLoaderUtils.gameConfigPath, null));
         }
 
+        assert gameConfig != null;
         width = gameConfig.windowWidth;
         height = gameConfig.windowHeight;
 

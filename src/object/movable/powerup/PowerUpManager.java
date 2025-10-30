@@ -39,7 +39,7 @@ public class PowerUpManager {
 
         refresh();
         powerUpsRegistry.put(PowerUpType.SLOW_BALL, levelConfig.slowPowerUp);
-        powerUpsRegistry.put(PowerUpType.EXPAND_PADDLE, levelConfig.expandPaddleWidthPowerUp);
+        powerUpsRegistry.put(PowerUpType.EXPAND_PADDLE, levelConfig.expandPaddlePowerUp);
         powerUpsRegistry.put(PowerUpType.SPEEDUP_PADDLE, levelConfig.speedUpPaddlePowerUp);
     }
 

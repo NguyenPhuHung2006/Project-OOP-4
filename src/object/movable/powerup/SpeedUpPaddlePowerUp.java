@@ -27,7 +27,6 @@ public class SpeedUpPaddlePowerUp extends PowerUp {
         if(currentSpeed <= speedUpSpeed) {
             paddle.setSpeed(speedUpSpeed);
         }
-        System.out.println(paddle.getSpeed());
     }
 
     @Override

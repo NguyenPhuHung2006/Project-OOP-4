@@ -9,7 +9,7 @@ public class Main {
         frame.setResizable(false);
         frame.setTitle("Arkanoid");
 
-        GameManager gameManager = GameManager.getInstance();
+        GameManager gameManager = new GameManager();
         frame.add(gameManager);
         frame.pack();
         frame.setLocationRelativeTo(null);

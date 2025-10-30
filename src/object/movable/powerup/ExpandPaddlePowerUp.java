@@ -2,20 +2,20 @@ package object.movable.powerup;
 
 import object.movable.Paddle;
 
-public class ExpandPaddleWidthPowerUp extends PowerUp {
+public class ExpandPaddlePowerUp extends PowerUp {
 
     private final float widthMultiplier;
     private final Paddle paddle;
     private final float originalWidth;
     private final float scaledWidth;
 
-    public ExpandPaddleWidthPowerUp(PowerUp powerUp) {
+    public ExpandPaddlePowerUp(PowerUp powerUp) {
 
         super(powerUp);
 
-        ExpandPaddleWidthPowerUp expandPaddleWidthPowerUp = (ExpandPaddleWidthPowerUp) powerUp;
+        ExpandPaddlePowerUp expandPaddlePowerUp = (ExpandPaddlePowerUp) powerUp;
 
-        this.widthMultiplier = expandPaddleWidthPowerUp.widthMultiplier;
+        this.widthMultiplier = expandPaddlePowerUp.widthMultiplier;
         this.paddle = gameContext.getPaddle();
         this.originalWidth = paddle.getOriginalWidth();
         this.scaledWidth = this.originalWidth * widthMultiplier;
@@ -42,8 +42,8 @@ public class ExpandPaddleWidthPowerUp extends PowerUp {
     }
 
     @Override
-    public ExpandPaddleWidthPowerUp clone() {
-        return (ExpandPaddleWidthPowerUp) super.clone();
+    public ExpandPaddlePowerUp clone() {
+        return (ExpandPaddlePowerUp) super.clone();
     }
 
 }

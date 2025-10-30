@@ -114,6 +114,7 @@ public class PlayScreen implements Screen {
             if(isGameOver) {
                 screenManager.push(ScreenType.GAME_OVER);
             } else {
+                gameContext.setGameWin(true);
                 screenManager.push(ScreenType.GAME_WIN);
             }
             return;

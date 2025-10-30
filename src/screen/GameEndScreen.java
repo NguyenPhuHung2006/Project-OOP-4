@@ -139,14 +139,14 @@ public abstract class GameEndScreen implements Screen {
         int numberOfBrickDestroyed = BrickManager.getInstance().getDestroyedBricksCount();
         playerStatusData.numberOfBricksDestroyed += numberOfBrickDestroyed;
 
-        GameEndScreen currentGameOverScreen = (GameEndScreen) screenManager.top();
+        GameEndScreen currentGameEndScreen = (GameEndScreen) screenManager.top();
         screenManager.pop();
         PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
         long totalTimePlayed = previousPlayScreen.getTotalTimePlayed();
 
         playerStatusData.totalTimePlayed += totalTimePlayed;
 
-        screenManager.push(currentGameOverScreen);
+        screenManager.push(currentGameEndScreen);
 
         JsonLoaderUtils.saveToJson(JsonLoaderUtils.playerStatusDataPath, playerStatusData);
 

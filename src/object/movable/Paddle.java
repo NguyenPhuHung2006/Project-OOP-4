@@ -8,11 +8,13 @@ import java.awt.event.KeyEvent;
 public class Paddle extends MovableObject {
 
     private final float originWidth;
+    private final float originalSpeed;
 
     public Paddle(Paddle paddle) {
 
         super(paddle);
         this.originWidth = width;
+        this.originalSpeed = speed;
     }
 
     @Override
@@ -69,5 +71,7 @@ public class Paddle extends MovableObject {
     public float getOriginalWidth() {
         return originWidth;
     }
+
+    public float getOriginalSpeed() {return originalSpeed;}
 
 }

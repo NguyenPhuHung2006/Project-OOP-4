@@ -7,6 +7,7 @@ import object.movable.Ball;
 import object.movable.Paddle;
 import object.movable.powerup.ExpandPaddleWidthPowerUp;
 import object.movable.powerup.SlowBallPowerUp;
+import object.movable.powerup.SpeedUpPaddlePowerUp;
 
 public class LevelConfig {
     public Paddle paddle;
@@ -26,5 +27,5 @@ public class LevelConfig {
 
     public SlowBallPowerUp slowPowerUp;
     public ExpandPaddleWidthPowerUp expandPaddleWidthPowerUp;
-
+    public SpeedUpPaddlePowerUp speedUpPaddlePowerUp;
 }

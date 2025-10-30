@@ -54,6 +54,16 @@
     "widthMultiplier": 2
   },
 
+  "speedUpPaddlePowerUp": {
+    "textureWidth": 22, "textureHeight": 7,
+    "texturePath": "/textures/speedup_paddle.png",
+    "relativeSize": 0.1,
+    "numberOfFrames": 1,
+    "speed": 3,
+    "durationMs": 5000,
+    "speedUpMultiplier": 2
+  },
+
   "normalBrickTextureIndices": [0, 1, 2, 3, 4, 5],
   "strongBrickTextureIndices": [6, 7, 8, 9],
   "powerUpBrickTextureIndices": [10, 11, 12, 13, 14, 15, 16],

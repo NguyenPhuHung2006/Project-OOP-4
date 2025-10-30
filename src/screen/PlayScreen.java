@@ -50,6 +50,7 @@ public class PlayScreen implements Screen {
         numScoreText = new GameText(playScreen.numScoreText);
         pauseButton = new GameButton(playScreen.pauseButton);
         background = new Background(playScreen.background);
+
         levelPath = playScreen.levelPath;
 
         initObjects(levelPath);
@@ -100,7 +101,7 @@ public class PlayScreen implements Screen {
     @Override
     public void update() {
 
-        if(hasPaused) {
+        if (hasPaused) {
             powerUpManager.resumeTimers();
             long currentTime = System.currentTimeMillis();
             pauseTime += currentTime - pauseStartTime;
@@ -110,20 +111,19 @@ public class PlayScreen implements Screen {
         boolean isGameOver = gameContext.isGameOver();
         boolean isGameWin = brickManager.isCleared();
 
-        if(isGameOver || isGameWin) {
+        if (isGameOver || isGameWin) {
             endTime = System.currentTimeMillis();
-            if(isGameOver) {
+            if (isGameOver) {
                 screenManager.push(ScreenType.GAME_OVER);
             } else {
-                gameContext.setGameWin(true);
                 screenManager.push(ScreenType.GAME_WIN);
             }
             return;
         }
 
-        if(mouseManager.isLeftClicked()) {
+        if (mouseManager.isLeftClicked()) {
             soundManager.play(SoundType.CLICK_BUTTON);
-            if(pauseButton.isClicked(mouseManager)) {
+            if (pauseButton.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PAUSE);
                 powerUpManager.pauseTimers();
                 hasPaused = true;
@@ -140,6 +140,12 @@ public class PlayScreen implements Screen {
         }
 
         powerUpManager.updateFallingPowerUps();
+
+        if (gameContext.getBall().isLost()) {
+            gameContext.getLifeCounter().updateLives(false);
+            gameContext.resetObjectsBound();
+        }
+
     }
 
     @Override
@@ -148,8 +154,7 @@ public class PlayScreen implements Screen {
         background.render(graphics2D);
 
         brickManager.renderBricks(graphics2D);
-        gameContext.getPaddle().render(graphics2D);
-        gameContext.getBall().render(graphics2D);
+        gameContext.renderContext(graphics2D);
 
         powerUpManager.renderPowerUps(graphics2D);
 
@@ -162,7 +167,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void onEnter() {
-        if(gameContext.isGameOver() || gameContext.isGameWin()) {
+        if (gameContext.isGameOver() || brickManager.isCleared()) {
             return;
         }
         soundManager.playMusic(MusicType.PLAY_THEME, true);
@@ -170,7 +175,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void onExit() {
-        if(gameContext.isGameOver() || gameContext.isGameWin() || exited) {
+        if (gameContext.isGameOver() || brickManager.isCleared() || exited) {
             soundManager.stopMusic(MusicType.PLAY_THEME);
         } else {
             soundManager.pauseMusic(MusicType.PLAY_THEME);

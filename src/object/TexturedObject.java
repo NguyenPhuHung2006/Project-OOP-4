@@ -2,11 +2,12 @@ package object;
 
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
+import object.UI.LifeCounter;
 import utils.RendererUtils;
 import utils.TextureLoaderUtils;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,16 +21,12 @@ public abstract class TexturedObject extends GameObject {
     protected int textureHeight;
     protected transient BufferedImage currentTexture;
 
-    protected int frameX = 0;
+    protected int indexFrame = 0;
 
     protected final int numberOfFrames;
-    protected transient Queue<BufferedImage> frames;
+    protected transient List<BufferedImage> frames;
 
     protected boolean isScaled;
-
-    public Queue<BufferedImage> getFrames() {
-        return frames;
-    }
 
     public TexturedObject(TexturedObject texturedObject) {
 
@@ -44,15 +41,16 @@ public abstract class TexturedObject extends GameObject {
     }
 
     private void loadFrames() {
-        frames = new LinkedList<>();
-        for (int i = frameX; i < numberOfFrames; i++) {
+        frames = new ArrayList<>();
+
+        for (int i = 0; i < numberOfFrames; i++) {
             frames.add(TextureLoaderUtils.scaleTexture(textureX + i * textureWidth, textureY, textureWidth, textureHeight,
                     texturePath, width, height));
         }
-        if (frames.isEmpty()) {
-            ExceptionHandler.handle(new InvalidGameStateException("The number of frames " + numberOfFrames + " is not valid", null));
+        if (indexFrame >= frames.size() || indexFrame < 0) {
+            ExceptionHandler.handle(new InvalidGameStateException("The index frame " + indexFrame + " is not valid", null));
         }
-        currentTexture = frames.peek();
+        currentTexture = frames.get(indexFrame);
     }
 
     protected void initTextureBounds(GameObject gameObject) {
@@ -135,4 +133,9 @@ public abstract class TexturedObject extends GameObject {
     public void setScaled(boolean isScaled) {
         this.isScaled = isScaled;
     }
+
+    public int getNumberOfFrames() {
+        return numberOfFrames;
+    }
+
 }

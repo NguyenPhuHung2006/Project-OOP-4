@@ -16,16 +16,16 @@ public abstract class GameObject implements Cloneable {
     protected transient float width;
     protected transient float height;
 
-    protected static final int windowWidth = GameContext.getInstance().getWindowWidth();
-    protected static final int windowHeight = GameContext.getInstance().getWindowHeight();
-    protected static final int paddingX = GameContext.getInstance().getPaddingX();
-    protected static final int paddingY = GameContext.getInstance().getPaddingY();
+    protected static GameContext gameContext = GameContext.getInstance();
+    protected static final int windowWidth = gameContext.getWindowWidth();
+    protected static final int windowHeight = gameContext.getWindowHeight();
+    protected static final int paddingX = gameContext.getPaddingX();
+    protected static final int paddingY = gameContext.getPaddingY();
 
     protected float relativeSize;
     protected float relativeX;
     protected float relativeY;
 
-    protected transient GameContext gameContext = GameContext.getInstance();
     protected transient KeyboardManager keyboardManager = KeyboardManager.getInstance();
     protected transient BrickManager brickManager = BrickManager.getInstance();
     protected transient SoundManager soundManager = SoundManager.getInstance();

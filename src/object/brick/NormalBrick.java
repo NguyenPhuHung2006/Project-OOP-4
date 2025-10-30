@@ -13,8 +13,8 @@ public class NormalBrick extends Brick {
         hit = false;
         soundManager.play(SoundType.NORMAL_BRICK);
         if (!frames.isEmpty()) {
-            frames.removeLast();
-            currentTexture = frames.isEmpty() ? null : frames.getLast();
+            frames.poll();
+            currentTexture = frames.isEmpty() ? null : frames.peek();
             frameX += textureWidth;
         }
 

@@ -5,10 +5,11 @@ import exception.InvalidGameStateException;
 import utils.RendererUtils;
 import utils.TextureLoaderUtils;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class TexturedObject extends GameObject {
 
@@ -22,11 +23,11 @@ public abstract class TexturedObject extends GameObject {
     protected int frameX = 0;
 
     protected final int numberOfFrames;
-    protected transient List<BufferedImage> frames;
+    protected transient Queue<BufferedImage> frames;
 
     protected boolean isScaled;
 
-    public List<BufferedImage> getFrames() {
+    public Queue<BufferedImage> getFrames() {
         return frames;
     }
 
@@ -43,16 +44,15 @@ public abstract class TexturedObject extends GameObject {
     }
 
     private void loadFrames() {
-
-        frames = new ArrayList<>();
-        for (int i = numberOfFrames - 1; i >= frameX; i--) {
+        frames = new LinkedList<>();
+        for (int i = frameX; i < numberOfFrames; i++) {
             frames.add(TextureLoaderUtils.scaleTexture(textureX + i * textureWidth, textureY, textureWidth, textureHeight,
                     texturePath, width, height));
         }
         if (frames.isEmpty()) {
             ExceptionHandler.handle(new InvalidGameStateException("The number of frames " + numberOfFrames + " is not valid", null));
         }
-        currentTexture = frames.getLast();
+        currentTexture = frames.peek();
     }
 
     protected void initTextureBounds(GameObject gameObject) {

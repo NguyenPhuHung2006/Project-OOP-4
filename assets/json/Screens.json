@@ -270,7 +270,7 @@
 
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background.png",
+      "texturePath": "/textures/background_multi.png",
       "numberOfFrames": 1
     }
   }

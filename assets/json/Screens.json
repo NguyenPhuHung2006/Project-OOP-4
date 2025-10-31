@@ -14,7 +14,7 @@
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background.png",
+      "texturePath": "/textures/background_start.png",
       "numberOfFrames": 1
     }
   },
@@ -47,7 +47,7 @@
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background.png",
+      "texturePath": "/textures/background_multi.png",
       "numberOfFrames": 1
     }
   },
@@ -73,7 +73,7 @@
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background.png",
+      "texturePath": "/textures/background_level1.png",
       "numberOfFrames": 1
     },
     "levelPath": "assets/json/levels/Level1.json"
@@ -100,7 +100,7 @@
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background.png",
+      "texturePath": "/textures/background_level2.png",
       "numberOfFrames": 1
     },
     "levelPath": "assets/json/levels/Level2.json"
@@ -133,7 +133,7 @@
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background.png",
+      "texturePath": "/textures/background_multi.png",
       "numberOfFrames": 1
     }
   },
@@ -165,7 +165,7 @@
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background.png",
+      "texturePath": "/textures/background_over.png",
       "numberOfFrames": 1
     },
     "levelPath": "assets/json/levels/Level1.json"
@@ -194,11 +194,12 @@
       "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
       "texturePath": "/textures/buttons.png",
+
       "numberOfFrames": 1
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background.png",
+      "texturePath": "/textures/background_multi.png",
       "numberOfFrames": 1
     },
     "levelPath": "assets/json/levels/Level1.json"

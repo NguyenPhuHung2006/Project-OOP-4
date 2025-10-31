@@ -3,6 +3,9 @@ package object.brick;
 import object.GameObject;
 import object.TexturedObject;
 
+/**
+ * This class mean bricks
+ */
 public abstract class Brick extends TexturedObject {
 
     protected boolean destroyed;

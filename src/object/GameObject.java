@@ -9,6 +9,10 @@ import object.movable.powerup.PowerUpType;
 
 import java.awt.*;
 
+/**
+ * This class is so amazing
+ */
+
 public abstract class GameObject implements Cloneable {
 
     protected transient float x;
@@ -219,15 +223,15 @@ public abstract class GameObject implements Cloneable {
     public void translateX(float deltaX) {
         this.x += deltaX;
     }
-    
+
     public void translateY(float deltaY) {
         this.y += deltaY;
     }
-    
+
     public void addWidth(float deltaWidth) {
         this.width += deltaWidth;
     }
-    
+
     public void addHeight(float deltaHeight) {
         this.height += deltaHeight;
     }

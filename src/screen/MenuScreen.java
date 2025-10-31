@@ -5,6 +5,7 @@ import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class MenuScreen implements Screen {
@@ -16,6 +17,8 @@ public class MenuScreen implements Screen {
     GameButton level2Button;
 
     GameButton playerStatusButton;
+
+    GameButton escapeButton;
 
     Background background;
 
@@ -33,6 +36,8 @@ public class MenuScreen implements Screen {
 
         playerStatusButton = new GameButton(menuScreen.playerStatusButton);
 
+        escapeButton = new GameButton(menuScreen.escapeButton);
+
         background = new Background(menuScreen.background);
     }
 
@@ -49,6 +54,8 @@ public class MenuScreen implements Screen {
         GameButton baseLevel2Button = menuScreen.level2Button;
 
         GameButton basePlayerStatusButton = menuScreen.playerStatusButton;
+
+        GameButton baseEscapeButton = menuScreen.escapeButton;
 
         baseLevel1Text.updateSizeFromFontData();
         baseLevel1Text.applyRelativePosition();
@@ -68,6 +75,9 @@ public class MenuScreen implements Screen {
         basePlayerStatusButton.applyRelativeSize();
         basePlayerStatusButton.alignTopRight();
 
+        baseEscapeButton.applyRelativeSize();
+        baseEscapeButton.alignTopLeft();
+
     }
 
     @Override
@@ -81,6 +91,8 @@ public class MenuScreen implements Screen {
                 screenManager.push(ScreenType.PLAY_LEVEL2);
             } else if(playerStatusButton.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PLAYER_STATUS);
+            } else if(escapeButton.isClicked(mouseManager)) {
+                handleEscape();
             }
         }
     }
@@ -93,6 +105,19 @@ public class MenuScreen implements Screen {
         level2Text.render(graphics2D);
         level2Button.render(graphics2D);
         playerStatusButton.render(graphics2D);
+        escapeButton.render(graphics2D);
+    }
+
+    private void handleEscape() {
+        int option = JOptionPane.showConfirmDialog(
+                null,
+                "Do you want to exit",
+                "WARNING",
+                JOptionPane.YES_NO_OPTION
+        );
+        if(option == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }
 
     @Override

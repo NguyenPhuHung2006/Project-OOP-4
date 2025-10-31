@@ -12,6 +12,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public final class TextUtils {
 
@@ -67,6 +68,15 @@ public final class TextUtils {
             ExceptionHandler.handle(e);
             return null;
         }
+    }
+
+    public static String convertMillisToTimeUnit(long millis) {
+
+        long hours = TimeUnit.MILLISECONDS.toHours(millis);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % 60;
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % 60;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
     public static Font derivedFont(float ratio, int windowHeight, Font originalFont) {

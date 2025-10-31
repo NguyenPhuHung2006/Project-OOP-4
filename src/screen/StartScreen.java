@@ -1,8 +1,6 @@
 package screen;
 
-import audio.SoundManager;
 import audio.SoundType;
-import input.MouseManager;
 import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;

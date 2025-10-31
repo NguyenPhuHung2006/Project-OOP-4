@@ -1,8 +1,11 @@
 package object;
 
 import config.LevelConfig;
+import object.UI.LifeCounter;
 import object.movable.Ball;
 import object.movable.Paddle;
+
+import java.awt.*;
 
 public class GameContext {
     private static GameContext gameContext;
@@ -14,9 +17,7 @@ public class GameContext {
 
     private Paddle paddle;
     private Ball ball;
-
-    private boolean gameWin;
-    private boolean gameOver;
+    private LifeCounter lifeCounter;
 
     private GameContext() {
     }
@@ -31,26 +32,33 @@ public class GameContext {
     public void loadFromJson(LevelConfig levelConfig) {
 
         refresh();
-        Paddle paddle = new Paddle(levelConfig.paddle);
-        gameContext.setPaddle(paddle);
 
-        Ball ball = new Ball(levelConfig.ball);
-        gameContext.setBall(ball);
-
-        gameOver = false;
-        gameWin = false;
+        paddle = new Paddle(levelConfig.paddle);
+        ball = new Ball(levelConfig.ball);
+        lifeCounter = new LifeCounter(levelConfig.lifeCounter);
     }
 
     public void updateContext() {
         paddle.update();
         ball.update();
+        lifeCounter.update();
+    }
+
+    public void renderContext(Graphics2D graphics2D) {
+        paddle.render(graphics2D);
+        ball.render(graphics2D);
+        lifeCounter.render(graphics2D);
+    }
+
+    public void resetObjectsBound() {
+        paddle.resetPaddleBound();
+        ball.resetBallBound(paddle);
     }
 
     private void refresh() {
         paddle = null;
         ball = null;
-        gameOver = false;
-        gameWin = false;
+        lifeCounter = null;
     }
 
     public void setWindowWidth(int windowWidth) {
@@ -63,20 +71,8 @@ public class GameContext {
         paddingY = windowHeight / 100;
     }
 
-    public void setPaddle(Paddle paddle) {
-        this.paddle = paddle;
-    }
-
-    public void setBall(Ball ball) {
-        this.ball = ball;
-    }
-
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
-    }
-
-    public void setGameWin(boolean gameWin) {
-        this.gameWin = gameWin;
+    public boolean isGameOver() {
+        return lifeCounter.isOutOfLives();
     }
 
     public int getWindowWidth() {
@@ -95,20 +91,16 @@ public class GameContext {
         return ball;
     }
 
+    public LifeCounter getLifeCounter() {
+        return lifeCounter;
+    }
+
     public int getPaddingX() {
         return paddingX;
     }
 
     public int getPaddingY() {
         return paddingY;
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public boolean isGameWin() {
-        return gameWin;
     }
 
 }

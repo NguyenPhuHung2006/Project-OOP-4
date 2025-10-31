@@ -13,11 +13,15 @@ public class GameSound {
     }
 
     public void play() {
-        if (sound != null) sound.play(volume);
+        if (sound != null) {
+            sound.play(volume);
+        }
     }
 
     public void stop() {
-        if (sound != null) sound.stop();
+        if (sound != null) {
+            sound.stop();
+        }
     }
 
     public void setVolume(float v) {

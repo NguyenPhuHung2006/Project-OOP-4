@@ -33,6 +33,7 @@ public class ScreenManager {
         screenRegistry.put(ScreenType.PAUSE, screenConfig.pauseScreen);
         screenRegistry.put(ScreenType.GAME_OVER, screenConfig.gameOverScreen);
         screenRegistry.put(ScreenType.GAME_WIN, screenConfig.gameWinScreen);
+        screenRegistry.put(ScreenType.PLAYER_STATUS, screenConfig.playerStatusScreen);
     }
 
     public void push(ScreenType screenType) {
@@ -50,6 +51,10 @@ public class ScreenManager {
 
         screens.push(newScreen);
         newScreen.onEnter();
+    }
+
+    public void push(Screen screen) {
+        screens.push(screen);
     }
 
     public void pop() {

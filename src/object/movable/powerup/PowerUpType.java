@@ -10,8 +10,12 @@ public enum PowerUpType {
     EXPAND_PADDLE {
         @Override
         public PowerUp create(PowerUp powerUp) {
-            return new ExpandPaddleWidthPowerUp(powerUp);
+            return new ExpandPaddlePowerUp(powerUp);
         }
+    },
+    SPEEDUP_PADDLE {
+        @Override
+        public PowerUp create(PowerUp powerUp) { return new SpeedUpPaddlePowerUp(powerUp); }
     };
 
     public abstract PowerUp create(PowerUp powerUp);

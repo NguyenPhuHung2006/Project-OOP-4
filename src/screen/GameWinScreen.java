@@ -1,5 +1,8 @@
 package screen;
 
+
+import config.PlayerStatusData;
+
 public class GameWinScreen extends GameEndScreen {
 
     public GameWinScreen(Screen screen) {
@@ -8,4 +11,8 @@ public class GameWinScreen extends GameEndScreen {
 
     }
 
+    @Override
+    protected void saveGameResultCount(PlayerStatusData playerStatusData) {
+        playerStatusData.numberOfWinGames++;
+    }
 }

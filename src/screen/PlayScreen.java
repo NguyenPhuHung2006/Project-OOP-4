@@ -1,11 +1,10 @@
 package screen;
 
-import audio.SoundManager;
+import audio.MusicType;
 import audio.SoundType;
 import config.LevelConfig;
 import exception.ExceptionHandler;
 import exception.ResourceLoadException;
-import input.MouseManager;
 import object.GameContext;
 import object.UI.Background;
 import object.UI.GameButton;
@@ -18,16 +17,23 @@ import java.awt.*;
 
 public class PlayScreen implements Screen {
 
-    private transient GameContext gameContext;
-    private transient BrickManager brickManager;
-    private transient PowerUpManager powerUpManager;
-    private transient ScreenType levelId;
+    private final transient GameContext gameContext;
+    private final transient BrickManager brickManager;
+    private final transient PowerUpManager powerUpManager;
+    private final transient ScreenType levelId;
 
-    private GameText scoreText;
-    private GameText numScoreText;
-    private GameButton pauseButton;
-    private Background background;
-    private String levelPath;
+    private final GameText scoreText;
+    private final GameText numScoreText;
+    private final GameButton pauseButton;
+    private final Background background;
+    private final String levelPath;
+
+    private long startTime;
+    private long pauseStartTime;
+    private long pauseTime;
+    private long endTime;
+    private boolean hasPaused;
+    private boolean exited;
 
     public PlayScreen(Screen screen, ScreenType screenType) {
 
@@ -44,9 +50,12 @@ public class PlayScreen implements Screen {
         numScoreText = new GameText(playScreen.numScoreText);
         pauseButton = new GameButton(playScreen.pauseButton);
         background = new Background(playScreen.background);
+
         levelPath = playScreen.levelPath;
 
         initObjects(levelPath);
+
+        startTime = System.currentTimeMillis();
 
     }
 
@@ -81,6 +90,7 @@ public class PlayScreen implements Screen {
             ExceptionHandler.handle(new ResourceLoadException(levelPath, null));
         }
 
+        assert levelConfig != null;
         gameContext.loadFromJson(levelConfig);
         brickManager.loadFromJson(levelConfig);
         powerUpManager.loadFromJson(levelConfig);
@@ -91,13 +101,19 @@ public class PlayScreen implements Screen {
     @Override
     public void update() {
 
-        powerUpManager.resumeTimers();
+        if (hasPaused) {
+            powerUpManager.resumeTimers();
+            long currentTime = System.currentTimeMillis();
+            pauseTime += currentTime - pauseStartTime;
+            hasPaused = false;
+        }
 
         boolean isGameOver = gameContext.isGameOver();
         boolean isGameWin = brickManager.isCleared();
 
-        if(isGameOver || isGameWin) {
-            if(isGameOver) {
+        if (isGameOver || isGameWin) {
+            endTime = System.currentTimeMillis();
+            if (isGameOver) {
                 screenManager.push(ScreenType.GAME_OVER);
             } else {
                 screenManager.push(ScreenType.GAME_WIN);
@@ -105,11 +121,13 @@ public class PlayScreen implements Screen {
             return;
         }
 
-        if(mouseManager.isLeftClicked()) {
+        if (mouseManager.isLeftClicked()) {
             soundManager.play(SoundType.CLICK_BUTTON);
-            if(pauseButton.isClicked(mouseManager)) {
+            if (pauseButton.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PAUSE);
                 powerUpManager.pauseTimers();
+                hasPaused = true;
+                pauseStartTime = System.currentTimeMillis();
                 return;
             }
         }
@@ -122,6 +140,12 @@ public class PlayScreen implements Screen {
         }
 
         powerUpManager.updateFallingPowerUps();
+
+        if (gameContext.getBall().isLost()) {
+            gameContext.getLifeCounter().updateLives(false);
+            gameContext.resetObjectsBound();
+        }
+
     }
 
     @Override
@@ -130,8 +154,7 @@ public class PlayScreen implements Screen {
         background.render(graphics2D);
 
         brickManager.renderBricks(graphics2D);
-        gameContext.getPaddle().render(graphics2D);
-        gameContext.getBall().render(graphics2D);
+        gameContext.renderContext(graphics2D);
 
         powerUpManager.renderPowerUps(graphics2D);
 
@@ -144,15 +167,34 @@ public class PlayScreen implements Screen {
 
     @Override
     public void onEnter() {
-
+        if (gameContext.isGameOver() || brickManager.isCleared()) {
+            return;
+        }
+        soundManager.playMusic(MusicType.PLAY_THEME, true);
     }
 
     @Override
     public void onExit() {
-
+        if (gameContext.isGameOver() || brickManager.isCleared() || exited) {
+            soundManager.stopMusic(MusicType.PLAY_THEME);
+        } else {
+            soundManager.pauseMusic(MusicType.PLAY_THEME);
+        }
     }
 
     public ScreenType getLevelId() {
         return levelId;
+    }
+
+    public long getPauseTime() {
+        return pauseTime;
+    }
+
+    public long getTotalTimePlayed() {
+        return endTime - startTime - pauseTime;
+    }
+
+    public void setExited(boolean exited) {
+        this.exited = exited;
     }
 }

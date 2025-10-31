@@ -48,6 +48,12 @@ public enum ScreenType {
         public Screen create(Screen screen) {
             return new GameWinScreen(screen);
         }
+    },
+    PLAYER_STATUS {
+        @Override
+        public Screen create(Screen screen) {
+            return new PlayerStatusScreen(screen);
+        }
     };
 
     public abstract Screen create(Screen screen);

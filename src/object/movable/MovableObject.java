@@ -96,9 +96,6 @@ public abstract class MovableObject extends TexturedObject {
 
     protected void handleWindowCollision() {
 
-        int windowWidth = gameContext.getWindowWidth();
-        int windowHeight = gameContext.getWindowHeight();
-
         if (x < 0 || x + width > windowWidth) {
             if (x < 0) {
                 x = 0;

@@ -15,6 +15,7 @@ public class PauseScreen implements Screen {
     private GameButton playAgainButton;
     private GameButton escapeButton;
     private Background background;
+    private boolean hasSavedGameProgress;
 
     public PauseScreen(Screen screen) {
 
@@ -31,7 +32,7 @@ public class PauseScreen implements Screen {
 
     @Override
     public void init(Screen screen) {
-        if(!(screen instanceof PauseScreen pauseScreen)) {
+        if (!(screen instanceof PauseScreen pauseScreen)) {
             return;
         }
 
@@ -56,45 +57,70 @@ public class PauseScreen implements Screen {
 
     @Override
     public void update() {
-        if(mouseManager.isLeftClicked()) {
+        if (mouseManager.isLeftClicked()) {
 
             soundManager.play(SoundType.CLICK_BUTTON);
-            if(resumeButton.isClicked(mouseManager)) {
+            if (resumeButton.isClicked(mouseManager)) {
                 screenManager.pop();
+                return;
             }
 
-            if(playAgainButton.isClicked(mouseManager)) {
-                int option = JOptionPane.showConfirmDialog(
-                        null,
-                        "Your game process will not be saved",
-                        "WARNING",
-                        JOptionPane.OK_CANCEL_OPTION
-                );
-                if(option == JOptionPane.OK_OPTION) {
-                    screenManager.pop();
-                    PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
-                    ScreenType previousLevelId = previousPlayScreen.getLevelId();
-                    screenManager.pop();
-                    screenManager.push(previousLevelId);
-                }
+            if (playAgainButton.isClicked(mouseManager)) {
+                handlePlayAgain();
             }
 
-            if(escapeButton.isClicked(mouseManager)) {
-                int option = JOptionPane.showConfirmDialog(
-                        null,
-                        "Do you want to save the game progress",
-                        "WARNING",
-                        JOptionPane.YES_NO_OPTION
-                );
-                if (option == JOptionPane.YES_OPTION) {
-
-                } else if(option == JOptionPane.NO_OPTION) {
-                    screenManager.pop();
-                    screenManager.pop();
-                }
+            if (escapeButton.isClicked(mouseManager)) {
+                handleEscape();
             }
 
         }
+    }
+
+    private void handlePlayAgain() {
+        int option = JOptionPane.showConfirmDialog(
+                null,
+                "Your game progress will not be saved.",
+                "WARNING",
+                JOptionPane.OK_CANCEL_OPTION
+        );
+        if (option == JOptionPane.OK_OPTION) {
+            playAgain();
+        }
+    }
+
+    private void handleEscape() {
+        int option = JOptionPane.showConfirmDialog(
+                null,
+                "Do you want to save the game progress?",
+                "WARNING",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (option == JOptionPane.YES_OPTION) {
+            saveGameProgress();
+        } else {
+            exitToMainMenu();
+        }
+    }
+
+    private void exitToMainMenu() {
+        screenManager.pop();
+        PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
+        previousPlayScreen.setExited(true);
+        screenManager.pop();
+    }
+
+    private void playAgain() {
+        screenManager.pop();
+        PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
+        previousPlayScreen.setExited(true);
+        ScreenType previousLevelId = previousPlayScreen.getLevelId();
+        screenManager.pop();
+        screenManager.push(previousLevelId);
+    }
+
+    private void saveGameProgress() {
+
     }
 
     @Override

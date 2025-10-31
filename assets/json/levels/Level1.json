@@ -44,7 +44,7 @@
     "slowMultiplier": 0.5
   },
 
-  "expandPaddleWidthPowerUp": {
+  "expandPaddlePowerUp": {
     "textureWidth": 25, "textureHeight": 6,
     "texturePath": "/textures/expand_paddle.png",
     "relativeSize": 0.1,
@@ -52,6 +52,23 @@
     "speed": 3,
     "durationMs": 5000,
     "widthMultiplier": 2
+  },
+
+  "speedUpPaddlePowerUp": {
+    "textureWidth": 22, "textureHeight": 7,
+    "texturePath": "/textures/speedup_paddle.png",
+    "relativeSize": 0.1,
+    "numberOfFrames": 1,
+    "speed": 3,
+    "durationMs": 5000,
+    "speedUpMultiplier": 2
+  },
+
+  "lifeCounter": {
+    "textureWidth": 11, "textureHeight": 10,
+    "relativeSize": 0.1,
+    "texturePath": "/textures/hearts.png",
+    "numberOfFrames": 7
   },
 
   "normalBrickTextureIndices": [0, 1, 2, 3, 4, 5],

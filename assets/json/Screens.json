@@ -45,6 +45,12 @@
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1
     },
+    "playerStatusButton": {
+      "textureX": 64, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
       "texturePath": "/textures/background_multi.png",
@@ -191,7 +197,7 @@
       "numberOfFrames": 1
     },
     "saveProgressButton": {
-      "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "textureX": 48, "textureY": 16, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1
@@ -202,5 +208,69 @@
       "numberOfFrames": 1
     },
     "levelPath": "assets/json/levels/Level1.json"
+  },
+  "playerStatusScreen": {
+    "brickDestroyedText": {
+      "content": "Brick destroyed: ",
+      "relativeSize": 0.05,
+      "relativeX": 0.04,
+      "relativeY": 0.2,
+      "colorData": {"r": 0, "g": 0, "b": 255, "a": 255},
+      "fontData": {"fontPath": "/fonts/PixelOperator.ttf", "style": "BOLD", "size": 24}
+    },
+    "numBrickDestroyedText": {
+      "relativeSize": 0.05,
+      "colorData": {"r": 255, "g": 255, "b": 0, "a": 255},
+      "fontData": {"fontPath": "/fonts/PixelOperator.ttf", "style": "BOLD", "size": 24}
+    },
+
+    "totalTimePlayedText": {
+      "content": "Total time played: ",
+      "relativeSize": 0.05,
+      "colorData": {"r": 0, "g": 0, "b": 255, "a": 255},
+      "fontData": {"fontPath": "/fonts/PixelOperator.ttf", "style": "BOLD", "size": 24}
+    },
+    "numTotalTimePlayedText": {
+      "relativeSize": 0.05,
+      "colorData": {"r": 255, "g": 255, "b": 0, "a": 255},
+      "fontData": {"fontPath": "/fonts/PixelOperator.ttf", "style": "BOLD", "size": 24}
+    },
+
+    "totalWinGameText": {
+      "content": "Total win games: ",
+      "relativeSize": 0.05,
+      "colorData": {"r": 0, "g": 255, "b": 0, "a": 255},
+      "fontData": {"fontPath": "/fonts/PixelOperator.ttf", "style": "BOLD", "size": 24}
+    },
+    "numTotalWinGameText": {
+      "relativeSize": 0.05,
+      "colorData": {"r": 255, "g": 255, "b": 0, "a": 255},
+      "fontData": {"fontPath": "/fonts/PixelOperator.ttf", "style": "BOLD", "size": 24}
+    },
+
+    "totalLostGameText": {
+      "content": "Total lost games: ",
+      "relativeSize": 0.05,
+      "colorData": {"r": 255, "g": 0, "b": 0, "a": 255},
+      "fontData": {"fontPath": "/fonts/PixelOperator.ttf", "style": "BOLD", "size": 24}
+    },
+    "numTotalLostGameText": {
+      "relativeSize": 0.05,
+      "colorData": {"r": 255, "g": 255, "b": 0, "a": 255},
+      "fontData": {"fontPath": "/fonts/PixelOperator.ttf", "style": "BOLD", "size": 24}
+    },
+
+    "returnButton": {
+      "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.1,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+
+    "background": {
+      "textureWidth": 1000, "textureHeight": 1000,
+      "texturePath": "/textures/background.png",
+      "numberOfFrames": 1
+    }
   }
 }

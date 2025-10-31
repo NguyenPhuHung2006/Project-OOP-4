@@ -1,5 +1,6 @@
 package config;
 
+import object.UI.LifeCounter;
 import object.brick.NormalBrick;
 import object.brick.PowerUpBrick;
 import object.brick.StrongBrick;
@@ -12,6 +13,7 @@ import object.movable.powerup.SpeedUpPaddlePowerUp;
 public class LevelConfig {
     public Paddle paddle;
     public Ball ball;
+    public LifeCounter lifeCounter;
 
     public int[][] brickLayout;
 

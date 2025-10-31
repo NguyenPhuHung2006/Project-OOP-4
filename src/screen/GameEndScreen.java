@@ -63,50 +63,66 @@ public abstract class GameEndScreen implements Screen {
 
     @Override
     public void update() {
+        if (!mouseManager.isLeftClicked()) return;
 
-        if (mouseManager.isLeftClicked()) {
-            soundManager.play(SoundType.CLICK_BUTTON);
+        soundManager.play(SoundType.CLICK_BUTTON);
 
-            if (escapeButton.isClicked(mouseManager)) {
-                if (hasSavedGameProgress) {
-                    goToMenu();
-                    return;
-                }
-                int option = JOptionPane.showConfirmDialog(
-                        null,
-                        "Your game process will not be saved",
-                        "WARNING",
-                        JOptionPane.OK_CANCEL_OPTION
-                );
-                if (option == JOptionPane.OK_OPTION) {
-                    goToMenu();
-                }
-            } else if (playAgainButton.isClicked(mouseManager)) {
-                if (hasSavedGameProgress) {
-                    playAgain();
-                    return;
-                }
-                int option = JOptionPane.showConfirmDialog(
-                        null,
-                        "Your game status will not be saved",
-                        "WARNING",
-                        JOptionPane.OK_CANCEL_OPTION
-                );
-                if (option == JOptionPane.OK_OPTION) {
-                    playAgain();
-                }
-            } else if (saveProgressButton.isClicked(mouseManager)) {
-                if (!hasSavedGameProgress) {
-                    saveGameStatus();
-                    hasSavedGameProgress = true;
-                }
-            }
+        if (escapeButton.isClicked(mouseManager)) {
+            handleEscape();
+        } else if (playAgainButton.isClicked(mouseManager)) {
+            handlePlayAgain();
+        } else if (saveProgressButton.isClicked(mouseManager)) {
+            handleSaveProgress();
+        }
+    }
+
+    private void handleEscape() {
+        if (hasSavedGameProgress) {
+            goToMenu();
+            return;
+        }
+
+        int option = JOptionPane.showConfirmDialog(
+                null,
+                "Your game progress will not be saved.",
+                "WARNING",
+                JOptionPane.OK_CANCEL_OPTION
+        );
+
+        if (option == JOptionPane.OK_OPTION) {
+            goToMenu();
+        }
+    }
+
+    private void handlePlayAgain() {
+        if (hasSavedGameProgress) {
+            playAgain();
+            return;
+        }
+
+        int option = JOptionPane.showConfirmDialog(
+                null,
+                "Your game status will not be saved.",
+                "WARNING",
+                JOptionPane.OK_CANCEL_OPTION
+        );
+
+        if (option == JOptionPane.OK_OPTION) {
+            playAgain();
+        }
+    }
+
+    private void handleSaveProgress() {
+        if (!hasSavedGameProgress) {
+            saveGameStatus();
+            hasSavedGameProgress = true;
         }
     }
 
     private void playAgain() {
         screenManager.pop();
         PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
+        previousPlayScreen.setExited(true);
         ScreenType previousLevelId = previousPlayScreen.getLevelId();
         screenManager.pop();
         screenManager.push(previousLevelId);

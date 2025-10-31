@@ -3,6 +3,7 @@ package object.movable;
 import audio.SoundType;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
+import object.GameContext;
 import object.GameObject;
 import object.TexturedObject;
 import object.brick.Brick;
@@ -16,6 +17,7 @@ public class Ball extends MovableObject {
 
     private boolean isMoving;
     private final float originalSpeed;
+    private boolean isBallLost;
 
     private Paddle paddle;
 
@@ -58,18 +60,25 @@ public class Ball extends MovableObject {
 
         initTextureBounds(gameObject);
 
-        TexturedObject texturedObject = (TexturedObject) gameObject;
+        Ball baseBall = (Ball) gameObject;
 
-        texturedObject.applyRelativeSize();
-        gameObject.alignAbove(paddle);
-        gameObject.centerHorizontallyTo(paddle);
-        gameObject.translateY(paddingY);
+        relativeSize = baseBall.getRelativeSize();
 
-        this.width = gameObject.getWidth();
-        this.height = gameObject.getHeight();
-        this.x = gameObject.getX();
-        this.y = gameObject.getY();
+        baseBall.resetBallBound(paddle);
 
+        this.width = baseBall.getWidth();
+        this.height = baseBall.getHeight();
+        this.x = baseBall.getX();
+        this.y = baseBall.getY();
+    }
+    
+    public void resetBallBound(Paddle paddle) {
+        isMoving = false;
+        stop();
+        applyRelativeSize();
+        alignAbove(paddle);
+        centerHorizontallyTo(paddle);
+        translateY(paddingY);
     }
 
     private void handleInitialMovement(Paddle paddle) {
@@ -174,19 +183,26 @@ public class Ball extends MovableObject {
     private void checkBallState() {
 
         if(y + height >= gameContext.getWindowHeight()) {
-            gameContext.setGameOver(true);
+            isBallLost = true;
         }
 
         if(isIntersect(paddle)) {
             y = paddle.getY() + paddle.getHeight() + 1;
             dy = Math.abs(dy);
         }
-
     }
 
     public void stop() {
         dx = 0;
         dy = 0;
+    }
+
+    public boolean isLost() {
+        if(isBallLost) {
+            isBallLost = false;
+            return true;
+        }
+        return false;
     }
 
     public float getOriginSpeed() {

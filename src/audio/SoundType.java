@@ -4,5 +4,7 @@ public enum SoundType {
     NORMAL_BRICK,
     STRONG_BRICK,
     POWERUP_BRICK,
-    CLICK_BUTTON
+    CLICK_BUTTON,
+    PLAYER_PADDLE,
+    WINDOW_WALL
 }

@@ -3,5 +3,7 @@
   "strongBrickSoundPath": "/sounds/strongBrick.wav",
   "powerUpBrickSoundPath": "/sounds/powerUpBrick.wav",
   "clickButtonSoundPath": "/sounds/clickButton.wav",
-  "playThemeMusicPath": "/sounds/background_theme.wav"
+  "playThemeMusicPath": "/sounds/background_theme.wav",
+  "paddleSoundPath": "/sounds/paddleSound.wav",
+  "wallSoundPath": "/sounds/wallSound.wav"
 }

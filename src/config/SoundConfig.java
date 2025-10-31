@@ -6,5 +6,7 @@ public class SoundConfig {
     public String powerUpBrickSoundPath;
     public String clickButtonSoundPath;
     public String playThemeMusicPath;
+    public String paddleSoundPath;
+    public String wallSoundPath;
 }
 

@@ -53,11 +53,13 @@ public class SoundManager {
         loadSound(SoundType.STRONG_BRICK, soundConfig.strongBrickSoundPath);
         loadSound(SoundType.POWERUP_BRICK, soundConfig.powerUpBrickSoundPath);
         loadSound(SoundType.CLICK_BUTTON, soundConfig.clickButtonSoundPath);
+        loadSound(SoundType.PLAYER_PADDLE, soundConfig.paddleSoundPath);
+        loadSound(SoundType.WINDOW_WALL, soundConfig.wallSoundPath);
 
         loadMusic(MusicType.PLAY_THEME, soundConfig.playThemeMusicPath);
 
         setSoundGlobalVolume(0.6f);
-        setMusicGlobalVolume(0.8f);
+        setMusicGlobalVolume(0.5f);
     }
 
 

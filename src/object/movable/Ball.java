@@ -1,5 +1,6 @@
 package object.movable;
 
+import audio.SoundType;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
 import object.GameObject;
@@ -104,6 +105,7 @@ public class Ball extends MovableObject {
         if (isIntersect(paddle)) {
             handleObjectCollisionX(paddle);
             PhysicsUtils.bounceOffPaddle(this, paddle);
+            soundManager.play(SoundType.PLAYER_PADDLE);
         }
         handleBricksCollisionX(bricks, tileWidth, tileHeight);
 
@@ -111,6 +113,7 @@ public class Ball extends MovableObject {
         if (isIntersect(paddle)) {
             handleObjectCollisionY(paddle);
             PhysicsUtils.bounceOffPaddle(this, paddle);
+            soundManager.play(SoundType.PLAYER_PADDLE);
         }
         handleBricksCollisionY(bricks, tileWidth, tileHeight);
     }

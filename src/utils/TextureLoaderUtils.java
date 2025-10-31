@@ -11,6 +11,9 @@ import java.awt.image.RasterFormatException;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * this class will help me load the texture
+ */
 public class TextureLoaderUtils {
 
     private TextureLoaderUtils() {

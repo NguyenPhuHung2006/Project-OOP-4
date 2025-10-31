@@ -6,6 +6,7 @@ import object.TexturedObject;
 
 /**
  * This class will load Background
+ * ỉijrtjrijtirt
  */
 public class Background extends TexturedObject {
 

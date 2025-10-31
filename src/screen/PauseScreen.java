@@ -107,7 +107,6 @@ public class PauseScreen implements Screen {
 
         if (option == JOptionPane.YES_OPTION) {
             saveGameProgressAndExit();
-            screenManager.pop();
         } else {
             exitToMainMenu();
         }
@@ -137,6 +136,9 @@ public class PauseScreen implements Screen {
         String savePath = previousPlayScreen.getLevelSavePath();
 
         JsonLoaderUtils.saveToJson(savePath, previousPlayScreen);
+
+        previousPlayScreen.setExited(true);
+        screenManager.pop();
 
     }
 

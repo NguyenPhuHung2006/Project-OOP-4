@@ -4,6 +4,10 @@ package object.UI;
 import object.GameObject;
 import object.TexturedObject;
 
+/**
+ * This class will load Background
+ * ỉijrtjrijtirt
+ */
 public class Background extends TexturedObject {
 
     public Background(Background background) {
@@ -13,7 +17,7 @@ public class Background extends TexturedObject {
 
     @Override
     public void update() {
-        
+
     }
 
     @Override

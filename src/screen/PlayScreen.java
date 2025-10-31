@@ -113,6 +113,7 @@ public class PlayScreen implements Screen {
 
         if (isGameOver || isGameWin) {
             endTime = System.currentTimeMillis();
+            powerUpManager.revertAllPowerUps();
             if (isGameOver) {
                 screenManager.push(ScreenType.GAME_OVER);
             } else {
@@ -143,6 +144,7 @@ public class PlayScreen implements Screen {
 
         if (gameContext.getBall().isLost()) {
             gameContext.getLifeCounter().updateLives(false);
+            powerUpManager.revertAllPowerUps();
             gameContext.resetObjectsBound();
         }
 

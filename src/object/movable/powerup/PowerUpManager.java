@@ -137,6 +137,24 @@ public class PowerUpManager {
         }
     }
 
+    public void revertAllPowerUps() {
+        synchronized (lock) {
+            for (ScheduledFuture<?> future : scheduledFutures.values()) {
+                future.cancel(false);
+            }
+            scheduledFutures.clear();
+
+            for (PowerUp powerUp : activePowerUps.values()) {
+                powerUp.revertEffect();
+            }
+
+            activePowerUps.clear();
+            startTimes.clear();
+            remainingTimes.clear();
+        }
+    }
+
+
     public void updateFallingPowerUps() {
         for (PowerUp fallingPowerUp : fallingPowerUps) {
             fallingPowerUp.update();

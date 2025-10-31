@@ -1,0 +1,52 @@
+{
+  "scoreText": {
+    "content": "Score: ",
+    "colorData": null,
+    "fontData": null,
+    "relativeSize": 0.0,
+    "relativeX": 0.0,
+    "relativeY": 0.0
+  },
+  "numScoreText": {
+    "content": "0",
+    "colorData": null,
+    "fontData": null,
+    "relativeSize": 0.0,
+    "relativeX": 0.0,
+    "relativeY": 0.0
+  },
+  "pauseButton": {
+    "texturePath": "/textures/buttons.png",
+    "textureX": 80,
+    "textureY": 0,
+    "textureWidth": 16,
+    "textureHeight": 16,
+    "indexFrame": 0,
+    "numberOfFrames": 1,
+    "isScaled": false,
+    "relativeSize": 0.0,
+    "relativeX": 0.0,
+    "relativeY": 0.0
+  },
+  "background": {
+    "texturePath": "/textures/background_level2.png",
+    "textureX": 0,
+    "textureY": 0,
+    "textureWidth": 1000,
+    "textureHeight": 1000,
+    "indexFrame": 0,
+    "numberOfFrames": 1,
+    "isScaled": false,
+    "relativeSize": 0.0,
+    "relativeX": 0.0,
+    "relativeY": 0.0
+  },
+  "levelInitPath": "assets/json/levels/Level2.json",
+  "levelSavePath": "assets/json/saveLevels/Level2.json",
+  "startTime": 1761926074326,
+  "pauseStartTime": 1761926075629,
+  "pauseTime": 0,
+  "endTime": 0,
+  "isPaused": true,
+  "exited": false
+}

@@ -18,8 +18,8 @@ public class PowerUpManager {
 
     private final Object lock = new Object();
 
-    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-    private final Map<PowerUpType, ScheduledFuture<?>> scheduledFutures = new EnumMap<>(PowerUpType.class);
+    private final transient ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private final transient Map<PowerUpType, ScheduledFuture<?>> scheduledFutures = new EnumMap<>(PowerUpType.class);
 
     private final Map<PowerUpType, Long> startTimes = new EnumMap<>(PowerUpType.class);
     private final Map<PowerUpType, Long> remainingTimes = new EnumMap<>(PowerUpType.class);

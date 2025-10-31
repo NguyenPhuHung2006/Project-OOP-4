@@ -4,6 +4,7 @@ import audio.SoundType;
 import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
+import utils.JsonLoaderUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,7 +62,7 @@ public class PauseScreen implements Screen {
 
             soundManager.play(SoundType.CLICK_BUTTON);
             if (resumeButton.isClicked(mouseManager)) {
-                screenManager.pop();
+                handleResume();
                 return;
             }
 
@@ -74,6 +75,14 @@ public class PauseScreen implements Screen {
             }
 
         }
+    }
+
+    private void handleResume() {
+
+        screenManager.pop();
+        PlayScreen playScreen = (PlayScreen) screenManager.top();
+        playScreen.setPaused(false);
+        playScreen.onEnter();
     }
 
     private void handlePlayAgain() {
@@ -97,7 +106,8 @@ public class PauseScreen implements Screen {
         );
 
         if (option == JOptionPane.YES_OPTION) {
-            saveGameProgress();
+            saveGameProgressAndExit();
+            screenManager.pop();
         } else {
             exitToMainMenu();
         }
@@ -119,7 +129,14 @@ public class PauseScreen implements Screen {
         screenManager.push(previousLevelId);
     }
 
-    private void saveGameProgress() {
+    private void saveGameProgressAndExit() {
+
+        screenManager.pop();
+
+        PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
+        String savePath = previousPlayScreen.getLevelSavePath();
+
+        JsonLoaderUtils.saveToJson(savePath, previousPlayScreen);
 
     }
 

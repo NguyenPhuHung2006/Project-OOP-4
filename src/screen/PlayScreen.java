@@ -17,22 +17,23 @@ import java.awt.*;
 
 public class PlayScreen implements Screen {
 
-    private final transient GameContext gameContext;
-    private final transient BrickManager brickManager;
-    private final transient PowerUpManager powerUpManager;
-    private final transient ScreenType levelId;
+    private final GameContext gameContext;
+    private final BrickManager brickManager;
+    private final PowerUpManager powerUpManager;
+    private final ScreenType levelId;
 
     private final GameText scoreText;
     private final GameText numScoreText;
     private final GameButton pauseButton;
     private final Background background;
-    private final String levelPath;
+    private final String levelInitPath;
+    private final String levelSavePath;
 
     private long startTime;
     private long pauseStartTime;
     private long pauseTime;
     private long endTime;
-    private boolean hasPaused;
+    private boolean isPaused;
     private boolean exited;
 
     public PlayScreen(Screen screen, ScreenType screenType) {
@@ -51,9 +52,10 @@ public class PlayScreen implements Screen {
         pauseButton = new GameButton(playScreen.pauseButton);
         background = new Background(playScreen.background);
 
-        levelPath = playScreen.levelPath;
+        levelInitPath = playScreen.levelInitPath;
+        levelSavePath = playScreen.levelSavePath;
 
-        initObjects(levelPath);
+        initObjects(levelInitPath);
 
         startTime = System.currentTimeMillis();
 
@@ -101,11 +103,11 @@ public class PlayScreen implements Screen {
     @Override
     public void update() {
 
-        if (hasPaused) {
+        if (isPaused) {
             powerUpManager.resumeTimers();
             long currentTime = System.currentTimeMillis();
             pauseTime += currentTime - pauseStartTime;
-            hasPaused = false;
+            isPaused = false;
         }
 
         boolean isGameOver = gameContext.isGameOver();
@@ -127,7 +129,7 @@ public class PlayScreen implements Screen {
             if (pauseButton.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PAUSE);
                 powerUpManager.pauseTimers();
-                hasPaused = true;
+                isPaused = true;
                 pauseStartTime = System.currentTimeMillis();
                 return;
             }
@@ -169,7 +171,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void onEnter() {
-        if (gameContext.isGameOver() || brickManager.isCleared()) {
+        if (gameContext.isGameOver() || brickManager.isCleared() || isPaused) {
             return;
         }
         soundManager.playMusic(MusicType.PLAY_THEME, true);
@@ -199,4 +201,13 @@ public class PlayScreen implements Screen {
     public void setExited(boolean exited) {
         this.exited = exited;
     }
+
+    public String getLevelSavePath() {
+        return levelSavePath;
+    }
+
+    public void setPaused(boolean isPaused) {
+        this.isPaused = isPaused;
+    }
+
 }

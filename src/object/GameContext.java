@@ -66,6 +66,8 @@ public class GameContext {
         ball.deserializeFromJson();
         lifeCounter.deserializeFromJson();
 
+        ball.setPaddle(paddle);
+
     }
 
     public void resetObjectsBound() {

@@ -140,6 +140,7 @@ public class PauseScreen implements Screen {
 
         GameContext.getInstance().serializeGameContext();
         PowerUpManager.getInstance().serializePowerUps();
+        BrickManager.getInstance().serializeBricks();
         previousPlayScreen.getScoreText().serializeToJson();
         previousPlayScreen.getNumScoreText().serializeToJson();
         previousPlayScreen.getPauseButton().serializeToJson();

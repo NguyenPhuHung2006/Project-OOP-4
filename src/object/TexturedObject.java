@@ -64,10 +64,6 @@ public abstract class TexturedObject extends GameObject {
     @Override
     public void deserializeFromJson() {
 
-        if(this instanceof LifeCounter) {
-            int i = 1;
-        }
-
         x = relativeX * windowWidth;
         y = relativeY * windowHeight;
 

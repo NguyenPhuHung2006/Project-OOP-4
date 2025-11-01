@@ -124,6 +124,17 @@ public class BrickManager {
         }
     }
 
+    public void serializeBricks() {
+
+        for (int y = 0; y < brickCountY; y++) {
+            for (int x = 0; x < brickCountX; x++) {
+                if (bricks[y][x] != null) {
+                    bricks[y][x].serializeToJson();
+                }
+            }
+        }
+    }
+
     public void deserializeBricks(BrickManager brickManager) {
 
         bricks = brickManager.getBricks();

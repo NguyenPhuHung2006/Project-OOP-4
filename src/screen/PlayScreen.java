@@ -13,6 +13,7 @@ import object.brick.BrickManager;
 import object.movable.powerup.PowerUpManager;
 import utils.JsonLoaderUtils;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class PlayScreen implements Screen {
@@ -22,10 +23,10 @@ public class PlayScreen implements Screen {
     private final PowerUpManager powerUpManager;
     private final ScreenType levelId;
 
-    private final GameText scoreText;
-    private final GameText numScoreText;
-    private final GameButton pauseButton;
-    private final Background background;
+    private GameText scoreText;
+    private GameText numScoreText;
+    private GameButton pauseButton;
+    private Background background;
     private final String levelInitPath;
     private final String levelSavePath;
 
@@ -38,22 +39,30 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(Screen screen, ScreenType screenType) {
 
+        PlayScreen playScreen = (PlayScreen) screen;
+
         gameContext = GameContext.getInstance();
         brickManager = BrickManager.getInstance();
         powerUpManager = PowerUpManager.getInstance();
-        this.levelId = screenType;
+        levelId = screenType;
+        levelInitPath = playScreen.levelInitPath;
+        levelSavePath = playScreen.levelSavePath;
+
+        boolean hadSavedProgress = JsonLoaderUtils.isJsonDataAvailable(levelSavePath);
+
+        if (hadSavedProgress) {
+            boolean canLoadProgress = handleSavedProgress();
+            if(exited || canLoadProgress) {
+                return;
+            }
+        }
 
         init(screen);
-
-        PlayScreen playScreen = (PlayScreen) screen;
 
         scoreText = new GameText(playScreen.scoreText);
         numScoreText = new GameText(playScreen.numScoreText);
         pauseButton = new GameButton(playScreen.pauseButton);
         background = new Background(playScreen.background);
-
-        levelInitPath = playScreen.levelInitPath;
-        levelSavePath = playScreen.levelSavePath;
 
         initObjects(levelInitPath);
 
@@ -100,6 +109,44 @@ public class PlayScreen implements Screen {
         numScoreText.setContent(String.valueOf(0));
     }
 
+    private boolean handleSavedProgress() {
+        int option = JOptionPane.showConfirmDialog(
+                null,
+                "Do you want to continue playing the saved progress",
+                "WARNING",
+                JOptionPane.YES_NO_OPTION
+        );
+        if(option == JOptionPane.YES_OPTION) {
+            loadSavedProgress();
+            return true;
+        } else if(option == JOptionPane.CLOSED_OPTION) {
+            exited = true;
+            screenManager.pop();
+        }
+        return false;
+    }
+
+    private void loadSavedProgress() {
+
+        PlayScreen savedPlayScreen = JsonLoaderUtils.loadFromJson(levelSavePath, PlayScreen.class);
+
+        assert savedPlayScreen != null;
+
+        gameContext.deserializeGameContext(savedPlayScreen.gameContext);
+        brickManager.deserializeBricks(savedPlayScreen.brickManager);
+        powerUpManager.deserializePowerUps(savedPlayScreen.powerUpManager);
+
+        scoreText = savedPlayScreen.scoreText;
+        numScoreText = savedPlayScreen.numScoreText;
+        pauseButton = savedPlayScreen.pauseButton;
+        background = savedPlayScreen.background;
+
+        scoreText.deserializeFromJson();
+        numScoreText.deserializeFromJson();
+        pauseButton.deserializeFromJson();
+        background.deserializeFromJson();
+    }
+
     @Override
     public void update() {
 
@@ -127,10 +174,10 @@ public class PlayScreen implements Screen {
         if (mouseManager.isLeftClicked()) {
             soundManager.play(SoundType.CLICK_BUTTON);
             if (pauseButton.isClicked(mouseManager)) {
-                screenManager.push(ScreenType.PAUSE);
                 powerUpManager.pauseTimers();
                 isPaused = true;
                 pauseStartTime = System.currentTimeMillis();
+                screenManager.push(ScreenType.PAUSE);
                 return;
             }
         }
@@ -171,17 +218,24 @@ public class PlayScreen implements Screen {
 
     @Override
     public void onEnter() {
-        if (gameContext.isGameOver() || brickManager.isCleared() || isPaused) {
+
+        if (gameContext.isGameOver() || brickManager.isCleared()) {
             return;
         }
-        soundManager.playMusic(MusicType.PLAY_THEME, true);
+
+        if (isPaused) {
+            soundManager.resumeMusic(MusicType.PLAY_THEME);
+        } else {
+            soundManager.playMusic(MusicType.PLAY_THEME, true);
+        }
     }
 
     @Override
     public void onExit() {
-        if (gameContext.isGameOver() || brickManager.isCleared() || exited) {
+
+        if (exited || gameContext.isGameOver() || brickManager.isCleared()) {
             soundManager.stopMusic(MusicType.PLAY_THEME);
-        } else {
+        } else if (isPaused) {
             soundManager.pauseMusic(MusicType.PLAY_THEME);
         }
     }
@@ -206,8 +260,20 @@ public class PlayScreen implements Screen {
         return levelSavePath;
     }
 
-    public void setPaused(boolean isPaused) {
-        this.isPaused = isPaused;
+    public GameText getScoreText() {
+        return scoreText;
+    }
+
+    public GameText getNumScoreText() {
+        return numScoreText;
+    }
+
+    public GameButton getPauseButton() {
+        return pauseButton;
+    }
+
+    public Background getBackground() {
+        return background;
     }
 
 }

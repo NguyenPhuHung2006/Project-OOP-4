@@ -50,6 +50,24 @@ public class GameContext {
         lifeCounter.render(graphics2D);
     }
 
+    public void serializeGameContext() {
+        paddle.serializeToJson();
+        ball.serializeToJson();
+        lifeCounter.serializeToJson();
+    }
+
+    public void deserializeGameContext(GameContext gameContext) {
+
+        paddle = gameContext.getPaddle();
+        ball = gameContext.getBall();
+        lifeCounter = gameContext.getLifeCounter();
+
+        paddle.deserializeFromJson();
+        ball.deserializeFromJson();
+        lifeCounter.deserializeFromJson();
+
+    }
+
     public void resetObjectsBound() {
         paddle.resetPaddleBound();
         ball.resetBallBound(paddle);
@@ -83,8 +101,20 @@ public class GameContext {
         return windowHeight;
     }
 
+    public void setPaddle(Paddle paddle) {
+        this.paddle = paddle;
+    }
+
     public Paddle getPaddle() {
         return paddle;
+    }
+
+    public void setBall(Ball ball) {
+        this.ball = ball;
+    }
+
+    public void setLifeCounter(LifeCounter lifeCounter) {
+        this.lifeCounter = lifeCounter;
     }
 
     public Ball getBall() {

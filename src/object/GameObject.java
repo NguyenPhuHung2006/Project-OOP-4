@@ -3,9 +3,7 @@ package object;
 import audio.SoundManager;
 import input.KeyboardManager;
 import object.brick.BrickManager;
-import object.movable.powerup.PowerUp;
 import object.movable.powerup.PowerUpManager;
-import object.movable.powerup.PowerUpType;
 
 import java.awt.*;
 
@@ -15,25 +13,42 @@ import java.awt.*;
 
 public abstract class GameObject implements Cloneable {
 
-    protected transient float x;
-    protected transient float y;
-    protected transient float width;
-    protected transient float height;
-
-    protected static GameContext gameContext = GameContext.getInstance();
-    protected static final int windowWidth = gameContext.getWindowWidth();
-    protected static final int windowHeight = gameContext.getWindowHeight();
-    protected static final int paddingX = gameContext.getPaddingX();
-    protected static final int paddingY = gameContext.getPaddingY();
+    protected float x;
+    protected float y;
+    protected float width;
+    protected float height;
 
     protected float relativeSize;
     protected float relativeX;
     protected float relativeY;
 
-    protected transient KeyboardManager keyboardManager = KeyboardManager.getInstance();
-    protected transient BrickManager brickManager = BrickManager.getInstance();
-    protected transient SoundManager soundManager = SoundManager.getInstance();
-    protected transient PowerUpManager powerUpManager = PowerUpManager.getInstance();
+    protected static GameContext gameContext;
+    protected static int windowWidth;
+    protected static int windowHeight;
+    protected static int paddingX;
+    protected static int paddingY;
+
+    protected static KeyboardManager keyboardManager;
+    protected static BrickManager brickManager;
+    protected static SoundManager soundManager;
+    protected static PowerUpManager powerUpManager;
+
+    static {
+        updateStatics();
+    }
+
+    public static void updateStatics() {
+        gameContext = GameContext.getInstance();
+        windowWidth = gameContext.getWindowWidth();
+        windowHeight = gameContext.getWindowHeight();
+        paddingX = gameContext.getPaddingX();
+        paddingY = gameContext.getPaddingY();
+
+        keyboardManager = KeyboardManager.getInstance();
+        brickManager = BrickManager.getInstance();
+        soundManager = SoundManager.getInstance();
+        powerUpManager = PowerUpManager.getInstance();
+    }
 
     public abstract void update();
 
@@ -61,6 +76,9 @@ public abstract class GameObject implements Cloneable {
                 y1 < y2 + h2 &&
                 y1 + h1 > y2;
     }
+
+    public abstract void serializeToJson();
+    public abstract void deserializeFromJson();
 
     public void alignLeftOf(GameObject target) {
         this.x = target.x - this.width - paddingX;

@@ -1,5 +1,4 @@
 import config.GameConfig;
-import config.LevelConfig;
 import object.GameContext;
 import object.movable.powerup.*;
 import org.junit.jupiter.api.*;
@@ -17,7 +16,7 @@ public class PowerUpManagerTest {
     @BeforeEach
     void setup() {
 
-        GameConfig gameConfig = JsonLoaderUtils.loadFromJson("assets/json/GameConfig.json", GameConfig.class);
+        GameConfig gameConfig = JsonLoaderUtils.initFromJson("assets/json/GameConfig.json", GameConfig.class);
 
         GameContext gameContext = GameContext.getInstance();
         assertNotNull(gameConfig);
@@ -25,7 +24,7 @@ public class PowerUpManagerTest {
         gameContext.setWindowHeight(gameConfig.windowHeight);
 
         powerUpManager = PowerUpManager.getInstance();
-        testPowerUp = JsonLoaderUtils.loadFromJson("assets/json/junit_json/PowerUpManagerTest.json", TestPowerUp.class);
+        testPowerUp = JsonLoaderUtils.initFromJson("assets/json/junit_json/PowerUpManagerTest.json", TestPowerUp.class);
 
         assertNotNull(testPowerUp);
         testPowerUp.setWidth(1);

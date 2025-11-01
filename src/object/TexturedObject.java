@@ -3,6 +3,7 @@ package object;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
 import object.UI.LifeCounter;
+import object.movable.Paddle;
 import utils.RendererUtils;
 import utils.TextureLoaderUtils;
 
@@ -51,6 +52,26 @@ public abstract class TexturedObject extends GameObject {
             ExceptionHandler.handle(new InvalidGameStateException("The index frame " + indexFrame + " is not valid", null));
         }
         currentTexture = frames.get(indexFrame);
+    }
+
+    @Override
+    public void serializeToJson() {
+
+        relativeX = x / windowWidth;
+        relativeY = y / windowHeight;
+    }
+
+    @Override
+    public void deserializeFromJson() {
+
+        if(this instanceof LifeCounter) {
+            int i = 1;
+        }
+
+        x = relativeX * windowWidth;
+        y = relativeY * windowHeight;
+
+        loadFrames();
     }
 
     protected void initTextureBounds(GameObject gameObject) {

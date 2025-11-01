@@ -12,11 +12,6 @@ public class ExceptionHandler {
         } else {
             logger.error("Unexpected exception: {}", e.getMessage(), e);
         }
-        stopGame();
-    }
-
-    private static void stopGame() {
-        System.exit(0);
     }
 }
 

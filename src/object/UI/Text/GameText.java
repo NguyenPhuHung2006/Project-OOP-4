@@ -26,6 +26,9 @@ public class GameText extends GameObject {
 
         this.font = gameText.font;
         this.color = TextUtils.toColor(gameText.getColorData());
+
+        colorData = gameText.colorData;
+        fontData = gameText.fontData;
     }
 
     @Override
@@ -48,6 +51,22 @@ public class GameText extends GameObject {
         y = gameObject.getY();
         width = gameObject.getWidth();
         height = gameObject.getHeight();
+    }
+
+    @Override
+    public void serializeToJson() {
+        relativeX = x / windowWidth;
+        relativeY = y / windowHeight;
+    }
+
+    @Override
+    public void deserializeFromJson() {
+        x = relativeX * windowWidth;
+        y = relativeY * windowHeight;
+
+        font = TextUtils.toFont(fontData);
+        color = TextUtils.toColor(colorData);
+
     }
 
     public void updateFontAndBounds(float ratio) {

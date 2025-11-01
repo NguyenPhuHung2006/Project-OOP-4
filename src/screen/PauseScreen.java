@@ -1,9 +1,12 @@
 package screen;
 
 import audio.SoundType;
+import object.GameContext;
 import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
+import object.brick.BrickManager;
+import object.movable.powerup.PowerUpManager;
 import utils.JsonLoaderUtils;
 
 import javax.swing.*;
@@ -63,7 +66,6 @@ public class PauseScreen implements Screen {
             soundManager.play(SoundType.CLICK_BUTTON);
             if (resumeButton.isClicked(mouseManager)) {
                 handleResume();
-                return;
             }
 
             if (playAgainButton.isClicked(mouseManager)) {
@@ -80,9 +82,7 @@ public class PauseScreen implements Screen {
     private void handleResume() {
 
         screenManager.pop();
-        PlayScreen playScreen = (PlayScreen) screenManager.top();
-        playScreen.setPaused(false);
-        playScreen.onEnter();
+
     }
 
     private void handlePlayAgain() {
@@ -107,7 +107,7 @@ public class PauseScreen implements Screen {
 
         if (option == JOptionPane.YES_OPTION) {
             saveGameProgressAndExit();
-        } else {
+        } else if (option == JOptionPane.NO_OPTION) {
             exitToMainMenu();
         }
     }
@@ -120,10 +120,13 @@ public class PauseScreen implements Screen {
     }
 
     private void playAgain() {
+
         screenManager.pop();
+
         PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
         previousPlayScreen.setExited(true);
         ScreenType previousLevelId = previousPlayScreen.getLevelId();
+
         screenManager.pop();
         screenManager.push(previousLevelId);
     }
@@ -134,6 +137,13 @@ public class PauseScreen implements Screen {
 
         PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
         String savePath = previousPlayScreen.getLevelSavePath();
+
+        GameContext.getInstance().serializeGameContext();
+        PowerUpManager.getInstance().serializePowerUps();
+        previousPlayScreen.getScoreText().serializeToJson();
+        previousPlayScreen.getNumScoreText().serializeToJson();
+        previousPlayScreen.getPauseButton().serializeToJson();
+        previousPlayScreen.getBackground().serializeToJson();
 
         JsonLoaderUtils.saveToJson(savePath, previousPlayScreen);
 

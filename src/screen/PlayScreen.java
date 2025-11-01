@@ -57,6 +57,8 @@ public class PlayScreen implements Screen {
             }
         }
 
+        JsonLoaderUtils.clearJsonFile(levelSavePath);
+
         init(screen);
 
         scoreText = new GameText(playScreen.scoreText);

@@ -2,8 +2,6 @@ package object;
 
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
-import object.UI.LifeCounter;
-import object.movable.Paddle;
 import utils.RendererUtils;
 import utils.TextureLoaderUtils;
 
@@ -42,6 +40,7 @@ public abstract class TexturedObject extends GameObject {
     }
 
     private void loadFrames() {
+
         frames = new ArrayList<>();
 
         for (int i = 0; i < numberOfFrames; i++) {
@@ -59,6 +58,7 @@ public abstract class TexturedObject extends GameObject {
 
         relativeX = x / windowWidth;
         relativeY = y / windowHeight;
+        relativeSize = width / windowWidth;
     }
 
     @Override
@@ -66,6 +66,7 @@ public abstract class TexturedObject extends GameObject {
 
         x = relativeX * windowWidth;
         y = relativeY * windowHeight;
+        applyRelativeSize();
 
         loadFrames();
     }

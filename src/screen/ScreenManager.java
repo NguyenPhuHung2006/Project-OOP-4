@@ -30,6 +30,7 @@ public class ScreenManager {
         screenRegistry.put(ScreenType.MENU, screenConfig.menuScreen);
         screenRegistry.put(ScreenType.PLAY_LEVEL1, screenConfig.playLevel1Screen);
         screenRegistry.put(ScreenType.PLAY_LEVEL2, screenConfig.playLevel2Screen);
+        screenRegistry.put(ScreenType.PLAY_LEVEL3, screenConfig.playLevel3Screen);
         screenRegistry.put(ScreenType.PAUSE, screenConfig.pauseScreen);
         screenRegistry.put(ScreenType.GAME_OVER, screenConfig.gameOverScreen);
         screenRegistry.put(ScreenType.GAME_WIN, screenConfig.gameWinScreen);

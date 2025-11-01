@@ -45,6 +45,18 @@
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1
     },
+    "level3Text": {
+      "content": "LEVEL 3   ",
+      "relativeSize": 0.05,
+      "colorData": {"r":255,"g":0,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
+    "level3Button": {
+      "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
     "playerStatusButton": {
       "textureX": 64, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
@@ -118,6 +130,34 @@
     },
     "levelInitPath": "assets/json/levels/Level2.json",
     "levelSavePath": "assets/json/saveLevels/Level2.json"
+  },
+
+  "playLevel3Screen": {
+    "scoreText": {
+      "content": "Score: ",
+      "relativeSize": 0.05,
+      "colorData": {"r":255,"g":255,"b":255,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
+    "numScoreText": {
+      "content": "0",
+      "relativeSize": 0.05,
+      "colorData": {"r":255,"g":255,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
+    "pauseButton": {
+      "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+    "background": {
+      "textureWidth": 1000, "textureHeight": 1000,
+      "texturePath": "/textures/background_level1.png",
+      "numberOfFrames": 1
+    },
+    "levelInitPath": "assets/json/levels/Level3.json",
+    "levelSavePath": "assets/json/saveLevels/Level3.json"
   },
 
   "pauseScreen": {

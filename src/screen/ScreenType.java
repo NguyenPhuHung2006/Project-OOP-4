@@ -25,6 +25,12 @@ public enum ScreenType {
             return new PlayScreen(screen, PLAY_LEVEL2);
         }
     },
+    PLAY_LEVEL3 {
+        @Override
+        public Screen create(Screen screen) {
+            return new PlayScreen(screen, PLAY_LEVEL3);
+        }
+    },
     PAUSE {
         @Override
         public Screen create(Screen screen) {

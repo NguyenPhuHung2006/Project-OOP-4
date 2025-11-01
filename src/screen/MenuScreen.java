@@ -26,7 +26,7 @@ public class MenuScreen implements Screen {
     Background background;
 
     public MenuScreen(Screen screen) {
-        
+
         init(screen);
 
         MenuScreen menuScreen = (MenuScreen) screen;
@@ -52,7 +52,7 @@ public class MenuScreen implements Screen {
         if (!(screen instanceof MenuScreen menuScreen)) {
             return;
         }
-        
+
         GameText baseLevel1Text = menuScreen.level1Text;
         GameButton baseLevel1Button = menuScreen.level1Button;
 
@@ -100,17 +100,21 @@ public class MenuScreen implements Screen {
     @Override
     public void update() {
 
-        if(mouseManager.isLeftClicked()) {
+        if (mouseManager.isLeftClicked()) {
             soundManager.play(SoundType.CLICK_BUTTON);
-            if(level1Button.isClicked(mouseManager)) {
+            if (level1Button.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PLAY_LEVEL1);
-            } else if(level2Button.isClicked(mouseManager)) {
+
+            } else if (level2Button.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PLAY_LEVEL2);
-            } else if(level3Button.isClicked(mouseManager)) {
+
+            } else if (level3Button.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PLAY_LEVEL3);
-            } else if(playerStatusButton.isClicked(mouseManager)) {
+
+            } else if (playerStatusButton.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PLAYER_STATUS);
-            } else if(escapeButton.isClicked(mouseManager)) {
+
+            } else if (escapeButton.isClicked(mouseManager)) {
                 handleEscape();
             }
         }
@@ -141,7 +145,7 @@ public class MenuScreen implements Screen {
                 "WARNING",
                 JOptionPane.YES_NO_OPTION
         );
-        if(option == JOptionPane.YES_OPTION) {
+        if (option == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
     }

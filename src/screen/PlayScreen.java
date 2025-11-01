@@ -123,7 +123,6 @@ public class PlayScreen implements Screen {
             return true;
         } else if(option == JOptionPane.CLOSED_OPTION) {
             exited = true;
-            screenManager.pop();
         }
         return false;
     }
@@ -252,6 +251,10 @@ public class PlayScreen implements Screen {
 
     public long getTotalTimePlayed() {
         return endTime - startTime - pauseTime;
+    }
+
+    public boolean isExited() {
+        return exited;
     }
 
     public void setExited(boolean exited) {

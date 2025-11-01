@@ -50,6 +50,12 @@ public class ScreenManager {
 
         Screen newScreen = screenType.create(baseScreen);
 
+        if(newScreen instanceof PlayScreen playScreen) {
+            if(playScreen.isExited()) {
+                return;
+            }
+        }
+
         screens.push(newScreen);
         newScreen.onEnter();
     }

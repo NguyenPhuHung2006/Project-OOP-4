@@ -50,8 +50,8 @@ public class ScreenManager {
 
         Screen newScreen = screenType.create(baseScreen);
 
-        if(newScreen instanceof PlayScreen playScreen) {
-            if(playScreen.isExited()) {
+        if (newScreen instanceof PlayScreen playScreen) {
+            if (playScreen.isExited()) {
                 return;
             }
         }
@@ -74,7 +74,7 @@ public class ScreenManager {
     }
 
     public Screen top() {
-        if(screens.isEmpty()) {
+        if (screens.isEmpty()) {
             return null;
         }
         return screens.peek();

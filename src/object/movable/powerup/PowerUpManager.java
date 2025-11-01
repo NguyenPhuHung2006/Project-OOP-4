@@ -111,7 +111,7 @@ public class PowerUpManager {
             }
             paused = false;
 
-            reapplyScheduledPowerUps();
+            resumeActivePowerUps();
         }
     }
 
@@ -119,6 +119,8 @@ public class PowerUpManager {
         long now = System.currentTimeMillis();
         for (var entry : activePowerUps.entrySet()) {
             PowerUpType type = entry.getKey();
+            PowerUp powerUp = entry.getValue();
+
             ScheduledFuture<?> future = scheduledFutures.remove(type);
             if (future != null) {
                 future.cancel(false);
@@ -131,15 +133,17 @@ public class PowerUpManager {
                 long remaining = Math.max(duration - elapsed, 0);
                 remainingTimes.put(type, remaining);
             }
+            powerUp.revertEffect();
         }
     }
 
-    private void reapplyScheduledPowerUps() {
+    private void resumeActivePowerUps() {
         for (var entry : activePowerUps.entrySet()) {
             PowerUpType type = entry.getKey();
             PowerUp powerUp = entry.getValue();
             Long remaining = remainingTimes.get(type);
             if (remaining != null && remaining > 0) {
+                powerUp.applyEffect();
                 startTimes.put(type, System.currentTimeMillis());
                 ScheduledFuture<?> future = scheduleRevert(powerUp, type, remaining);
                 scheduledFutures.put(type, future);
@@ -165,7 +169,6 @@ public class PowerUpManager {
     }
 
     public void serializePowerUps() {
-        saveScheduledPowerUps();
         for (PowerUp fallingPowerUp : fallingPowerUps) {
             fallingPowerUp.serializeToJson();
         }

@@ -27,8 +27,8 @@ public class PlayScreen implements Screen {
     private GameText numScoreText;
     private GameButton pauseButton;
     private Background background;
-    private final String levelInitPath;
-    private final String levelSavePath;
+    private String levelInitPath;
+    private String levelSavePath;
 
     private long startTime;
     private long pauseStartTime;
@@ -141,6 +141,11 @@ public class PlayScreen implements Screen {
         numScoreText = savedPlayScreen.numScoreText;
         pauseButton = savedPlayScreen.pauseButton;
         background = savedPlayScreen.background;
+
+        levelInitPath = savedPlayScreen.levelInitPath;
+        levelSavePath = savedPlayScreen.levelSavePath;
+        isPaused = true;
+        exited = false;
 
         scoreText.deserializeFromJson();
         numScoreText.deserializeFromJson();

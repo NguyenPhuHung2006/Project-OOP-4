@@ -68,6 +68,9 @@ public class GameContext {
 
         ball.setPaddle(paddle);
 
+        paddle.setSpeed(paddle.getOriginalSpeed());
+        ball.setSpeed(ball.getOriginSpeed());
+        paddle.setWidth(paddle.getOriginalWidth());
     }
 
     public void resetObjectsBound() {

@@ -125,14 +125,4 @@ public abstract class GameEndScreen implements Screen {
     }
 
     protected abstract void saveGameResultCount(PlayerStatusData playerStatusData);
-
-    @Override
-    public void onEnter() {
-
-    }
-
-    @Override
-    public void onExit() {
-
-    }
 }

@@ -1,6 +1,7 @@
 package screen;
 
 
+import audio.SoundType;
 import config.PlayerStatusData;
 
 public class GameWinScreen extends GameEndScreen {
@@ -14,5 +15,14 @@ public class GameWinScreen extends GameEndScreen {
     @Override
     protected void saveGameResultCount(PlayerStatusData playerStatusData) {
         playerStatusData.numberOfWinGames++;
+    }
+
+    @Override
+    public void onEnter() {
+        soundManager.play(SoundType.WIN_GAME);
+    }
+
+    @Override
+    public void onExit() {
     }
 }

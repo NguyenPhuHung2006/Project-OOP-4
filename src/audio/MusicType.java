@@ -1,5 +1,6 @@
 package audio;
 
 public enum MusicType {
-    PLAY_THEME
+    PLAY_THEME,
+    MENU_THEME
 }

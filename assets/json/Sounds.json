@@ -3,7 +3,11 @@
   "strongBrickSoundPath": "/sounds/strongBrick.wav",
   "powerUpBrickSoundPath": "/sounds/powerUpBrick.wav",
   "clickButtonSoundPath": "/sounds/clickButton.wav",
-  "playThemeMusicPath": "/sounds/background_theme.wav",
   "paddleSoundPath": "/sounds/paddleSound.wav",
-  "wallSoundPath": "/sounds/wallSound.wav"
+  "wallSoundPath": "/sounds/wallSound.wav",
+  "winSoundPath": "/sounds/Win.wav",
+  "loseSoundPath": "/sounds/Lose.wav",
+
+  "playThemeMusicPath": "/sounds/InGame.wav",
+  "menuThemeMusicPath": "/sounds/MusicMenu.wav"
 }

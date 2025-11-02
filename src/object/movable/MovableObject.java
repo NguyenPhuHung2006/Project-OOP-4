@@ -25,6 +25,67 @@ public abstract class MovableObject extends TexturedObject {
         dy = 0;
     }
 
+    protected void handleObjectCollisionX(GameObject gameObject) {
+
+        if (gameObject == null) {
+            return;
+        }
+
+        if (isIntersect(gameObject)) {
+            if (dx > 0) {
+                x = gameObject.getX() - width;
+            } else {
+                x = gameObject.getX() + gameObject.getWidth();
+            }
+            dx *= -1;
+        }
+    }
+
+    protected void handleObjectCollisionY(GameObject gameObject) {
+
+        if (gameObject == null) {
+            return;
+        }
+
+        if (isIntersect(gameObject)) {
+            if (dy > 0) {
+                y = gameObject.getY() - height;
+            } else {
+                y = gameObject.getY() + gameObject.getHeight();
+            }
+            dy *= -1;
+        }
+    }
+
+    protected void handleWindowCollision() {
+
+        boolean isBall = this instanceof Ball;
+
+        if (x < 0 || x + width > windowWidth) {
+            if (x < 0) {
+                x = 0;
+            } else {
+                x = windowWidth - width;
+            }
+            if (isBall) {
+                soundManager.play(SoundType.WINDOW_WALL);
+            }
+            dx *= -1;
+        }
+
+        if (y < 0 || y + height > windowHeight) {
+            if (y < 0) {
+                y = 0;
+            } else {
+                y = windowHeight - height;
+            }
+            if (isBall) {
+                soundManager.play(SoundType.WINDOW_WALL);
+            }
+            dy *= -1;
+        }
+    }
+
     @Override
     public MovableObject clone() {
         return (MovableObject) super.clone();
@@ -60,61 +121,5 @@ public abstract class MovableObject extends TexturedObject {
 
     protected void moveY() {
         y += dy * speed;
-    }
-
-    protected void handleObjectCollisionX(GameObject gameObject) {
-
-        if (gameObject == null) {
-            return;
-        }
-
-        if (isIntersect(gameObject)) {
-            if (dx > 0) {
-                x = gameObject.getX() - width;
-            } else {
-                x = gameObject.getX() + gameObject.getWidth();
-            }
-            dx *= -1;
-        }
-    }
-
-    protected void handleObjectCollisionY(GameObject gameObject) {
-
-        if (gameObject == null) {
-            return;
-        }
-
-        if (isIntersect(gameObject)) {
-            if (dy > 0) {
-                y = gameObject.getY() - height;
-            } else {
-                y = gameObject.getY() + gameObject.getHeight();
-            }
-            dy *= -1;
-        }
-    }
-
-    protected void handleWindowCollision() {
-
-        if (x < 0 || x + width > windowWidth) {
-            if (x < 0) {
-                x = 0;
-            } else {
-                x = windowWidth - width;
-            }
-            if (this instanceof Ball) {
-                soundManager.play(SoundType.WINDOW_WALL);
-            }
-            dx *= -1;
-        }
-
-        if (y < 0 || y + height > windowHeight) {
-            if (y < 0) {
-                y = 0;
-            } else {
-                y = windowHeight - height;
-            }
-            dy *= -1;
-        }
     }
 }

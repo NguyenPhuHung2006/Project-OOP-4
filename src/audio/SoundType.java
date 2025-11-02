@@ -6,5 +6,7 @@ public enum SoundType {
     POWERUP_BRICK,
     CLICK_BUTTON,
     PLAYER_PADDLE,
-    WINDOW_WALL
+    WINDOW_WALL,
+    WIN_GAME,
+    LOSE_GAME
 }

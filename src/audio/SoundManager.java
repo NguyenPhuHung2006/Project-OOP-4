@@ -55,8 +55,11 @@ public class SoundManager {
         loadSound(SoundType.CLICK_BUTTON, soundConfig.clickButtonSoundPath);
         loadSound(SoundType.PLAYER_PADDLE, soundConfig.paddleSoundPath);
         loadSound(SoundType.WINDOW_WALL, soundConfig.wallSoundPath);
+        loadSound(SoundType.WIN_GAME, soundConfig.winSoundPath);
+        loadSound(SoundType.LOSE_GAME, soundConfig.loseSoundPath);
 
         loadMusic(MusicType.PLAY_THEME, soundConfig.playThemeMusicPath);
+        loadMusic(MusicType.MENU_THEME, soundConfig.menuThemeMusicPath);
 
         setSoundGlobalVolume(0.6f);
         setMusicGlobalVolume(0.3f);

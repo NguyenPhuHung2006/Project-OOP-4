@@ -1,5 +1,6 @@
 package screen;
 
+import audio.MusicType;
 import audio.SoundType;
 import object.UI.Background;
 import object.UI.GameButton;
@@ -152,11 +153,11 @@ public class MenuScreen implements Screen {
 
     @Override
     public void onEnter() {
-
+        soundManager.playMusic(MusicType.MENU_THEME, true);
     }
 
     @Override
     public void onExit() {
-
+        soundManager.stopMusic(MusicType.MENU_THEME);
     }
 }

@@ -13,12 +13,10 @@ import java.awt.*;
 
 public abstract class GameEndScreen implements Screen {
 
-    private GameText gameEndText;
-    private GameButton escapeButton;
-    private GameButton playAgainButton;
-    private GameButton saveProgressButton;
-    private Background background;
-    private boolean hasSavedGameProgress;
+    private final GameText gameEndText;
+    private final GameButton escapeButton;
+    private final GameButton playAgainButton;
+    private final Background background;
 
     public GameEndScreen(Screen screen) {
 
@@ -29,7 +27,6 @@ public abstract class GameEndScreen implements Screen {
         gameEndText = new GameText(gameEndScreen.gameEndText);
         escapeButton = new GameButton(gameEndScreen.escapeButton);
         playAgainButton = new GameButton(gameEndScreen.playAgainButton);
-        saveProgressButton = new GameButton(gameEndScreen.saveProgressButton);
         background = new Background(gameEndScreen.background);
 
     }
@@ -44,7 +41,6 @@ public abstract class GameEndScreen implements Screen {
         GameText baseGameEndText = gameEndScreen.gameEndText;
         GameButton baseEscapeButton = gameEndScreen.escapeButton;
         GameButton basePlayAgainButton = gameEndScreen.playAgainButton;
-        GameButton baseSaveProgressButton = gameEndScreen.saveProgressButton;
 
         baseGameEndText.updateSizeFromFontData();
         baseGameEndText.center();
@@ -54,72 +50,28 @@ public abstract class GameEndScreen implements Screen {
         basePlayAgainButton.centerHorizontally();
 
         baseEscapeButton.applyRelativeSize();
-        baseEscapeButton.alignRightOf(basePlayAgainButton);
-
-        baseSaveProgressButton.applyRelativeSize();
-        baseSaveProgressButton.alignLeftOf(basePlayAgainButton);
+        baseEscapeButton.alignBelow(basePlayAgainButton);
 
     }
 
     @Override
     public void update() {
-        if (!mouseManager.isLeftClicked()) return;
+        if (!mouseManager.isLeftClicked()) {
+            return;
+        }
 
         soundManager.play(SoundType.CLICK_BUTTON);
 
         if (escapeButton.isClicked(mouseManager)) {
-            handleEscape();
+            goToMenu();
         } else if (playAgainButton.isClicked(mouseManager)) {
-            handlePlayAgain();
-        } else if (saveProgressButton.isClicked(mouseManager)) {
-            handleSaveProgress();
-        }
-    }
-
-    private void handleEscape() {
-        if (hasSavedGameProgress) {
-            goToMenu();
-            return;
-        }
-
-        int option = JOptionPane.showConfirmDialog(
-                null,
-                "Your game progress will not be saved.",
-                "WARNING",
-                JOptionPane.OK_CANCEL_OPTION
-        );
-
-        if (option == JOptionPane.OK_OPTION) {
-            goToMenu();
-        }
-    }
-
-    private void handlePlayAgain() {
-        if (hasSavedGameProgress) {
             playAgain();
-            return;
-        }
-
-        int option = JOptionPane.showConfirmDialog(
-                null,
-                "Your game status will not be saved.",
-                "WARNING",
-                JOptionPane.OK_CANCEL_OPTION
-        );
-
-        if (option == JOptionPane.OK_OPTION) {
-            playAgain();
-        }
-    }
-
-    private void handleSaveProgress() {
-        if (!hasSavedGameProgress) {
-            saveGameStatus();
-            hasSavedGameProgress = true;
         }
     }
 
     private void playAgain() {
+
+        saveGameStatus();
         screenManager.pop();
         PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
         previousPlayScreen.setExited(true);
@@ -129,6 +81,8 @@ public abstract class GameEndScreen implements Screen {
     }
 
     private void goToMenu() {
+
+        saveGameStatus();
         while (!(screenManager.top() instanceof MenuScreen)) {
             screenManager.pop();
         }
@@ -141,7 +95,6 @@ public abstract class GameEndScreen implements Screen {
         gameEndText.render(graphics2D);
         escapeButton.render(graphics2D);
         playAgainButton.render(graphics2D);
-        saveProgressButton.render(graphics2D);
     }
 
     public void saveGameStatus() {
@@ -161,6 +114,9 @@ public abstract class GameEndScreen implements Screen {
         long totalTimePlayed = previousPlayScreen.getTotalTimePlayedBeforeExit();
 
         playerStatusData.totalTimePlayed += totalTimePlayed;
+
+        String levelSavedPath = previousPlayScreen.getLevelSavePath();
+        JsonLoaderUtils.clearJsonFile(levelSavedPath);
 
         screenManager.push(currentGameEndScreen);
 

@@ -1,6 +1,6 @@
 {
-  "windowWidth": 600,
-  "windowHeight": 600,
+  "windowWidth": 800,
+  "windowHeight": 800,
   "screenConfigPath": "assets/json/Screens.json",
   "soundConfigPath": "assets/json/Sounds.json"
 }

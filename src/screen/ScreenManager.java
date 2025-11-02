@@ -52,6 +52,7 @@ public class ScreenManager {
 
         if (newScreen instanceof PlayScreen playScreen) {
             if (playScreen.isExited()) {
+                screens.peek().onEnter();
                 return;
             }
         }

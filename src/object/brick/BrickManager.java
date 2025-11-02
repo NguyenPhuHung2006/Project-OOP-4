@@ -108,6 +108,8 @@ public class BrickManager {
                 baseBrick.setWidth(brickWidth);
                 baseBrick.setHeight(brickHeight);
 
+                baseBrick.setRelativeSize((float) brickWidth / GameContext.getInstance().getWindowWidth());
+
                 baseBrick.setTextureX(0);
                 baseBrick.setTextureY(brickTextureIndex * baseBrick.getTextureHeight());
 

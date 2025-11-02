@@ -57,7 +57,7 @@ public abstract class GameObject implements Cloneable {
     protected abstract void initBounds(GameObject gameObject);
 
     public GameObject(GameObject gameObject) {
-
+        relativeSize = gameObject.getRelativeSize();
     }
 
     public boolean isIntersect(GameObject otherObject) {

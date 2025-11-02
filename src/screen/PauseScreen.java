@@ -136,19 +136,9 @@ public class PauseScreen implements Screen {
         screenManager.pop();
 
         PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
-        String savePath = previousPlayScreen.getLevelSavePath();
 
-        GameContext.getInstance().serializeGameContext();
-        PowerUpManager.getInstance().serializePowerUps();
-        BrickManager.getInstance().serializeBricks();
-        previousPlayScreen.getScoreText().serializeToJson();
-        previousPlayScreen.getNumScoreText().serializeToJson();
-        previousPlayScreen.getPauseButton().serializeToJson();
-        previousPlayScreen.getBackground().serializeToJson();
+        previousPlayScreen.saveGameProgress();
 
-        JsonLoaderUtils.saveToJson(savePath, previousPlayScreen);
-
-        previousPlayScreen.setExited(true);
         screenManager.pop();
 
     }

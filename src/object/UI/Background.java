@@ -6,7 +6,6 @@ import object.TexturedObject;
 
 /**
  * This class will load Background
- * ỉijrtjrijtirt
  */
 public class Background extends TexturedObject {
 
@@ -29,6 +28,7 @@ public class Background extends TexturedObject {
         y = 0;
         width = gameContext.getWindowWidth();
         height = gameContext.getWindowHeight();
+        relativeSize = 1;
     }
 
 }

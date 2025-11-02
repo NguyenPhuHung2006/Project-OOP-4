@@ -58,7 +58,6 @@ public abstract class TexturedObject extends GameObject {
 
         relativeX = x / windowWidth;
         relativeY = y / windowHeight;
-        relativeSize = width / windowWidth;
     }
 
     @Override

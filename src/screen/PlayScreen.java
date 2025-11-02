@@ -12,6 +12,7 @@ import object.UI.Text.GameText;
 import object.brick.BrickManager;
 import object.movable.powerup.PowerUpManager;
 import utils.JsonLoaderUtils;
+import utils.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +27,9 @@ public class PlayScreen implements Screen {
     private GameText scoreText;
     private GameText numScoreText;
     private GameButton pauseButton;
+    private GameText numTimeText;
     private Background background;
+
     private String levelInitPath;
     private String levelSavePath;
 
@@ -34,6 +37,8 @@ public class PlayScreen implements Screen {
     private long pauseStartTime;
     private long pauseTime;
     private long endTime;
+    private long totalTimePlayed;
+
     private boolean isPaused;
     private boolean exited;
 
@@ -50,6 +55,8 @@ public class PlayScreen implements Screen {
 
         boolean hadSavedProgress = JsonLoaderUtils.isJsonDataAvailable(levelSavePath);
 
+        startTime = System.currentTimeMillis();
+
         if (hadSavedProgress) {
             boolean canLoadProgress = handleSavedProgress();
             if(exited || canLoadProgress) {
@@ -64,11 +71,10 @@ public class PlayScreen implements Screen {
         scoreText = new GameText(playScreen.scoreText);
         numScoreText = new GameText(playScreen.numScoreText);
         pauseButton = new GameButton(playScreen.pauseButton);
+        numTimeText = new GameText(playScreen.numTimeText);
         background = new Background(playScreen.background);
 
         initObjects(levelInitPath);
-
-        startTime = System.currentTimeMillis();
 
     }
 
@@ -82,6 +88,7 @@ public class PlayScreen implements Screen {
         GameText baseScoreText = playScreen.scoreText;
         GameText baseNumScoreText = playScreen.numScoreText;
         GameButton basePauseButton = playScreen.pauseButton;
+        GameText baseNumTimeText = playScreen.numTimeText;
 
         baseScoreText.updateSizeFromFontData();
         baseScoreText.alignBottomLeft();
@@ -92,6 +99,11 @@ public class PlayScreen implements Screen {
         basePauseButton.applyRelativeSize();
         basePauseButton.centerHorizontally();
         basePauseButton.alignBottom();
+
+        baseNumTimeText.updateSizeFromFontData();
+        baseNumTimeText.alignRightOf(basePauseButton);
+        baseNumTimeText.alignBottom();
+        baseNumTimeText.translateX(spacingX);
 
     }
 
@@ -127,6 +139,25 @@ public class PlayScreen implements Screen {
         return false;
     }
 
+    public void saveGameProgress() {
+
+        gameContext.serializeGameContext();
+        powerUpManager.serializePowerUps();
+        brickManager.serializeBricks();
+
+        scoreText.serializeToJson();
+        numScoreText.serializeToJson();
+        pauseButton.serializeToJson();
+        numTimeText.serializeToJson();
+        background.serializeToJson();
+
+        getTotalTimePlayedBeforeExit();
+
+        JsonLoaderUtils.saveToJson(levelSavePath, this);
+
+        exited = true;
+    }
+
     private void loadSavedProgress() {
 
         PlayScreen savedPlayScreen = JsonLoaderUtils.loadFromJson(levelSavePath, PlayScreen.class);
@@ -140,17 +171,21 @@ public class PlayScreen implements Screen {
         scoreText = savedPlayScreen.scoreText;
         numScoreText = savedPlayScreen.numScoreText;
         pauseButton = savedPlayScreen.pauseButton;
+        numTimeText = savedPlayScreen.numTimeText;
         background = savedPlayScreen.background;
 
         levelInitPath = savedPlayScreen.levelInitPath;
         levelSavePath = savedPlayScreen.levelSavePath;
-        isPaused = true;
-        exited = false;
 
         scoreText.deserializeFromJson();
         numScoreText.deserializeFromJson();
         pauseButton.deserializeFromJson();
+        numTimeText.deserializeFromJson();
         background.deserializeFromJson();
+
+        totalTimePlayed = savedPlayScreen.totalTimePlayed;
+        isPaused = false;
+        powerUpManager.resumeTimers();
     }
 
     @Override
@@ -162,6 +197,9 @@ public class PlayScreen implements Screen {
             pauseTime += currentTime - pauseStartTime;
             isPaused = false;
         }
+
+        long currentTimePlayed = getCurrentTimePlayed();
+        numTimeText.setContent(TextUtils.convertMillisToTimeUnit(currentTimePlayed));
 
         boolean isGameOver = gameContext.isGameOver();
         boolean isGameWin = brickManager.isCleared();
@@ -182,6 +220,7 @@ public class PlayScreen implements Screen {
             if (pauseButton.isClicked(mouseManager)) {
                 powerUpManager.pauseTimers();
                 isPaused = true;
+                endTime = System.currentTimeMillis();
                 pauseStartTime = System.currentTimeMillis();
                 screenManager.push(ScreenType.PAUSE);
                 return;
@@ -220,6 +259,7 @@ public class PlayScreen implements Screen {
         scoreText.render(graphics2D);
         numScoreText.render(graphics2D);
         pauseButton.render(graphics2D);
+        numTimeText.render(graphics2D);
     }
 
     @Override
@@ -254,8 +294,13 @@ public class PlayScreen implements Screen {
         return pauseTime;
     }
 
-    public long getTotalTimePlayed() {
-        return endTime - startTime - pauseTime;
+    public long getTotalTimePlayedBeforeExit() {
+        totalTimePlayed += endTime - startTime - pauseTime;
+        return totalTimePlayed;
+    }
+
+    private long getCurrentTimePlayed() {
+        return totalTimePlayed + System.currentTimeMillis() - startTime - pauseTime;
     }
 
     public boolean isExited() {
@@ -268,22 +313,6 @@ public class PlayScreen implements Screen {
 
     public String getLevelSavePath() {
         return levelSavePath;
-    }
-
-    public GameText getScoreText() {
-        return scoreText;
-    }
-
-    public GameText getNumScoreText() {
-        return numScoreText;
-    }
-
-    public GameButton getPauseButton() {
-        return pauseButton;
-    }
-
-    public Background getBackground() {
-        return background;
     }
 
 }

@@ -95,6 +95,12 @@
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1
     },
+    "numTimeText": {
+      "content": "00:00:00",
+      "relativeSize": 0.05,
+      "colorData": {"r":255,"g":255,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
       "texturePath": "/textures/background_level1.png",
@@ -123,6 +129,12 @@
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1
     },
+    "numTimeText": {
+      "content": "00:00:00",
+      "relativeSize": 0.05,
+      "colorData": {"r":255,"g":255,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
       "texturePath": "/textures/background_level2.png",
@@ -150,6 +162,12 @@
       "relativeSize": 0.05,
       "texturePath": "/textures/buttons.png",
       "numberOfFrames": 1
+    },
+    "numTimeText": {
+      "content": "00:00:00",
+      "relativeSize": 0.05,
+      "colorData": {"r":255,"g":255,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,

@@ -12,13 +12,12 @@ public class GameText extends GameObject {
     private String content;
     private transient Color color;
     private transient Font font;
-    private transient float ratio;
 
     private ColorData colorData;
     private FontData fontData;
 
     public GameText(GameText gameText) {
-        super(null);
+        super(gameText);
 
         initBounds(gameText);
 
@@ -66,7 +65,7 @@ public class GameText extends GameObject {
 
         font = TextUtils.toFont(fontData);
         color = TextUtils.toColor(colorData);
-
+        updateSizeFromFontData();
     }
 
     public void updateFontAndBounds(float ratio) {

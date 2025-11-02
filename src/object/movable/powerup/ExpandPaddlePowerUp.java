@@ -5,41 +5,40 @@ import object.movable.Paddle;
 public class ExpandPaddlePowerUp extends PowerUp {
 
     private final float widthMultiplier;
-    private final float originalWidth;
-    private final float scaledWidth;
 
     public ExpandPaddlePowerUp(PowerUp powerUp) {
 
         super(powerUp);
 
         ExpandPaddlePowerUp expandPaddlePowerUp = (ExpandPaddlePowerUp) powerUp;
-
         this.widthMultiplier = expandPaddlePowerUp.widthMultiplier;
-        Paddle paddle = gameContext.getPaddle();
-        this.originalWidth = paddle.getOriginalWidth();
-        this.scaledWidth = this.originalWidth * widthMultiplier;
     }
 
     @Override
     public void applyEffect() {
         Paddle paddle = gameContext.getPaddle();
-        if(paddle.isScaled()) {
+        if(paddle.isSizeScaled()) {
             return;
         }
+        float originalWidth = paddle.getWidth();
+        float scaledWidth = originalWidth * widthMultiplier;
+        paddle.setOriginalWidth(originalWidth);
+        paddle.setWidth(scaledWidth);
         paddle.setX(paddle.getX() + (originalWidth - scaledWidth) / 2f);
-        paddle.setWidth(originalWidth * widthMultiplier);
-        paddle.setScaled(true);
+        paddle.setSizeScaled(true);
     }
 
     @Override
     public void revertEffect() {
         Paddle paddle = gameContext.getPaddle();
-        if(!paddle.isScaled()) {
+        if(!paddle.isSizeScaled()) {
             return;
         }
+        float originalWidth = paddle.getOriginalWidth();
+        float scaledWidth = originalWidth * widthMultiplier;
         paddle.setX(paddle.getX() - (originalWidth - scaledWidth) / 2f);
-        paddle.setWidth(originalWidth);
-        paddle.setScaled(false);
+        paddle.setWidth(paddle.getOriginalWidth());
+        paddle.setSizeScaled(false);
     }
 
     @Override

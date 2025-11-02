@@ -6,14 +6,9 @@ import java.awt.event.KeyEvent;
 
 public class Paddle extends MovableObject {
 
-    private final float originWidth;
-    private final float originalSpeed;
-
     public Paddle(Paddle paddle) {
 
         super(paddle);
-        this.originWidth = width;
-        this.originalSpeed = speed;
     }
 
     @Override
@@ -27,12 +22,12 @@ public class Paddle extends MovableObject {
     protected void initBounds(GameObject gameObject) {
 
         initTextureBounds(gameObject);
-        
+
         Paddle basePaddle = (Paddle) gameObject;
 
         relativeSize = basePaddle.getRelativeSize();
         relativeY = basePaddle.getRelativeY();
-        
+
         basePaddle.resetPaddleBound();
 
         this.width = basePaddle.getWidth();
@@ -41,7 +36,7 @@ public class Paddle extends MovableObject {
         this.y = basePaddle.getY();
 
     }
-    
+
     public void resetPaddleBound() {
         applyRelativeSize();
         applyRelativePositionY();
@@ -51,7 +46,7 @@ public class Paddle extends MovableObject {
 
     @Override
     public Paddle clone() {
-        return (Paddle)super.clone();
+        return (Paddle) super.clone();
     }
 
     @Override
@@ -74,11 +69,4 @@ public class Paddle extends MovableObject {
             dx = 1;
         }
     }
-
-    public float getOriginalWidth() {
-        return originWidth;
-    }
-
-    public float getOriginalSpeed() {return originalSpeed;}
-
 }

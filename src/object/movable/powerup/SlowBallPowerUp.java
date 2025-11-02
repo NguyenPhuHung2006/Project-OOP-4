@@ -5,37 +5,34 @@ import object.movable.Ball;
 public class SlowBallPowerUp extends PowerUp {
 
     private final float slowMultiplier;
-    private final float originalSpeed;
-    private final float slowedSpeed;
 
     public SlowBallPowerUp(PowerUp powerUp) {
 
         super(powerUp);
 
         SlowBallPowerUp slowBallPowerUp = (SlowBallPowerUp) powerUp;
-
         this.slowMultiplier = slowBallPowerUp.slowMultiplier;
-        Ball ball = gameContext.getBall();
-        this.originalSpeed = ball.getOriginSpeed();
-        this.slowedSpeed = originalSpeed * slowMultiplier;
     }
 
     @Override
     public void applyEffect() {
 
         Ball ball = gameContext.getBall();
-        float currentSpeed = ball.getSpeed();
 
-        if(currentSpeed >= slowedSpeed) {
-            ball.setSpeed(slowedSpeed);
+        if(ball.isSpeedScaled()) {
+            return;
         }
+
+        float originalSpeed = ball.getSpeed();
+        float scaledSpeed = originalSpeed * slowMultiplier;
+        ball.setScaledSpeed(scaledSpeed);
+        ball.setSpeedScaled(true);
     }
 
     @Override
     public void revertEffect() {
-
         Ball ball = gameContext.getBall();
-        ball.setSpeed(originalSpeed);
+        ball.setSpeedScaled(false);
     }
 
     @Override

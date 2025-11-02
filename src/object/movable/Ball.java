@@ -16,7 +16,6 @@ import java.awt.event.KeyEvent;
 public class Ball extends MovableObject {
 
     private boolean isMoving;
-    private final float originalSpeed;
     private boolean isBallLost;
 
     private Paddle paddle;
@@ -24,7 +23,6 @@ public class Ball extends MovableObject {
     public Ball(Ball ball) {
         super(ball);
         isMoving = false;
-        this.originalSpeed = ball.getSpeed();
     }
 
     @Override
@@ -207,9 +205,5 @@ public class Ball extends MovableObject {
 
     public void setPaddle(Paddle paddle) {
         this.paddle = paddle;
-    }
-
-    public float getOriginSpeed() {
-        return originalSpeed;
     }
 }

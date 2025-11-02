@@ -25,8 +25,6 @@ public abstract class TexturedObject extends GameObject {
     protected final int numberOfFrames;
     protected transient List<BufferedImage> frames;
 
-    protected boolean isScaled;
-
     public TexturedObject(TexturedObject texturedObject) {
 
         super(texturedObject);
@@ -44,8 +42,14 @@ public abstract class TexturedObject extends GameObject {
         frames = new ArrayList<>();
 
         for (int i = 0; i < numberOfFrames; i++) {
-            frames.add(TextureLoaderUtils.scaleTexture(textureX + i * textureWidth, textureY, textureWidth, textureHeight,
-                    texturePath, width, height));
+            frames.add(TextureLoaderUtils.scaleTexture(
+                    textureX + i * textureWidth,
+                    textureY,
+                    textureWidth,
+                    textureHeight,
+                    texturePath,
+                    width,
+                    height));
         }
         if (indexFrame >= frames.size() || indexFrame < 0) {
             ExceptionHandler.handle(new InvalidGameStateException("The index frame " + indexFrame + " is not valid", null));
@@ -65,8 +69,8 @@ public abstract class TexturedObject extends GameObject {
 
         x = relativeX * windowWidth;
         y = relativeY * windowHeight;
-        applyRelativeSize();
 
+        applyRelativeSize();
         loadFrames();
     }
 
@@ -83,11 +87,14 @@ public abstract class TexturedObject extends GameObject {
 
         this.width = windowWidth * relativeSize;
         this.height = textureHeight * width / textureWidth;
+
+        this.originalWidth = width;
+        this.originalHeight = height;
     }
 
     @Override
     public void render(Graphics2D graphics2D) {
-        if(isScaled) {
+        if(isSizeScaled) {
             RendererUtils.render(currentTexture, x, y, (int)width, (int)height, graphics2D);
         } else {
             RendererUtils.render(currentTexture, x, y, graphics2D);
@@ -123,8 +130,8 @@ public abstract class TexturedObject extends GameObject {
         return texturePath;
     }
 
-    public boolean isScaled() {
-        return isScaled;
+    public boolean isSizeScaled() {
+        return isSizeScaled;
     }
 
     public void setTextureX(int textureX) {
@@ -145,10 +152,6 @@ public abstract class TexturedObject extends GameObject {
 
     public void setTexture(BufferedImage texture) {
         this.currentTexture = texture;
-    }
-
-    public void setScaled(boolean isScaled) {
-        this.isScaled = isScaled;
     }
 
     public int getNumberOfFrames() {

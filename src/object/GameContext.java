@@ -14,6 +14,7 @@ public class GameContext {
     private int windowHeight;
     private int paddingX;
     private int paddingY;
+    private float scaled;
 
     private Paddle paddle;
     private Ball ball;
@@ -68,9 +69,6 @@ public class GameContext {
 
         ball.setPaddle(paddle);
 
-        paddle.setSpeed(paddle.getOriginalSpeed());
-        ball.setSpeed(ball.getOriginSpeed());
-        paddle.setWidth(paddle.getOriginalWidth());
     }
 
     public void resetObjectsBound() {
@@ -87,6 +85,7 @@ public class GameContext {
     public void setWindowWidth(int windowWidth) {
         this.windowWidth = windowWidth;
         paddingX = windowWidth / 100;
+        scaled = windowWidth / 1000f;
     }
 
     public void setWindowHeight(int windowHeight) {
@@ -138,4 +137,7 @@ public class GameContext {
         return paddingY;
     }
 
+    public float getScaled() {
+        return scaled;
+    }
 }

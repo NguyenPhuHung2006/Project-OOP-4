@@ -27,6 +27,11 @@ public abstract class GameObject implements Cloneable {
     protected static int windowHeight;
     protected static int paddingX;
     protected static int paddingY;
+    protected static float scaled;
+
+    protected float originalWidth;
+    protected float originalHeight;
+    protected boolean isSizeScaled;
 
     protected static KeyboardManager keyboardManager;
     protected static BrickManager brickManager;
@@ -43,6 +48,7 @@ public abstract class GameObject implements Cloneable {
         windowHeight = gameContext.getWindowHeight();
         paddingX = gameContext.getPaddingX();
         paddingY = gameContext.getPaddingY();
+        scaled = gameContext.getScaled();
 
         keyboardManager = KeyboardManager.getInstance();
         brickManager = BrickManager.getInstance();
@@ -252,6 +258,26 @@ public abstract class GameObject implements Cloneable {
 
     public void addHeight(float deltaHeight) {
         this.height += deltaHeight;
+    }
+
+    public void setSizeScaled(boolean isScaled) {
+        this.isSizeScaled = isScaled;
+    }
+
+    public float getOriginalWidth() {
+        return originalWidth;
+    }
+
+    public void setOriginalWidth(float originalWidth) {
+        this.originalWidth = originalWidth;
+    }
+
+    public float getOriginalHeight() {
+        return originalHeight;
+    }
+
+    public void setOriginalHeight(float originalHeight) {
+        this.originalHeight = originalHeight;
     }
 
 }

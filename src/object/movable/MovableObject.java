@@ -10,6 +10,9 @@ public abstract class MovableObject extends TexturedObject {
     protected float dy;
     protected float speed;
 
+    protected float scaledSpeed;
+    protected boolean isSpeedScaled;
+
     public void setDx(int dx) {
         this.dx = dx;
     }
@@ -116,10 +119,27 @@ public abstract class MovableObject extends TexturedObject {
     protected abstract void moveAndCollide();
 
     protected void moveX() {
-        x += dx * speed;
+        x += dx * (isSpeedScaled ? scaledSpeed : speed) * scaled;
     }
 
     protected void moveY() {
-        y += dy * speed;
+        y += dy * (isSpeedScaled ? scaledSpeed : speed) * scaled;
     }
+
+    public float getScaledSpeed() {
+        return scaledSpeed;
+    }
+
+    public void setScaledSpeed(float scaledSpeed) {
+        this.scaledSpeed = scaledSpeed;
+    }
+
+    public boolean isSpeedScaled() {
+        return isSpeedScaled;
+    }
+
+    public void setSpeedScaled(boolean isSpeedScaled) {
+        this.isSpeedScaled = isSpeedScaled;
+    }
+
 }

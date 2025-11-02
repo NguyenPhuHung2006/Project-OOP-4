@@ -108,6 +108,8 @@ public class BrickManager {
                 baseBrick.setWidth(brickWidth);
                 baseBrick.setHeight(brickHeight);
 
+                baseBrick.setRelativeSize((float) brickWidth / GameContext.getInstance().getWindowWidth());
+
                 baseBrick.setTextureX(0);
                 baseBrick.setTextureY(brickTextureIndex * baseBrick.getTextureHeight());
 
@@ -120,6 +122,40 @@ public class BrickManager {
                 }
 
                 bricks[y][x] = currentBrick;
+            }
+        }
+    }
+
+    public void serializeBricks() {
+
+        for (int y = 0; y < brickCountY; y++) {
+            for (int x = 0; x < brickCountX; x++) {
+                if (bricks[y][x] != null) {
+                    bricks[y][x].serializeToJson();
+                }
+            }
+        }
+    }
+
+    public void deserializeBricks(BrickManager brickManager) {
+
+        bricks = brickManager.getBricks();
+
+        brickCountY = bricks.length;
+        brickCountX = bricks[0].length;
+        brickWidth = GameContext.getInstance().getWindowWidth() / brickCountX;
+        brickHeight = GameContext.getInstance().getWindowHeight() / brickCountY;
+
+        framePerRow = brickManager.framePerRow;
+        destroyedBricksCount = brickManager.destroyedBricksCount;
+        totalBricksCount = brickManager.totalBricksCount;
+        isIncremented = brickManager.isIncremented;
+
+        for (int y = 0; y < brickCountY; y++) {
+            for (int x = 0; x < brickCountX; x++) {
+                if (bricks[y][x] != null) {
+                    bricks[y][x].deserializeFromJson();
+                }
             }
         }
     }
@@ -179,8 +215,8 @@ public class BrickManager {
 
     private void refresh() {
 
-        for(int y = 0; y < brickCountY; y++) {
-            for(int x = 0; x < brickCountX; x++) {
+        for (int y = 0; y < brickCountY; y++) {
+            for (int x = 0; x < brickCountX; x++) {
                 bricks[y][x] = null;
             }
         }
@@ -206,6 +242,10 @@ public class BrickManager {
         this.totalBricksCount = totalBricksCount;
     }
 
+    public void setBricks(Brick[][] bricks) {
+        this.bricks = bricks;
+    }
+
     public int getBrickWidth() {
         return brickWidth;
     }
@@ -227,7 +267,7 @@ public class BrickManager {
     }
 
     public boolean isIncremented() {
-        if(isIncremented) {
+        if (isIncremented) {
             isIncremented = false;
             return true;
         }

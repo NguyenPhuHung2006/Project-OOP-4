@@ -1,7 +1,9 @@
+
 import config.GameConfig;
-import config.LevelConfig;
 import object.GameContext;
-import object.movable.powerup.*;
+import object.movable.powerup.PowerUp;
+import object.movable.powerup.PowerUpManager;
+import object.movable.powerup.PowerUpType;
 import org.junit.jupiter.api.*;
 import utils.JsonLoaderUtils;
 
@@ -11,63 +13,97 @@ import java.util.concurrent.TimeUnit;
 
 public class PowerUpManagerTest {
 
-    PowerUpManager powerUpManager;
-    PowerUp testPowerUp;
+    private PowerUpManager powerUpManager;
+    private PowerUp basePowerUp;
 
     @BeforeEach
     void setup() {
-
         GameConfig gameConfig = JsonLoaderUtils.loadFromJson("assets/json/GameConfig.json", GameConfig.class);
+        assertNotNull(gameConfig, "GameConfig should load successfully");
 
         GameContext gameContext = GameContext.getInstance();
-        assertNotNull(gameConfig);
         gameContext.setWindowWidth(gameConfig.windowWidth);
         gameContext.setWindowHeight(gameConfig.windowHeight);
 
         powerUpManager = PowerUpManager.getInstance();
-        testPowerUp = JsonLoaderUtils.loadFromJson("assets/json/junit_json/PowerUpManagerTest.json", TestPowerUp.class);
+        powerUpManager.revertAllPowerUps();
 
-        assertNotNull(testPowerUp);
-        testPowerUp.setWidth(1);
-        testPowerUp.setHeight(1);
+        basePowerUp = JsonLoaderUtils.loadFromJson("assets/json/junit_json/PowerUpManagerTest.json", TestPowerUp.class);
+        assertNotNull(basePowerUp, "Test PowerUp JSON should load successfully");
+
+        basePowerUp.setWidth(1);
+        basePowerUp.setHeight(1);
     }
 
     @Test
+    @DisplayName("PowerUp should apply immediately and revert after duration")
     void testPowerUpAppliesAndRevertsAfterDelay() throws Exception {
-        TestPowerUp powerUp = new TestPowerUp(200, testPowerUp);
+        TestPowerUp powerUp = new TestPowerUp(200, basePowerUp);
 
         powerUpManager.applyPowerUp(PowerUpType.EXPAND_PADDLE, powerUp);
 
-        assertTrue(powerUp.isApplied(), "Power-up should apply immediately");
+        assertTrue(powerUp.isApplied(), "PowerUp should apply immediately");
 
         TimeUnit.MILLISECONDS.sleep(250);
 
-        assertTrue(powerUp.isReverted(), "Power-up should revert after delay");
+        assertTrue(powerUp.isReverted(), "PowerUp should revert after its duration expires");
     }
 
     @Test
+    @DisplayName("Reapplying a PowerUp of same type resets its timer")
     void testApplyingTwiceResetsTimer() throws Exception {
-        TestPowerUp powerUp1 = new TestPowerUp(300, testPowerUp);
-        TestPowerUp powerUp2 = new TestPowerUp(300, testPowerUp);
+        TestPowerUp first = new TestPowerUp(300, basePowerUp);
+        TestPowerUp second = new TestPowerUp(300, basePowerUp);
 
-        powerUpManager.applyPowerUp(PowerUpType.EXPAND_PADDLE, powerUp1);
+        powerUpManager.applyPowerUp(PowerUpType.EXPAND_PADDLE, first);
         TimeUnit.MILLISECONDS.sleep(150);
 
-        powerUpManager.applyPowerUp(PowerUpType.EXPAND_PADDLE, powerUp2);
+        powerUpManager.applyPowerUp(PowerUpType.EXPAND_PADDLE, second);
 
         TimeUnit.MILLISECONDS.sleep(250);
 
-        assertFalse(powerUp2.isReverted(), "Second power-up should still be active");
+        assertFalse(second.isReverted(), "Second PowerUp should still be active (timer reset)");
+    }
+
+    @Test
+    @DisplayName("Pausing and resuming should not trigger revert during pause")
+    void testPauseAndResumePowerUps() throws Exception {
+        TestPowerUp powerUp = new TestPowerUp(300, basePowerUp);
+        powerUpManager.applyPowerUp(PowerUpType.EXPAND_PADDLE, powerUp);
+
+        assertTrue(powerUp.isApplied(), "PowerUp should be applied before pausing");
+
+        powerUpManager.pauseTimers();
+        TimeUnit.MILLISECONDS.sleep(350);
+
+        assertFalse(powerUp.isReverted(), "PowerUp should not revert while paused");
+
+        powerUpManager.resumeTimers();
+        TimeUnit.MILLISECONDS.sleep(298);
+
+        assertTrue(powerUp.isReverted(), "PowerUp should revert after resuming");
+    }
+
+    @Test
+    @DisplayName("Reverting all PowerUps should cancel active effects immediately")
+    void testRevertAllPowerUps() {
+        TestPowerUp powerUp = new TestPowerUp(500, basePowerUp);
+        powerUpManager.applyPowerUp(PowerUpType.EXPAND_PADDLE, powerUp);
+
+        assertTrue(powerUp.isApplied(), "PowerUp should start as applied");
+
+        powerUpManager.revertAllPowerUps();
+
+        assertTrue(powerUp.isReverted(), "RevertAll should force all PowerUps to revert");
     }
 
     static class TestPowerUp extends PowerUp {
         private boolean applied = false;
         private boolean reverted = false;
-        private final int duration;
 
-        TestPowerUp(int durationMs, PowerUp testPowerUp) {
-            super(testPowerUp);
-            this.duration = durationMs;
+        TestPowerUp(int durationMs, PowerUp template) {
+            super(template);
+            this.durationMs = durationMs;
         }
 
         @Override
@@ -80,15 +116,17 @@ public class PowerUpManagerTest {
             reverted = true;
         }
 
-        @Override
-        public int getDurationMs() {
-            return duration;
+        public boolean isApplied() {
+            return applied;
         }
 
-        public boolean isApplied() { return applied; }
-        public boolean isReverted() { return reverted; }
+        public boolean isReverted() {
+            return reverted;
+        }
 
         @Override
-        public PowerUp clone() { return this; } // simple no-op clone
+        public PowerUp clone() {
+            return this;
+        }
     }
 }

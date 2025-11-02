@@ -5,7 +5,6 @@ import object.movable.Paddle;
 public class ExpandPaddlePowerUp extends PowerUp {
 
     private final float widthMultiplier;
-    private final Paddle paddle;
     private final float originalWidth;
     private final float scaledWidth;
 
@@ -16,13 +15,14 @@ public class ExpandPaddlePowerUp extends PowerUp {
         ExpandPaddlePowerUp expandPaddlePowerUp = (ExpandPaddlePowerUp) powerUp;
 
         this.widthMultiplier = expandPaddlePowerUp.widthMultiplier;
-        this.paddle = gameContext.getPaddle();
+        Paddle paddle = gameContext.getPaddle();
         this.originalWidth = paddle.getOriginalWidth();
         this.scaledWidth = this.originalWidth * widthMultiplier;
     }
 
     @Override
     public void applyEffect() {
+        Paddle paddle = gameContext.getPaddle();
         if(paddle.isScaled()) {
             return;
         }
@@ -33,6 +33,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
 
     @Override
     public void revertEffect() {
+        Paddle paddle = gameContext.getPaddle();
         if(!paddle.isScaled()) {
             return;
         }

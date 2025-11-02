@@ -205,6 +205,10 @@ public class Ball extends MovableObject {
         return false;
     }
 
+    public void setPaddle(Paddle paddle) {
+        this.paddle = paddle;
+    }
+
     public float getOriginSpeed() {
         return originalSpeed;
     }

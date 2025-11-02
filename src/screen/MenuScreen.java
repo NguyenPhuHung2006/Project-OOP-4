@@ -16,6 +16,9 @@ public class MenuScreen implements Screen {
     GameText level2Text;
     GameButton level2Button;
 
+    GameText level3Text;
+    GameButton level3Button;
+
     GameButton playerStatusButton;
 
     GameButton escapeButton;
@@ -23,7 +26,7 @@ public class MenuScreen implements Screen {
     Background background;
 
     public MenuScreen(Screen screen) {
-        
+
         init(screen);
 
         MenuScreen menuScreen = (MenuScreen) screen;
@@ -33,6 +36,9 @@ public class MenuScreen implements Screen {
 
         level2Button = new GameButton(menuScreen.level2Button);
         level2Text = new GameText(menuScreen.level2Text);
+
+        level3Button = new GameButton(menuScreen.level3Button);
+        level3Text = new GameText(menuScreen.level3Text);
 
         playerStatusButton = new GameButton(menuScreen.playerStatusButton);
 
@@ -46,12 +52,15 @@ public class MenuScreen implements Screen {
         if (!(screen instanceof MenuScreen menuScreen)) {
             return;
         }
-        
+
         GameText baseLevel1Text = menuScreen.level1Text;
         GameButton baseLevel1Button = menuScreen.level1Button;
 
         GameText baseLevel2Text = menuScreen.level2Text;
         GameButton baseLevel2Button = menuScreen.level2Button;
+
+        GameText baseLevel3Text = menuScreen.level3Text;
+        GameButton baseLevel3Button = menuScreen.level3Button;
 
         GameButton basePlayerStatusButton = menuScreen.playerStatusButton;
 
@@ -72,6 +81,14 @@ public class MenuScreen implements Screen {
         baseLevel2Button.alignRightOf(baseLevel2Text);
         baseLevel2Button.centerVerticallyTo(baseLevel2Text);
 
+        baseLevel3Text.updateSizeFromFontData();
+        baseLevel3Text.alignBelow(baseLevel2Text);
+        baseLevel3Text.translateY(spacingY);
+
+        baseLevel3Button.applyRelativeSize();
+        baseLevel3Button.alignRightOf(baseLevel3Text);
+        baseLevel3Button.centerVerticallyTo(baseLevel3Text);
+
         basePlayerStatusButton.applyRelativeSize();
         basePlayerStatusButton.alignTopRight();
 
@@ -83,15 +100,21 @@ public class MenuScreen implements Screen {
     @Override
     public void update() {
 
-        if(mouseManager.isLeftClicked()) {
+        if (mouseManager.isLeftClicked()) {
             soundManager.play(SoundType.CLICK_BUTTON);
-            if(level1Button.isClicked(mouseManager)) {
+            if (level1Button.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PLAY_LEVEL1);
-            } else if(level2Button.isClicked(mouseManager)) {
+
+            } else if (level2Button.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PLAY_LEVEL2);
-            } else if(playerStatusButton.isClicked(mouseManager)) {
+
+            } else if (level3Button.isClicked(mouseManager)) {
+                screenManager.push(ScreenType.PLAY_LEVEL3);
+
+            } else if (playerStatusButton.isClicked(mouseManager)) {
                 screenManager.push(ScreenType.PLAYER_STATUS);
-            } else if(escapeButton.isClicked(mouseManager)) {
+
+            } else if (escapeButton.isClicked(mouseManager)) {
                 handleEscape();
             }
         }
@@ -99,11 +122,18 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(Graphics2D graphics2D) {
+
         background.render(graphics2D);
+
         level1Text.render(graphics2D);
         level1Button.render(graphics2D);
+
         level2Text.render(graphics2D);
         level2Button.render(graphics2D);
+
+        level3Text.render(graphics2D);
+        level3Button.render(graphics2D);
+
         playerStatusButton.render(graphics2D);
         escapeButton.render(graphics2D);
     }
@@ -115,7 +145,7 @@ public class MenuScreen implements Screen {
                 "WARNING",
                 JOptionPane.YES_NO_OPTION
         );
-        if(option == JOptionPane.YES_OPTION) {
+        if (option == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
     }

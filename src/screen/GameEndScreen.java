@@ -158,7 +158,7 @@ public abstract class GameEndScreen implements Screen {
         GameEndScreen currentGameEndScreen = (GameEndScreen) screenManager.top();
         screenManager.pop();
         PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
-        long totalTimePlayed = previousPlayScreen.getTotalTimePlayed();
+        long totalTimePlayed = previousPlayScreen.getTotalTimePlayedBeforeExit();
 
         playerStatusData.totalTimePlayed += totalTimePlayed;
 

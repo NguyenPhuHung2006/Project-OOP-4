@@ -7,7 +7,6 @@ public class SpeedUpPaddlePowerUp extends PowerUp {
     private final float speedUpMultiplier;
     private final float originalSpeed;
     private final float speedUpSpeed;
-    private final Paddle paddle;
 
     public SpeedUpPaddlePowerUp(PowerUp powerUp) {
 
@@ -16,13 +15,15 @@ public class SpeedUpPaddlePowerUp extends PowerUp {
         SpeedUpPaddlePowerUp speedUpPaddlePowerUp = (SpeedUpPaddlePowerUp) powerUp;
 
         this.speedUpMultiplier = speedUpPaddlePowerUp.speedUpMultiplier;
-        this.paddle = gameContext.getPaddle();
+
+        Paddle paddle = gameContext.getPaddle();
         this.originalSpeed = paddle.getOriginalSpeed();
         this.speedUpSpeed = this.originalSpeed * speedUpMultiplier;
     }
 
     @Override
     public void applyEffect() {
+        Paddle paddle = gameContext.getPaddle();
         float currentSpeed = paddle.getSpeed();
         if(currentSpeed <= speedUpSpeed) {
             paddle.setSpeed(speedUpSpeed);
@@ -31,6 +32,7 @@ public class SpeedUpPaddlePowerUp extends PowerUp {
 
     @Override
     public void revertEffect() {
+        Paddle paddle = gameContext.getPaddle();
         paddle.setSpeed(originalSpeed);
     }
 }

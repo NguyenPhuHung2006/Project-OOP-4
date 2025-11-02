@@ -1,9 +1,13 @@
 package screen;
 
 import audio.SoundType;
+import object.GameContext;
 import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
+import object.brick.BrickManager;
+import object.movable.powerup.PowerUpManager;
+import utils.JsonLoaderUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,8 +65,7 @@ public class PauseScreen implements Screen {
 
             soundManager.play(SoundType.CLICK_BUTTON);
             if (resumeButton.isClicked(mouseManager)) {
-                screenManager.pop();
-                return;
+                handleResume();
             }
 
             if (playAgainButton.isClicked(mouseManager)) {
@@ -74,6 +77,12 @@ public class PauseScreen implements Screen {
             }
 
         }
+    }
+
+    private void handleResume() {
+
+        screenManager.pop();
+
     }
 
     private void handlePlayAgain() {
@@ -97,8 +106,8 @@ public class PauseScreen implements Screen {
         );
 
         if (option == JOptionPane.YES_OPTION) {
-            saveGameProgress();
-        } else {
+            saveGameProgressAndExit();
+        } else if (option == JOptionPane.NO_OPTION) {
             exitToMainMenu();
         }
     }
@@ -111,15 +120,26 @@ public class PauseScreen implements Screen {
     }
 
     private void playAgain() {
+
         screenManager.pop();
+
         PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
         previousPlayScreen.setExited(true);
         ScreenType previousLevelId = previousPlayScreen.getLevelId();
+
         screenManager.pop();
         screenManager.push(previousLevelId);
     }
 
-    private void saveGameProgress() {
+    private void saveGameProgressAndExit() {
+
+        screenManager.pop();
+
+        PlayScreen previousPlayScreen = (PlayScreen) screenManager.top();
+
+        previousPlayScreen.saveGameProgress();
+
+        screenManager.pop();
 
     }
 

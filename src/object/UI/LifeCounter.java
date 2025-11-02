@@ -48,7 +48,8 @@ public class LifeCounter extends TexturedObject {
     private void updateFrames() {
 
         if (lives <= totalLives && lives >= 1) {
-            currentTexture = frames.get(totalLives - lives);
+            indexFrame = totalLives - lives;
+            currentTexture = frames.get(indexFrame);
         }
     }
 

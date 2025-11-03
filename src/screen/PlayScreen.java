@@ -14,6 +14,8 @@ import object.movable.powerup.PowerUpManager;
 import utils.JsonLoaderUtils;
 import utils.TextUtils;
 
+import com.esotericsoftware.kryonet.*;
+
 import javax.swing.*;
 import java.awt.*;
 

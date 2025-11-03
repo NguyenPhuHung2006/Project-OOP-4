@@ -194,7 +194,7 @@
 
   "multiPlayerPlayScreen": {
     "scoreText": {
-      "content": "Score:    ",
+      "content": "Score:       ",
       "relativeSize": 0.05,
       "colorData": {"r":255,"g":255,"b":255,"a":255},
       "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
@@ -202,7 +202,7 @@
     "numScoreText": {
       "content": "0",
       "relativeSize": 0.05,
-      "colorData": {"r":255,"g":255,"b":0,"a":255},
+      "colorData": {"r":0,"g":0,"b":255,"a":255},
       "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
     },
     "opponentScoreText": {
@@ -211,11 +211,10 @@
       "colorData": {"r":255,"g":255,"b":255,"a":255},
       "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
     },
-
     "opponentNumScoreText": {
       "content": "0",
       "relativeSize": 0.05,
-      "colorData": {"r":255,"g":255,"b":0,"a":255},
+      "colorData": {"r":255,"g":0,"b":0,"a":255},
       "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
     },
 

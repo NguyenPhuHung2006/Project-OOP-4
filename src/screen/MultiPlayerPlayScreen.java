@@ -8,13 +8,12 @@ import object.brick.BrickManager;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.util.Random;
+import java.net.InetAddress;
 
 public class MultiPlayerPlayScreen extends PlayScreen {
 
     private transient Server server;
     private transient Client client;
-    private transient String gameCode;
 
     private final GameText opponentScoreText;
     private final GameText opponentNumScoreText;
@@ -36,7 +35,6 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     }
 
     private void initOpponentObjects(MultiPlayerPlayScreen multiPlayerPlayScreen) {
-
         GameText baseOpponentScoreText = multiPlayerPlayScreen.opponentScoreText;
         GameText baseOpponentNumScoreText = multiPlayerPlayScreen.opponentNumScoreText;
 
@@ -45,6 +43,7 @@ public class MultiPlayerPlayScreen extends PlayScreen {
 
         baseOpponentNumScoreText.updateSizeFromFontData();
         baseOpponentNumScoreText.alignRightOf(baseOpponentScoreText);
+        baseOpponentNumScoreText.centerHorizontallyTo(numScoreText);
     }
 
     private void handleMultiplayerOption() {
@@ -79,8 +78,8 @@ public class MultiPlayerPlayScreen extends PlayScreen {
 
             server.addListener(new Listener() {
                 public void received(Connection connection, Object object) {
-                    if (object instanceof Network.JoinRequest joinReq) {
-                        System.out.println("Player joined with code: " + joinReq.playerCode);
+                    if (object instanceof Network.JoinRequest joinRequest) {
+                        System.out.println("Player joined from IP: " + connection.getRemoteAddressTCP());
                         JOptionPane.showMessageDialog(null, "Player joined! Starting game...");
                         connected = true;
                     } else if (object instanceof Network.ScoreUpdate update) {
@@ -89,23 +88,26 @@ public class MultiPlayerPlayScreen extends PlayScreen {
                 }
             });
 
-            gameCode = generateGameCode();
+            String hostIP = InetAddress.getLocalHost().getHostAddress();
             JOptionPane.showMessageDialog(null,
-                    "Game created!\nShare this code with your friend:\n" + gameCode,
-                    "Game Code",
+                    "Game created!\nShare this IP with your friend:\n" + hostIP,
+                    "Game Host",
                     JOptionPane.INFORMATION_MESSAGE);
 
-            // Wait for a client to connect (the popup above remains visible)
+            System.out.println("Server started on IP: " + hostIP);
+
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
-                    "❌ Failed to start server: " + e.getMessage(),
+                    "Failed to start server: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void joinGameSession() {
-        String code = JOptionPane.showInputDialog(null, "Enter game code:");
-        if (code == null || code.isEmpty()) return;
+        String hostIP = JOptionPane.showInputDialog(null, "Enter Host IP Address:");
+        if (hostIP == null || hostIP.isEmpty()) {
+            return;
+        }
 
         try {
             client = new Client();
@@ -122,43 +124,32 @@ public class MultiPlayerPlayScreen extends PlayScreen {
                 }
             });
 
-            client.connect(5000, "localhost", 54555, 54777);
+            client.connect(5000, hostIP, 54555, 54777);
 
             Network.JoinRequest req = new Network.JoinRequest();
-            req.playerCode = code;
+            req.playerCode = "N/A";
             client.sendTCP(req);
 
             connected = true;
             JOptionPane.showMessageDialog(null,
-                    "✅ Joined game with code: " + code + "\nWaiting for host to start...",
-                    "Joined", JOptionPane.INFORMATION_MESSAGE);
+                    "Connected to host: " + hostIP + "\nWaiting for host to start...",
+                    "Connected", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
-                    "❌ Failed to connect: " + e.getMessage(),
+                    "Failed to connect: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private String generateGameCode() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        StringBuilder sb = new StringBuilder();
-        Random r = new Random();
-        for (int i = 0; i < 6; i++) {
-            sb.append(chars.charAt(r.nextInt(chars.length())));
-        }
-        return sb.toString();
-    }
-
     @Override
     public void update() {
-        super.update();
-
         if (!connected) {
             return;
         }
 
-        // Example of sending score updates
+        super.update();
+
         int currentScore = BrickManager.getInstance().getDestroyedBricksCount();
 
         Network.ScoreUpdate update = new Network.ScoreUpdate();
@@ -186,6 +177,9 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     @Override
     public void render(Graphics2D g) {
         super.render(g);
+
+        opponentScoreText.render(g);
+        opponentNumScoreText.render(g);
 
         if (!connected) {
             g.setColor(Color.YELLOW);

@@ -52,6 +52,5 @@ Thumbs.db
 # Other common ignores
 # ==========================
 *.class
-*.jar
 *.war
 *.ear

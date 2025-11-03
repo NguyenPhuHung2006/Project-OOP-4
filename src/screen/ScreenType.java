@@ -1,5 +1,17 @@
 package screen;
 
+import screen.endscreen.GameOverScreen;
+import screen.endscreen.GameWinScreen;
+import screen.menuscreen.MenuScreen;
+import screen.menuscreen.PlayerStatusScreen;
+import screen.menuscreen.StartScreen;
+import screen.pausescreen.MultiPlayerPauseScreen;
+import screen.pausescreen.PauseScreen;
+import screen.pausescreen.SinglePlayerPauseScreen;
+import screen.playscreen.MultiPlayerPlayScreen;
+import screen.playscreen.PlayScreen;
+import screen.playscreen.SinglePlayerPlayScreen;
+
 public enum ScreenType {
     START {
         @Override
@@ -16,19 +28,19 @@ public enum ScreenType {
     PLAY_LEVEL1 {
         @Override
         public Screen create(Screen screen) {
-            return new PlayScreen(screen, PLAY_LEVEL1);
+            return new SinglePlayerPlayScreen(screen, PLAY_LEVEL1);
         }
     },
     PLAY_LEVEL2 {
         @Override
         public Screen create(Screen screen) {
-            return new PlayScreen(screen, PLAY_LEVEL2);
+            return new SinglePlayerPlayScreen(screen, PLAY_LEVEL2);
         }
     },
     PLAY_LEVEL3 {
         @Override
         public Screen create(Screen screen) {
-            return new PlayScreen(screen, PLAY_LEVEL3);
+            return new SinglePlayerPlayScreen(screen, PLAY_LEVEL3);
         }
     },
     MULTI_PLAYER {
@@ -37,16 +49,16 @@ public enum ScreenType {
             return new MultiPlayerPlayScreen(screen, MULTI_PLAYER);
         }
     },
-    PAUSE {
+    SINGLE_PLAYER_PAUSE {
         @Override
         public Screen create(Screen screen) {
-            return new PauseScreen(screen);
+            return new SinglePlayerPauseScreen(screen);
         }
     },
-    LOADING {
+    MULTIPLE_PLAYER_PAUSE {
         @Override
         public Screen create(Screen screen) {
-            return new LoadingScreen();
+            return new MultiPlayerPauseScreen(screen);
         }
     },
     GAME_OVER {

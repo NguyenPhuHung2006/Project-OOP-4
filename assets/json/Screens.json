@@ -230,6 +230,21 @@
       "colorData": {"r":255,"g":255,"b":0,"a":255},
       "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
     },
+
+    "waitingForConnectionText": {
+      "content": "WAITING FOR CONNECTION",
+      "relativeSize": 0.1,
+      "colorData": {"r":255,"g":255,"b":0,"a":255},
+      "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
+    },
+
+    "exitButton": {
+      "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
+      "relativeSize": 0.05,
+      "texturePath": "/textures/buttons.png",
+      "numberOfFrames": 1
+    },
+
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
       "texturePath": "/textures/background_level1.png",

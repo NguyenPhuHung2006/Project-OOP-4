@@ -4,6 +4,7 @@ import com.google.gson.*;
 import exception.ExceptionHandler;
 import object.brick.Brick;
 import object.movable.powerup.PowerUp;
+import screen.pausescreen.PauseScreen;
 
 import java.io.*;
 
@@ -15,6 +16,7 @@ public class JsonLoaderUtils {
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(Brick.class, new PolymorphicAdapter<>())
             .registerTypeAdapter(PowerUp.class, new PolymorphicAdapter<>())
+            .registerTypeAdapter(PauseScreen.class, new PolymorphicAdapter<>())
             .setPrettyPrinting()
             .create();
 

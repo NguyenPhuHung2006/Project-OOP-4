@@ -1,9 +1,14 @@
-package screen;
+package screen.playscreen;
 
+import audio.SoundType;
 import com.esotericsoftware.kryonet.*;
 import network.*;
+import object.UI.GameButton;
 import object.UI.Text.GameText;
 import object.brick.BrickManager;
+import screen.Screen;
+import screen.ScreenType;
+import screen.menuscreen.MenuScreen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +23,9 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     private final GameText opponentScoreText;
     private final GameText opponentNumScoreText;
 
+    private final GameText waitingForConnectionText;
+    private final GameButton exitButton;
+
     private boolean isHost = false;
     private boolean connected = false;
 
@@ -31,12 +39,18 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         opponentScoreText = new GameText(multiPlayerPlayScreen.opponentScoreText);
         opponentNumScoreText = new GameText(multiPlayerPlayScreen.opponentNumScoreText);
 
+        waitingForConnectionText = new GameText(multiPlayerPlayScreen.waitingForConnectionText);
+        exitButton = new GameButton(multiPlayerPlayScreen.exitButton);
+
         handleMultiplayerOption();
     }
 
     private void initOpponentObjects(MultiPlayerPlayScreen multiPlayerPlayScreen) {
+
         GameText baseOpponentScoreText = multiPlayerPlayScreen.opponentScoreText;
         GameText baseOpponentNumScoreText = multiPlayerPlayScreen.opponentNumScoreText;
+        GameText baseWaitingForConnectionText = multiPlayerPlayScreen.waitingForConnectionText;
+        GameButton baseExitButton = multiPlayerPlayScreen.exitButton;
 
         baseOpponentScoreText.updateSizeFromFontData();
         baseOpponentScoreText.alignAbove(scoreText);
@@ -44,6 +58,14 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         baseOpponentNumScoreText.updateSizeFromFontData();
         baseOpponentNumScoreText.alignRightOf(baseOpponentScoreText);
         baseOpponentNumScoreText.centerHorizontallyTo(numScoreText);
+
+        baseWaitingForConnectionText.updateSizeFromFontData();
+        baseWaitingForConnectionText.center();
+
+        baseExitButton.applyRelativeSize();
+        baseExitButton.alignBelow(baseWaitingForConnectionText);
+        baseExitButton.centerHorizontallyTo(baseWaitingForConnectionText);
+
     }
 
     private void handleMultiplayerOption() {
@@ -78,10 +100,15 @@ public class MultiPlayerPlayScreen extends PlayScreen {
 
             server.addListener(new Listener() {
                 public void received(Connection connection, Object object) {
+
                     if (object instanceof Network.JoinRequest joinRequest) {
+
                         System.out.println("Player joined from IP: " + connection.getRemoteAddressTCP());
                         JOptionPane.showMessageDialog(null, "Player joined! Starting game...");
+
                         connected = true;
+                        startTime = System.currentTimeMillis();
+
                     } else if (object instanceof Network.ScoreUpdate update) {
                         BrickManager.getInstance().setDestroyedBricksCount(update.playerScore);
                     }
@@ -106,6 +133,7 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     private void joinGameSession() {
         String hostIP = JOptionPane.showInputDialog(null, "Enter Host IP Address:");
         if (hostIP == null || hostIP.isEmpty()) {
+            exited = true;
             return;
         }
 
@@ -139,12 +167,14 @@ public class MultiPlayerPlayScreen extends PlayScreen {
             JOptionPane.showMessageDialog(null,
                     "Failed to connect: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
+            exited = true;
         }
     }
 
     @Override
     public void update() {
         if (!connected) {
+            updateWaiting();
             return;
         }
 
@@ -164,6 +194,54 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     }
 
     @Override
+    protected void handlePauseGame() {
+        screenManager.push(ScreenType.MULTIPLE_PLAYER_PAUSE);
+    }
+
+    @Override
+    protected boolean handleSavedProgress() {
+        return false;
+    }
+
+    @Override
+    public void render(Graphics2D graphics2D) {
+
+        if (!connected) {
+            renderWaiting(graphics2D);
+            return;
+        }
+
+        super.render(graphics2D);
+
+        opponentScoreText.render(graphics2D);
+        opponentNumScoreText.render(graphics2D);
+    }
+
+    public void updateWaiting() {
+
+        if (mouseManager.isLeftClicked()) {
+            soundManager.play(SoundType.CLICK_BUTTON);
+            if (exitButton.isClicked(mouseManager)) {
+                goToMenu();
+            }
+        }
+    }
+
+    public void renderWaiting(Graphics2D graphics2D) {
+
+        background.render(graphics2D);
+        waitingForConnectionText.render(graphics2D);
+        exitButton.render(graphics2D);
+    }
+
+    private void goToMenu() {
+        exited = true;
+        while (!(screenManager.top() instanceof MenuScreen)) {
+            screenManager.pop();
+        }
+    }
+
+    @Override
     public void onExit() {
         super.onExit();
         if (server != null) {
@@ -171,20 +249,6 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         }
         if (client != null) {
             client.stop();
-        }
-    }
-
-    @Override
-    public void render(Graphics2D g) {
-        super.render(g);
-
-        opponentScoreText.render(g);
-        opponentNumScoreText.render(g);
-
-        if (!connected) {
-            g.setColor(Color.YELLOW);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
-            g.drawString("Waiting for other player...", 350, 200);
         }
     }
 }

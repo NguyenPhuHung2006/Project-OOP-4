@@ -1,10 +1,12 @@
-package screen;
+package screen.menuscreen;
 
 import audio.MusicType;
 import audio.SoundType;
 import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
+import screen.Screen;
+import screen.ScreenType;
 
 import javax.swing.*;
 import java.awt.*;

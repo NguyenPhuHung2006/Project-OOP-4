@@ -1,4 +1,4 @@
-package screen;
+package screen.endscreen;
 
 import audio.SoundType;
 import config.PlayerStatusData;
@@ -6,6 +6,10 @@ import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
 import object.brick.BrickManager;
+import screen.Screen;
+import screen.ScreenType;
+import screen.menuscreen.MenuScreen;
+import screen.playscreen.PlayScreen;
 import utils.JsonLoaderUtils;
 
 import javax.swing.*;

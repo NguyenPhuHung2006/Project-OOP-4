@@ -1,4 +1,4 @@
-package screen;
+package screen.playscreen;
 
 import audio.MusicType;
 import audio.SoundType;
@@ -11,15 +11,14 @@ import object.UI.GameButton;
 import object.UI.Text.GameText;
 import object.brick.BrickManager;
 import object.movable.powerup.PowerUpManager;
+import screen.Screen;
+import screen.ScreenType;
 import utils.JsonLoaderUtils;
 import utils.TextUtils;
 
-import com.esotericsoftware.kryonet.*;
-
-import javax.swing.*;
 import java.awt.*;
 
-public class PlayScreen implements Screen {
+public abstract class PlayScreen implements Screen {
 
     protected final GameContext gameContext;
     protected final BrickManager brickManager;
@@ -44,6 +43,12 @@ public class PlayScreen implements Screen {
     protected boolean isPaused;
     protected boolean exited;
 
+    protected boolean isGameOver;
+    protected boolean isGameWin;
+
+    protected abstract void handlePauseGame();
+    protected abstract boolean handleSavedProgress();
+
     public PlayScreen(Screen screen, ScreenType screenType) {
 
         PlayScreen playScreen = (PlayScreen) screen;
@@ -57,19 +62,12 @@ public class PlayScreen implements Screen {
 
         startTime = System.currentTimeMillis();
 
-        if (!(this instanceof MultiPlayerPlayScreen)) {
-            boolean hadSavedProgress = JsonLoaderUtils.isJsonDataAvailable(levelSavePath);
+        boolean canLoadProgress = handleSavedProgress();
 
-            startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
 
-            if (hadSavedProgress) {
-                boolean canLoadProgress = handleSavedProgress();
-                if (exited || canLoadProgress) {
-                    return;
-                }
-            }
-
-            JsonLoaderUtils.clearJsonFile(levelSavePath);
+        if(exited || canLoadProgress) {
+            return;
         }
 
         init(screen);
@@ -110,7 +108,6 @@ public class PlayScreen implements Screen {
         baseNumTimeText.alignRightOf(basePauseButton);
         baseNumTimeText.alignBottom();
         baseNumTimeText.translateX(spacingX);
-
     }
 
     private void initObjects(String levelPath) {
@@ -129,71 +126,6 @@ public class PlayScreen implements Screen {
         numScoreText.setContent(String.valueOf(0));
     }
 
-    private boolean handleSavedProgress() {
-        int option = JOptionPane.showConfirmDialog(
-                null,
-                "Do you want to continue playing the saved progress",
-                "WARNING",
-                JOptionPane.YES_NO_OPTION
-        );
-        if (option == JOptionPane.YES_OPTION) {
-            loadSavedProgress();
-            return true;
-        } else if (option == JOptionPane.CLOSED_OPTION) {
-            exited = true;
-        }
-        return false;
-    }
-
-    public void saveGameProgress() {
-
-        gameContext.serializeGameContext();
-        powerUpManager.serializePowerUps();
-        brickManager.serializeBricks();
-
-        scoreText.serializeToJson();
-        numScoreText.serializeToJson();
-        pauseButton.serializeToJson();
-        numTimeText.serializeToJson();
-        background.serializeToJson();
-
-        getTotalTimePlayedBeforeExit();
-
-        JsonLoaderUtils.saveToJson(levelSavePath, this);
-
-        exited = true;
-    }
-
-    private void loadSavedProgress() {
-
-        PlayScreen savedPlayScreen = JsonLoaderUtils.loadFromJson(levelSavePath, PlayScreen.class);
-
-        assert savedPlayScreen != null;
-
-        gameContext.deserializeGameContext(savedPlayScreen.gameContext);
-        brickManager.deserializeBricks(savedPlayScreen.brickManager);
-        powerUpManager.deserializePowerUps(savedPlayScreen.powerUpManager);
-
-        scoreText = savedPlayScreen.scoreText;
-        numScoreText = savedPlayScreen.numScoreText;
-        pauseButton = savedPlayScreen.pauseButton;
-        numTimeText = savedPlayScreen.numTimeText;
-        background = savedPlayScreen.background;
-
-        levelInitPath = savedPlayScreen.levelInitPath;
-        levelSavePath = savedPlayScreen.levelSavePath;
-
-        scoreText.deserializeFromJson();
-        numScoreText.deserializeFromJson();
-        pauseButton.deserializeFromJson();
-        numTimeText.deserializeFromJson();
-        background.deserializeFromJson();
-
-        totalTimePlayed = savedPlayScreen.totalTimePlayed;
-        isPaused = false;
-        powerUpManager.resumeTimers();
-    }
-
     @Override
     public void update() {
 
@@ -207,8 +139,8 @@ public class PlayScreen implements Screen {
         long currentTimePlayed = getCurrentTimePlayed();
         numTimeText.setContent(TextUtils.convertMillisToTimeUnit(currentTimePlayed));
 
-        boolean isGameOver = gameContext.isGameOver();
-        boolean isGameWin = brickManager.isCleared();
+        isGameOver = gameContext.isGameOver() || isGameOver;
+        isGameWin = brickManager.isCleared() || isGameWin;
 
         if (isGameOver || isGameWin) {
             endTime = System.currentTimeMillis();
@@ -228,7 +160,7 @@ public class PlayScreen implements Screen {
                 isPaused = true;
                 endTime = System.currentTimeMillis();
                 pauseStartTime = System.currentTimeMillis();
-                screenManager.push(ScreenType.PAUSE);
+                handlePauseGame();
                 return;
             }
         }
@@ -320,5 +252,7 @@ public class PlayScreen implements Screen {
     public String getLevelSavePath() {
         return levelSavePath;
     }
+
+
 
 }

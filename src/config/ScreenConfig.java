@@ -8,6 +8,7 @@ public class ScreenConfig {
     public PlayScreen playLevel1Screen;
     public PlayScreen playLevel2Screen;
     public PlayScreen playLevel3Screen;
+    public MultiPlayerPlayScreen multiPlayerPlayScreen;
     public PlayerStatusScreen playerStatusScreen;
     public PauseScreen pauseScreen;
     public GameOverScreen gameOverScreen;

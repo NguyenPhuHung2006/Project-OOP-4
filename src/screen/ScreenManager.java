@@ -31,6 +31,7 @@ public class ScreenManager {
         screenRegistry.put(ScreenType.PLAY_LEVEL1, screenConfig.playLevel1Screen);
         screenRegistry.put(ScreenType.PLAY_LEVEL2, screenConfig.playLevel2Screen);
         screenRegistry.put(ScreenType.PLAY_LEVEL3, screenConfig.playLevel3Screen);
+        screenRegistry.put(ScreenType.MULTI_PLAYER, screenConfig.multiPlayerPlayScreen);
         screenRegistry.put(ScreenType.PAUSE, screenConfig.pauseScreen);
         screenRegistry.put(ScreenType.GAME_OVER, screenConfig.gameOverScreen);
         screenRegistry.put(ScreenType.GAME_WIN, screenConfig.gameWinScreen);
@@ -50,11 +51,10 @@ public class ScreenManager {
 
         Screen newScreen = screenType.create(baseScreen);
 
-        if (newScreen instanceof PlayScreen playScreen) {
-            if (playScreen.isExited()) {
-                screens.peek().onEnter();
-                return;
-            }
+        if ((newScreen instanceof PlayScreen playScreen && playScreen.isExited()) ||
+                (newScreen instanceof MultiPlayerPlayScreen multiPlayerPlayScreen && multiPlayerPlayScreen.isExited())) {
+            screens.peek().onEnter();
+            return;
         }
 
         screens.push(newScreen);

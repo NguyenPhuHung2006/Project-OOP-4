@@ -21,28 +21,28 @@ import java.awt.*;
 
 public class PlayScreen implements Screen {
 
-    private final GameContext gameContext;
-    private final BrickManager brickManager;
-    private final PowerUpManager powerUpManager;
-    private final ScreenType levelId;
+    protected final GameContext gameContext;
+    protected final BrickManager brickManager;
+    protected final PowerUpManager powerUpManager;
+    protected final ScreenType levelId;
 
-    private GameText scoreText;
-    private GameText numScoreText;
-    private GameButton pauseButton;
-    private GameText numTimeText;
-    private Background background;
+    protected GameText scoreText;
+    protected GameText numScoreText;
+    protected GameButton pauseButton;
+    protected GameText numTimeText;
+    protected Background background;
 
-    private String levelInitPath;
-    private String levelSavePath;
+    protected String levelInitPath;
+    protected String levelSavePath;
 
-    private long startTime;
-    private long pauseStartTime;
-    private long pauseTime;
-    private long endTime;
-    private long totalTimePlayed;
+    protected long startTime;
+    protected long pauseStartTime;
+    protected long pauseTime;
+    protected long endTime;
+    protected long totalTimePlayed;
 
-    private boolean isPaused;
-    private boolean exited;
+    protected boolean isPaused;
+    protected boolean exited;
 
     public PlayScreen(Screen screen, ScreenType screenType) {
 
@@ -55,18 +55,22 @@ public class PlayScreen implements Screen {
         levelInitPath = playScreen.levelInitPath;
         levelSavePath = playScreen.levelSavePath;
 
-        boolean hadSavedProgress = JsonLoaderUtils.isJsonDataAvailable(levelSavePath);
-
         startTime = System.currentTimeMillis();
 
-        if (hadSavedProgress) {
-            boolean canLoadProgress = handleSavedProgress();
-            if(exited || canLoadProgress) {
-                return;
-            }
-        }
+        if (!(this instanceof MultiPlayerPlayScreen)) {
+            boolean hadSavedProgress = JsonLoaderUtils.isJsonDataAvailable(levelSavePath);
 
-        JsonLoaderUtils.clearJsonFile(levelSavePath);
+            startTime = System.currentTimeMillis();
+
+            if (hadSavedProgress) {
+                boolean canLoadProgress = handleSavedProgress();
+                if (exited || canLoadProgress) {
+                    return;
+                }
+            }
+
+            JsonLoaderUtils.clearJsonFile(levelSavePath);
+        }
 
         init(screen);
 
@@ -132,10 +136,10 @@ public class PlayScreen implements Screen {
                 "WARNING",
                 JOptionPane.YES_NO_OPTION
         );
-        if(option == JOptionPane.YES_OPTION) {
+        if (option == JOptionPane.YES_OPTION) {
             loadSavedProgress();
             return true;
-        } else if(option == JOptionPane.CLOSED_OPTION) {
+        } else if (option == JOptionPane.CLOSED_OPTION) {
             exited = true;
         }
         return false;

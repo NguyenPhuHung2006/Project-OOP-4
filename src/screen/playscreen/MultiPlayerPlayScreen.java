@@ -25,8 +25,8 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     private final GameButton exitButton;
 
     private boolean isHost = false;
-    private boolean connected = false;
     private boolean hasSentEndState = false;
+    private boolean connected = false;
 
     public MultiPlayerPlayScreen(Screen screen, ScreenType screenType) {
         super(screen, screenType);
@@ -96,9 +96,7 @@ public class MultiPlayerPlayScreen extends PlayScreen {
             gameServer = new GameServer();
             gameServer.start();
 
-            startTime = System.currentTimeMillis();
-
-            connected = true;
+            gameServer.bind();
 
             String hostIP = InetAddress.getLocalHost().getHostAddress();
             JOptionPane.showMessageDialog(null,
@@ -122,18 +120,10 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         }
 
         try {
-
             gameClient = new GameClient();
             gameClient.start();
 
             gameClient.connect(hostIP);
-
-            startTime = System.currentTimeMillis();
-
-            connected = true;
-            JOptionPane.showMessageDialog(null,
-                    "Connected to host: " + hostIP + "\nWaiting for host to start...",
-                    "Connected", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
@@ -141,16 +131,6 @@ public class MultiPlayerPlayScreen extends PlayScreen {
                     "Error", JOptionPane.ERROR_MESSAGE);
             exited = true;
         }
-    }
-
-    @Override
-    public void update() {
-        if (!connected) {
-            updateWaiting();
-            return;
-        }
-
-        super.update();
     }
 
     @Override
@@ -185,10 +165,10 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     }
 
     @Override
-    protected void handleGameEnd() {
+    public void handleGameEnd() {
 
         isGameOver = isGameOver || gameContext.isGameOver();
-        isGameWin  = isGameWin  || brickManager.isCleared();
+        isGameWin = isGameWin || brickManager.isCleared();
 
         if ((isGameWin || isGameOver) && !hasSentEndState) {
 
@@ -225,7 +205,22 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     }
 
     @Override
+    public void update() {
+
+        checkConnected();
+
+        if (!connected) {
+            updateWaiting();
+            return;
+        }
+
+        super.update();
+    }
+
+    @Override
     public void render(Graphics2D graphics2D) {
+
+        checkConnected();
 
         if (!connected) {
             renderWaiting(graphics2D);
@@ -243,16 +238,36 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         if (mouseManager.isLeftClicked()) {
             soundManager.play(SoundType.CLICK_BUTTON);
             if (exitButton.isClicked(mouseManager)) {
+                stopConnection();
                 goToMenu();
             }
         }
     }
 
-    public void renderWaiting(Graphics2D graphics2D) {
+    private void renderWaiting(Graphics2D graphics2D) {
 
         background.render(graphics2D);
         waitingForConnectionText.render(graphics2D);
         exitButton.render(graphics2D);
+    }
+
+    private void checkConnected() {
+        boolean previouslyConnected = connected;
+
+        connected = (isHost ? gameServer.isConnected() : gameClient.isConnected());
+
+        if (!previouslyConnected && connected) {
+            startTime = System.currentTimeMillis();
+        }
+    }
+
+    private void stopConnection() {
+        if (gameServer != null) {
+            gameServer.stop();
+        }
+        if (gameClient != null) {
+            gameClient.stop();
+        }
     }
 
     private void goToMenu() {
@@ -266,13 +281,8 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     public void onExit() {
         super.onExit();
 
-        if(isGameOver || isGameWin) {
-            if (gameServer != null) {
-                gameServer.stop();
-            }
-            if (gameClient != null) {
-                gameClient.stop();
-            }
+        if (isGameOver || isGameWin) {
+            stopConnection();
         }
     }
 }

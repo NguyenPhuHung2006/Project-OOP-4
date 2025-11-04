@@ -202,7 +202,7 @@ public abstract class PlayScreen implements Screen {
     @Override
     public void onExit() {
 
-        if (exited || gameContext.isGameOver() || brickManager.isCleared()) {
+        if (exited || isGameOver || isGameWin) {
             soundManager.stopMusic(MusicType.PLAY_THEME);
         } else if (isPaused) {
             soundManager.pauseMusic(MusicType.PLAY_THEME);
@@ -238,6 +238,8 @@ public abstract class PlayScreen implements Screen {
         return levelSavePath;
     }
 
-
+    public void setGameOver(boolean gameOver) {
+        this.isGameOver = gameOver;
+    }
 
 }

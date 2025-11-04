@@ -1,6 +1,7 @@
 package screen.pausescreen;
 
 import screen.Screen;
+import screen.playscreen.MultiPlayerPlayScreen;
 
 import javax.swing.*;
 
@@ -28,6 +29,16 @@ public class MultiPlayerPauseScreen extends PauseScreen {
                 "WARNING",
                 JOptionPane.YES_NO_OPTION
         );
+
+        if(option == JOptionPane.YES_OPTION) {
+            screenManager.pop();
+
+            MultiPlayerPlayScreen multiPlayerPlayScreen = (MultiPlayerPlayScreen) screenManager.top();
+
+            multiPlayerPlayScreen.setGameOver(true);
+
+            multiPlayerPlayScreen.handleGameEnd();
+        }
 
     }
 }

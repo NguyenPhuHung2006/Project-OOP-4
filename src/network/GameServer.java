@@ -1,7 +1,6 @@
 package network;
 
 import com.esotericsoftware.kryonet.*;
-import exception.ExceptionHandler;
 
 import java.io.IOException;
 
@@ -17,18 +16,23 @@ public class GameServer extends AbstractNetwork {
     @Override
     public void start() {
         server.start();
-        try {
-            server.bind(Network.TCP_PORT, Network.UDP_PORT);
-        } catch (IOException e) {
-            ExceptionHandler.handle(e);
-        }
 
         server.addListener(new Listener() {
+
+            @Override
+            public void connected(Connection connection) {
+                connected = true;
+            }
+
             @Override
             public void received(Connection connection, Object object) {
                 update(connection, object);
             }
         });
+    }
+
+    public void bind() throws IOException {
+        server.bind(Network.TCP_PORT, Network.UDP_PORT);
     }
 
     @Override
@@ -39,5 +43,6 @@ public class GameServer extends AbstractNetwork {
     @Override
     public void stop() {
         server.stop();
+        connected = false;
     }
 }

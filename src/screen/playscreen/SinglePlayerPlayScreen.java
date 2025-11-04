@@ -87,4 +87,29 @@ public class SinglePlayerPlayScreen extends PlayScreen {
         return false;
     }
 
+    @Override
+    protected void handleScore() {
+
+        if (brickManager.isIncremented()) {
+            numScoreText.setContent(String.valueOf(brickManager.getDestroyedBricksCount()));
+        }
+    }
+
+    @Override
+    protected void handleGameEnd() {
+
+        isGameOver = gameContext.isGameOver() || isGameOver;
+        isGameWin = brickManager.isCleared() || isGameWin;
+
+        if (isGameOver || isGameWin) {
+            endTime = System.currentTimeMillis();
+            powerUpManager.revertAllPowerUps();
+            if (isGameOver) {
+                screenManager.push(ScreenType.GAME_OVER);
+            } else {
+                screenManager.push(ScreenType.GAME_WIN);
+            }
+        }
+    }
+
 }

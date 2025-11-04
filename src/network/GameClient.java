@@ -1,50 +1,56 @@
 package network;
 
 import com.esotericsoftware.kryonet.*;
+import screen.playscreen.PlayScreen;
 
 import java.io.IOException;
 
-public class GameClient {
+public class GameClient extends AbstractNetwork {
+
     private final Client client;
 
     public GameClient() {
+        super();
         client = new Client();
         Network.register(client.getKryo());
     }
 
+    @Override
     public void start() {
         client.start();
 
         client.addListener(new Listener() {
             @Override
             public void received(Connection connection, Object object) {
-                if (object instanceof Network.ScoreUpdate update) {
-                    System.out.println("Received score update: " + update.playerScore + " / " + update.opponentScore);
-                } else if (object instanceof Network.GameState state) {
-                    System.out.println("Received game state: " + state.playerState);
-                }
+                update(connection, object);
             }
         });
+
+        opponentScore = 0;
+        opponentState = PlayerState.PLAYING;
     }
 
-    public void connect(String host) throws IOException {
-        client.connect(5000, host, 54555, 54777);
+    @Override
+    public void update(Connection connection, Object object) {
+
+        if (object instanceof Integer newOpponentScore) {
+            setOpponentScore(newOpponentScore);
+        } else if(object instanceof PlayerState newOpponentState) {
+            setOpponentState(newOpponentState);
+        }
     }
 
-    public void sendJoinRequest(String code) {
-        Network.JoinRequest req = new Network.JoinRequest();
-        req.playerCode = code;
-        client.sendTCP(req);
+    @Override
+    public void sendTCP(Object object) {
+        client.sendTCP(object);
     }
 
-    public void sendScore(int playerScore, int opponentScore) {
-        Network.ScoreUpdate update = new Network.ScoreUpdate();
-        update.playerScore = playerScore;
-        update.opponentScore = opponentScore;
-        client.sendTCP(update);
-    }
-
+    @Override
     public void stop() {
         client.stop();
+    }
+
+    public void connect(String hostIP) throws IOException {
+        client.connect(5000, hostIP, Network.TCP_PORT, Network.UDP_PORT);
     }
 }

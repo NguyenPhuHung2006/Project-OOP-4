@@ -1,11 +1,9 @@
 package screen.playscreen;
 
 import audio.SoundType;
-import com.esotericsoftware.kryonet.*;
 import network.*;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
-import object.brick.BrickManager;
 import screen.Screen;
 import screen.ScreenType;
 import screen.menuscreen.MenuScreen;
@@ -17,8 +15,8 @@ import java.net.InetAddress;
 
 public class MultiPlayerPlayScreen extends PlayScreen {
 
-    private transient Server server;
-    private transient Client client;
+    private transient GameServer gameServer;
+    private transient GameClient gameClient;
 
     private final GameText opponentScoreText;
     private final GameText opponentNumScoreText;
@@ -93,40 +91,25 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     private void createGameSession() {
         try {
             isHost = true;
-            server = new Server();
-            Network.register(server.getKryo());
-            server.bind(54555, 54777);
-            server.start();
 
-            server.addListener(new Listener() {
-                public void received(Connection connection, Object object) {
+            gameServer = new GameServer();
+            gameServer.start();
 
-                    if (object instanceof Network.JoinRequest joinRequest) {
+            startTime = System.currentTimeMillis();
 
-                        System.out.println("Player joined from IP: " + connection.getRemoteAddressTCP());
-                        JOptionPane.showMessageDialog(null, "Player joined! Starting game...");
-
-                        connected = true;
-                        startTime = System.currentTimeMillis();
-
-                    } else if (object instanceof Network.ScoreUpdate update) {
-                        BrickManager.getInstance().setDestroyedBricksCount(update.playerScore);
-                    }
-                }
-            });
+            connected = true;
 
             String hostIP = InetAddress.getLocalHost().getHostAddress();
             JOptionPane.showMessageDialog(null,
-                    "Game created!\nShare this IP with your friend:\n" + hostIP,
+                    "Game created!\nYour IP address: " + hostIP,
                     "Game Host",
                     JOptionPane.INFORMATION_MESSAGE);
-
-            System.out.println("Server started on IP: " + hostIP);
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
                     "Failed to start server: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
+            exited = true;
         }
     }
 
@@ -138,25 +121,13 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         }
 
         try {
-            client = new Client();
-            Network.register(client.getKryo());
-            client.start();
 
-            client.addListener(new Listener() {
-                public void received(Connection connection, Object object) {
-                    if (object instanceof Network.ScoreUpdate update) {
-                        BrickManager.getInstance().setDestroyedBricksCount(update.opponentScore);
-                    } else if (object instanceof Network.GameState state) {
-                        System.out.println("Received game state: " + state.playerState);
-                    }
-                }
-            });
+            gameClient = new GameClient();
+            gameClient.start();
 
-            client.connect(5000, hostIP, 54555, 54777);
+            gameClient.connect(hostIP);
 
-            Network.JoinRequest req = new Network.JoinRequest();
-            req.playerCode = "N/A";
-            client.sendTCP(req);
+            startTime = System.currentTimeMillis();
 
             connected = true;
             JOptionPane.showMessageDialog(null,
@@ -180,17 +151,27 @@ public class MultiPlayerPlayScreen extends PlayScreen {
 
         super.update();
 
-        int currentScore = BrickManager.getInstance().getDestroyedBricksCount();
+//        PlayerState opponentState = (isHost ? gameServer.getOpponentState() : gameClient.getOpponentState());
+//
+//        switch (opponentState) {
+//            case WIN -> {
+//                isGameOver = true;
+//                if (isHost) {
+//                    gameServer.sendTCP();
+//                } else {
+//                    gameClient.sendTCP();
+//                }
+//            }
+//            case LOSE -> {
+//                isGameWin = true;
+//                if (isHost) {
+//                    gameServer.sendTCP();
+//                } else {
+//                    gameClient.sendTCP();
+//                }
+//            }
+//        }
 
-        Network.ScoreUpdate update = new Network.ScoreUpdate();
-        update.playerScore = currentScore;
-        update.opponentScore = currentScore;
-
-        if (isHost && server != null) {
-            server.sendToAllTCP(update);
-        } else if (client != null) {
-            client.sendTCP(update);
-        }
     }
 
     @Override
@@ -201,6 +182,64 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     @Override
     protected boolean handleSavedProgress() {
         return false;
+    }
+
+    @Override
+    protected void handleScore() {
+
+        if (brickManager.isIncremented()) {
+
+            Integer newScore = brickManager.getDestroyedBricksCount();
+            numScoreText.setContent(String.valueOf(newScore));
+
+            if (isHost) {
+                gameServer.sendTCP(newScore);
+            } else {
+                gameClient.sendTCP(newScore);
+            }
+        }
+
+        int opponentScore = (isHost ? gameServer.getOpponentScore() : gameClient.getOpponentScore());
+        opponentNumScoreText.setContent(
+                Integer.toString(opponentScore)
+        );
+    }
+
+    @Override
+    protected void handleGameEnd() {
+
+        if (isGameWin || isGameOver) {
+
+            PlayerState newOpponentState = (isGameWin ? PlayerState.LOSE : PlayerState.WIN);
+
+            if(isHost) {
+                gameServer.sendTCP(newOpponentState);
+            } else {
+                gameClient.sendTCP(newOpponentState);
+            }
+        }
+
+        PlayerState opponentState = (isHost ? gameServer.getOpponentState() : gameClient.getOpponentState());
+
+        if (opponentState == PlayerState.WIN) {
+            isGameOver = true;
+        } else if (opponentState == PlayerState.LOSE) {
+            isGameWin = true;
+        }
+
+        isGameOver = gameContext.isGameOver() || isGameOver;
+        isGameWin = brickManager.isCleared() || isGameWin;
+
+        if (isGameOver || isGameWin) {
+            endTime = System.currentTimeMillis();
+            powerUpManager.revertAllPowerUps();
+            if (isGameOver) {
+                screenManager.push(ScreenType.GAME_OVER);
+            } else {
+                screenManager.push(ScreenType.GAME_WIN);
+            }
+        }
+
     }
 
     @Override
@@ -244,11 +283,11 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     @Override
     public void onExit() {
         super.onExit();
-        if (server != null) {
-            server.stop();
+        if (gameServer != null) {
+            gameServer.stop();
         }
-        if (client != null) {
-            client.stop();
+        if (gameClient != null) {
+            gameClient.stop();
         }
     }
 }

@@ -48,6 +48,8 @@ public abstract class PlayScreen implements Screen {
 
     protected abstract void handlePauseGame();
     protected abstract boolean handleSavedProgress();
+    protected abstract void handleScore();
+    protected abstract void handleGameEnd();
 
     public PlayScreen(Screen screen, ScreenType screenType) {
 
@@ -139,20 +141,6 @@ public abstract class PlayScreen implements Screen {
         long currentTimePlayed = getCurrentTimePlayed();
         numTimeText.setContent(TextUtils.convertMillisToTimeUnit(currentTimePlayed));
 
-        isGameOver = gameContext.isGameOver() || isGameOver;
-        isGameWin = brickManager.isCleared() || isGameWin;
-
-        if (isGameOver || isGameWin) {
-            endTime = System.currentTimeMillis();
-            powerUpManager.revertAllPowerUps();
-            if (isGameOver) {
-                screenManager.push(ScreenType.GAME_OVER);
-            } else {
-                screenManager.push(ScreenType.GAME_WIN);
-            }
-            return;
-        }
-
         if (mouseManager.isLeftClicked()) {
             soundManager.play(SoundType.CLICK_BUTTON);
             if (pauseButton.isClicked(mouseManager)) {
@@ -167,11 +155,6 @@ public abstract class PlayScreen implements Screen {
 
         gameContext.updateContext();
         brickManager.updateBricks();
-
-        if (brickManager.isIncremented()) {
-            numScoreText.setContent(String.valueOf(brickManager.getDestroyedBricksCount()));
-        }
-
         powerUpManager.updateFallingPowerUps();
 
         if (gameContext.getBall().isLost()) {
@@ -180,6 +163,8 @@ public abstract class PlayScreen implements Screen {
             gameContext.resetObjectsBound();
         }
 
+        handleScore();
+        handleGameEnd();
     }
 
     @Override

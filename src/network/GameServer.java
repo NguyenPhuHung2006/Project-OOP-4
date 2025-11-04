@@ -32,16 +32,6 @@ public class GameServer extends AbstractNetwork {
     }
 
     @Override
-    public void update(Connection connection, Object object) {
-
-        if (object instanceof Integer newOpponentScore) {
-            setOpponentScore(newOpponentScore);
-        } else if (object instanceof PlayerState newOpponentState) {
-            setOpponentState(newOpponentState);
-        }
-    }
-
-    @Override
     public void sendTCP(Object object) {
         server.sendToAllTCP(object);
     }

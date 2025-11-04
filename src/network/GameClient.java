@@ -1,7 +1,6 @@
 package network;
 
 import com.esotericsoftware.kryonet.*;
-import screen.playscreen.PlayScreen;
 
 import java.io.IOException;
 
@@ -25,19 +24,6 @@ public class GameClient extends AbstractNetwork {
                 update(connection, object);
             }
         });
-
-        opponentScore = 0;
-        opponentState = PlayerState.PLAYING;
-    }
-
-    @Override
-    public void update(Connection connection, Object object) {
-
-        if (object instanceof Integer newOpponentScore) {
-            setOpponentScore(newOpponentScore);
-        } else if(object instanceof PlayerState newOpponentState) {
-            setOpponentState(newOpponentState);
-        }
     }
 
     @Override

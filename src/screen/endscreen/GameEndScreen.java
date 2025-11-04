@@ -10,6 +10,7 @@ import screen.Screen;
 import screen.ScreenType;
 import screen.menuscreen.MenuScreen;
 import screen.playscreen.PlayScreen;
+import screen.playscreen.SinglePlayerPlayScreen;
 import utils.JsonLoaderUtils;
 
 import javax.swing.*;
@@ -119,8 +120,10 @@ public abstract class GameEndScreen implements Screen {
 
         playerStatusData.totalTimePlayed += totalTimePlayed;
 
-        String levelSavedPath = previousPlayScreen.getLevelSavePath();
-        JsonLoaderUtils.clearJsonFile(levelSavedPath);
+        if(previousPlayScreen instanceof SinglePlayerPlayScreen singlePlayerPlayScreen) {
+            String levelSavedPath = singlePlayerPlayScreen.getLevelSavePath();
+            JsonLoaderUtils.clearJsonFile(levelSavedPath);
+        }
 
         screenManager.push(currentGameEndScreen);
 

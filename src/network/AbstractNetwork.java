@@ -1,7 +1,6 @@
 package network;
 
 import com.esotericsoftware.kryonet.Connection;
-import object.GameObject;
 
 public abstract class AbstractNetwork {
 
@@ -9,9 +8,19 @@ public abstract class AbstractNetwork {
     protected PlayerState opponentState;
 
     public abstract void start();
+
     public abstract void stop();
-    public abstract void update(Connection connection, Object object);
+
     public abstract void sendTCP(Object object);
+
+    protected void update(Connection connection, Object object) {
+
+        if (object instanceof Integer newOpponentScore) {
+            setOpponentScore(newOpponentScore);
+        } else if (object instanceof PlayerState newOpponentState) {
+            setOpponentState(newOpponentState);
+        }
+    }
 
     public AbstractNetwork() {
         opponentScore = 0;

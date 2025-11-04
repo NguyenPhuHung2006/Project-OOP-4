@@ -8,7 +8,7 @@ public class PhysicsUtils {
     }
 
     static final float MAX_BOUNCE_ANGLE = (float) Math.toRadians(75);
-    static final float MIN_BOUNCE_ANGLE = (float) Math.toRadians(20);
+    static final float MIN_BOUNCE_ANGLE = (float) Math.toRadians(30);
 
     public static void bounceOffPaddle(Ball ball, Paddle paddle) {
 

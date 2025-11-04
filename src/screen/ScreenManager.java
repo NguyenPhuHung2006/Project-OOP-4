@@ -3,6 +3,8 @@ package screen;
 import config.ScreenConfig;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
+import screen.playscreen.MultiPlayerPlayScreen;
+import screen.playscreen.PlayScreen;
 
 import java.awt.*;
 import java.util.EnumMap;
@@ -26,12 +28,18 @@ public class ScreenManager {
     }
 
     public void loadFromJson(ScreenConfig screenConfig) {
+
         screenRegistry.put(ScreenType.START, screenConfig.startScreen);
         screenRegistry.put(ScreenType.MENU, screenConfig.menuScreen);
+
         screenRegistry.put(ScreenType.PLAY_LEVEL1, screenConfig.playLevel1Screen);
         screenRegistry.put(ScreenType.PLAY_LEVEL2, screenConfig.playLevel2Screen);
         screenRegistry.put(ScreenType.PLAY_LEVEL3, screenConfig.playLevel3Screen);
-        screenRegistry.put(ScreenType.PAUSE, screenConfig.pauseScreen);
+        screenRegistry.put(ScreenType.MULTI_PLAYER, screenConfig.multiPlayerPlayScreen);
+
+        screenRegistry.put(ScreenType.SINGLE_PLAYER_PAUSE, screenConfig.pauseScreen);
+        screenRegistry.put(ScreenType.MULTIPLE_PLAYER_PAUSE, screenConfig.pauseScreen);
+
         screenRegistry.put(ScreenType.GAME_OVER, screenConfig.gameOverScreen);
         screenRegistry.put(ScreenType.GAME_WIN, screenConfig.gameWinScreen);
         screenRegistry.put(ScreenType.PLAYER_STATUS, screenConfig.playerStatusScreen);
@@ -50,11 +58,10 @@ public class ScreenManager {
 
         Screen newScreen = screenType.create(baseScreen);
 
-        if (newScreen instanceof PlayScreen playScreen) {
-            if (playScreen.isExited()) {
-                screens.peek().onEnter();
-                return;
-            }
+        if ((newScreen instanceof PlayScreen playScreen && playScreen.isExited()) ||
+                (newScreen instanceof MultiPlayerPlayScreen multiPlayerPlayScreen && multiPlayerPlayScreen.isExited())) {
+            screens.peek().onEnter();
+            return;
         }
 
         screens.push(newScreen);

@@ -1,10 +1,12 @@
-package screen;
+package screen.menuscreen;
 
 import audio.MusicType;
 import audio.SoundType;
 import object.UI.Background;
 import object.UI.GameButton;
 import object.UI.Text.GameText;
+import screen.Screen;
+import screen.ScreenType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +21,9 @@ public class MenuScreen implements Screen {
 
     GameText level3Text;
     GameButton level3Button;
+
+    GameText multiPlayerText;
+    GameButton multiPlayerButton;
 
     GameButton playerStatusButton;
 
@@ -41,6 +46,9 @@ public class MenuScreen implements Screen {
         level3Button = new GameButton(menuScreen.level3Button);
         level3Text = new GameText(menuScreen.level3Text);
 
+        multiPlayerText = new GameText(menuScreen.multiPlayerText);
+        multiPlayerButton = new GameButton(menuScreen.multiPlayerButton);
+
         playerStatusButton = new GameButton(menuScreen.playerStatusButton);
 
         escapeButton = new GameButton(menuScreen.escapeButton);
@@ -62,6 +70,9 @@ public class MenuScreen implements Screen {
 
         GameText baseLevel3Text = menuScreen.level3Text;
         GameButton baseLevel3Button = menuScreen.level3Button;
+
+        GameText baseMultiPlayerText = menuScreen.multiPlayerText;
+        GameButton baseMultiPlayerButton = menuScreen.multiPlayerButton;
 
         GameButton basePlayerStatusButton = menuScreen.playerStatusButton;
 
@@ -90,6 +101,14 @@ public class MenuScreen implements Screen {
         baseLevel3Button.alignRightOf(baseLevel3Text);
         baseLevel3Button.centerVerticallyTo(baseLevel3Text);
 
+        baseMultiPlayerText.updateSizeFromFontData();
+        baseMultiPlayerText.alignBelow(baseLevel3Text);
+        baseMultiPlayerText.translateY(spacingY);
+
+        baseMultiPlayerButton.applyRelativeSize();
+        baseMultiPlayerButton.alignRightOf(baseMultiPlayerText);
+        baseMultiPlayerButton.centerVerticallyTo(baseMultiPlayerText);
+
         basePlayerStatusButton.applyRelativeSize();
         basePlayerStatusButton.alignTopRight();
 
@@ -117,6 +136,9 @@ public class MenuScreen implements Screen {
 
             } else if (escapeButton.isClicked(mouseManager)) {
                 handleEscape();
+
+            } else if(multiPlayerButton.isClicked(mouseManager)) {
+                screenManager.push(ScreenType.MULTI_PLAYER);
             }
         }
     }
@@ -134,6 +156,9 @@ public class MenuScreen implements Screen {
 
         level3Text.render(graphics2D);
         level3Button.render(graphics2D);
+
+        multiPlayerText.render(graphics2D);
+        multiPlayerButton.render(graphics2D);
 
         playerStatusButton.render(graphics2D);
         escapeButton.render(graphics2D);

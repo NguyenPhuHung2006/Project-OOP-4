@@ -1,8 +1,8 @@
-package screen;
-
+package screen.endscreen;
 
 import audio.SoundType;
 import config.PlayerStatusData;
+import screen.Screen;
 
 public class GameOverScreen extends GameEndScreen {
 

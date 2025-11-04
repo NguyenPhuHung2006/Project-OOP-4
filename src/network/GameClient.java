@@ -19,6 +19,12 @@ public class GameClient extends AbstractNetwork {
         client.start();
 
         client.addListener(new Listener() {
+
+            @Override
+            public void connected(Connection connection) {
+                connected = true;
+            }
+
             @Override
             public void received(Connection connection, Object object) {
                 update(connection, object);

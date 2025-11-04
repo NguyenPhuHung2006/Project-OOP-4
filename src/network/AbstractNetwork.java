@@ -6,6 +6,7 @@ public abstract class AbstractNetwork {
 
     protected Integer opponentScore;
     protected PlayerState opponentState;
+    protected volatile boolean connected;
 
     public abstract void start();
 
@@ -25,6 +26,7 @@ public abstract class AbstractNetwork {
     public AbstractNetwork() {
         opponentScore = 0;
         opponentState = PlayerState.PLAYING;
+        connected = false;
     }
 
     public boolean isOpponentWin() {
@@ -49,6 +51,14 @@ public abstract class AbstractNetwork {
 
     public void setOpponentState(PlayerState opponentState) {
         this.opponentState = opponentState;
+    }
+
+    protected void setConnected(boolean state) {
+        connected = state;
+    }
+
+    public boolean isConnected() {
+        return connected;
     }
 
 }

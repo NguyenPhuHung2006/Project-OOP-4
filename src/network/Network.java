@@ -9,7 +9,7 @@ public class Network {
 
     public static void register(com.esotericsoftware.kryo.Kryo kryo) {
         kryo.register(String.class);
-        kryo.register(PlayScreen.class);
+        kryo.register(PlayerState.class);
         kryo.register(Integer.class);
     }
 }

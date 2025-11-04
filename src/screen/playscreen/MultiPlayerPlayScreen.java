@@ -26,6 +26,7 @@ public class MultiPlayerPlayScreen extends PlayScreen {
 
     private boolean isHost = false;
     private boolean connected = false;
+    private boolean hasSentEndState = false;
 
     public MultiPlayerPlayScreen(Screen screen, ScreenType screenType) {
         super(screen, screenType);
@@ -150,28 +151,6 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         }
 
         super.update();
-
-//        PlayerState opponentState = (isHost ? gameServer.getOpponentState() : gameClient.getOpponentState());
-//
-//        switch (opponentState) {
-//            case WIN -> {
-//                isGameOver = true;
-//                if (isHost) {
-//                    gameServer.sendTCP();
-//                } else {
-//                    gameClient.sendTCP();
-//                }
-//            }
-//            case LOSE -> {
-//                isGameWin = true;
-//                if (isHost) {
-//                    gameServer.sendTCP();
-//                } else {
-//                    gameClient.sendTCP();
-//                }
-//            }
-//        }
-
     }
 
     @Override
@@ -208,18 +187,25 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     @Override
     protected void handleGameEnd() {
 
-        if (isGameWin || isGameOver) {
+        isGameOver = isGameOver || gameContext.isGameOver();
+        isGameWin  = isGameWin  || brickManager.isCleared();
 
-            PlayerState newOpponentState = (isGameWin ? PlayerState.LOSE : PlayerState.WIN);
+        if ((isGameWin || isGameOver) && !hasSentEndState) {
 
-            if(isHost) {
-                gameServer.sendTCP(newOpponentState);
+            PlayerState newCurrentState = (isGameWin ? PlayerState.WIN : PlayerState.LOSE);
+
+            if (isHost) {
+                gameServer.sendTCP(newCurrentState);
             } else {
-                gameClient.sendTCP(newOpponentState);
+                gameClient.sendTCP(newCurrentState);
             }
+
+            hasSentEndState = true;
         }
 
-        PlayerState opponentState = (isHost ? gameServer.getOpponentState() : gameClient.getOpponentState());
+        PlayerState opponentState = isHost
+                ? gameServer.getOpponentState()
+                : gameClient.getOpponentState();
 
         if (opponentState == PlayerState.WIN) {
             isGameOver = true;
@@ -227,17 +213,13 @@ public class MultiPlayerPlayScreen extends PlayScreen {
             isGameWin = true;
         }
 
-        isGameOver = gameContext.isGameOver() || isGameOver;
-        isGameWin = brickManager.isCleared() || isGameWin;
-
-        if (isGameOver || isGameWin) {
+        if (isGameWin || isGameOver) {
             endTime = System.currentTimeMillis();
             powerUpManager.revertAllPowerUps();
-            if (isGameOver) {
-                screenManager.push(ScreenType.GAME_OVER);
-            } else {
-                screenManager.push(ScreenType.GAME_WIN);
-            }
+
+            screenManager.push(isGameOver
+                    ? ScreenType.GAME_OVER
+                    : ScreenType.GAME_WIN);
         }
 
     }
@@ -283,11 +265,14 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     @Override
     public void onExit() {
         super.onExit();
-        if (gameServer != null) {
-            gameServer.stop();
-        }
-        if (gameClient != null) {
-            gameClient.stop();
+
+        if(isGameOver || isGameWin) {
+            if (gameServer != null) {
+                gameServer.stop();
+            }
+            if (gameClient != null) {
+                gameClient.stop();
+            }
         }
     }
 }

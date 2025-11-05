@@ -173,11 +173,10 @@ public abstract class PlayScreen implements Screen {
         background.render(graphics2D);
 
         brickManager.renderBricks(graphics2D);
+
         gameContext.renderContext(graphics2D);
 
         powerUpManager.renderPowerUps(graphics2D);
-
-        brickManager.renderBricks(graphics2D);
 
         scoreText.render(graphics2D);
         numScoreText.render(graphics2D);

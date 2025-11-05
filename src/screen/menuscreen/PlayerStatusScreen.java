@@ -29,6 +29,8 @@ public class PlayerStatusScreen implements Screen {
 
     Background background;
 
+    private String playerStatusDataPath;
+
     public PlayerStatusScreen(Screen screen) {
         init(screen);
 
@@ -72,7 +74,9 @@ public class PlayerStatusScreen implements Screen {
 
         GameButton baseReturnButton = playerStatusScreen.returnButton;
 
-        PlayerStatusData playerStatusData = JsonLoaderUtils.loadFromJson(JsonLoaderUtils.playerStatusDataPath, PlayerStatusData.class);
+        playerStatusDataPath = playerStatusScreen.playerStatusDataPath;
+
+        PlayerStatusData playerStatusData = JsonLoaderUtils.loadFromJson(playerStatusDataPath, PlayerStatusData.class);
 
         assert playerStatusData != null;
         baseNumBrickDestroyedText.setContent(String.valueOf(playerStatusData.numberOfBricksDestroyed));

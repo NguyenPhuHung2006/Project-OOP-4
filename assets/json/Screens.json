@@ -308,7 +308,8 @@
       "textureWidth": 1000, "textureHeight": 1000,
       "texturePath": "/textures/background_over.png",
       "numberOfFrames": 1
-    }
+    },
+    "playerStatusDataPath": "assets/json/PlayerStatus.json"
   },
 
   "gameWinScreen": {
@@ -334,7 +335,8 @@
       "textureWidth": 1000, "textureHeight": 1000,
       "texturePath": "/textures/background_multi.png",
       "numberOfFrames": 1
-    }
+    },
+    "playerStatusDataPath": "assets/json/PlayerStatus.json"
   },
   "playerStatusScreen": {
     "brickDestroyedText": {
@@ -398,6 +400,8 @@
       "textureWidth": 1000, "textureHeight": 1000,
       "texturePath": "/textures/background_multi.png",
       "numberOfFrames": 1
-    }
+    },
+
+    "playerStatusDataPath": "assets/json/PlayerStatus.json"
   }
 }

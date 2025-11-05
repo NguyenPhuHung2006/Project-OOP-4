@@ -29,10 +29,12 @@ Game Arkanoid (phiên bản đơn giản) được viết bằng **Java + Swing*
 
 * Cơ chế va chạm ball — paddle — bricks
 * Nhiều loại gạch (brick)
+* Nhiều loại kỹ năng (Power Up)
 * Quản lý mạng (các lớp Network / GameServer / GameClient) 
 * Âm thanh nền và hiệu ứng
 * Menu, pause, game over
-* Lưu quá trình chơi khi ấn nút thoát khi tạm dừng
+* Lưu quá trình chơi 
+* Lưu thành tích chơi
 
 ## Cách báo lỗi / góp ý
 

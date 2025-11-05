@@ -3,8 +3,6 @@ package network;
 import com.esotericsoftware.kryonet.*;
 
 import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public class GameClient extends AbstractNetwork {
 
@@ -46,7 +44,7 @@ public class GameClient extends AbstractNetwork {
 
         Thread.sleep(300);
 
-        if(connectionResponse[0] == ConnectionResponse.REJECTED) {
+        if (connectionResponse[0] == ConnectionResponse.REJECTED) {
             throw new IOException("Another client has already connected to the server");
         }
     }

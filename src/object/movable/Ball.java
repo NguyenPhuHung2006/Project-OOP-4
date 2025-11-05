@@ -3,20 +3,22 @@ package object.movable;
 import audio.SoundType;
 import exception.ExceptionHandler;
 import exception.InvalidGameStateException;
-import object.GameContext;
 import object.GameObject;
-import object.TexturedObject;
 import object.brick.Brick;
 
 import utils.PhysicsUtils;
 import utils.RandomUtils;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ball extends MovableObject {
 
     private boolean isMoving;
     private boolean isBallLost;
+
+    private static final List<Brick> bricksCollided = new ArrayList<>();
 
     private Paddle paddle;
 
@@ -52,7 +54,7 @@ public class Ball extends MovableObject {
 
         paddle = gameContext.getPaddle();
 
-        if(paddle == null) {
+        if (paddle == null) {
             ExceptionHandler.handle(new InvalidGameStateException("the paddle should be initialized before the ball", null));
         }
 
@@ -69,7 +71,7 @@ public class Ball extends MovableObject {
         this.x = baseBall.getX();
         this.y = baseBall.getY();
     }
-    
+
     public void resetBallBound(Paddle paddle) {
         isMoving = false;
         stop();
@@ -90,7 +92,7 @@ public class Ball extends MovableObject {
     }
 
     private void followPaddleIfAttached(Paddle paddle) {
-        if(isIntersect(paddle)) {
+        if (isIntersect(paddle)) {
             if (paddle.getDx() == 1) {
                 x = paddle.getX() + paddle.getWidth();
             } else {
@@ -133,8 +135,8 @@ public class Ball extends MovableObject {
         int topLeftTileX = (int) x / tileWidth;
         int topLeftTileY = (int) y / tileHeight;
 
-        int bottomRightTileX = (int)(x + width) / tileWidth;
-        int bottomRightTileY = (int)(y + height) / tileHeight;
+        int bottomRightTileX = (int) (x + width) / tileWidth;
+        int bottomRightTileY = (int) (y + height) / tileHeight;
 
         int tileBoundX = bricks[0].length;
         int tileBoundY = bricks.length;
@@ -145,6 +147,8 @@ public class Ball extends MovableObject {
                 {topLeftTileX, bottomRightTileY},
                 {bottomRightTileX, bottomRightTileY}
         };
+
+        bricksCollided.clear();
 
         for (int[] corner : corners) {
             int tileX = corner[0];
@@ -158,14 +162,16 @@ public class Ball extends MovableObject {
                         brick.takeHit();
                     }
 
-                    if (checkX) {
-                        handleObjectCollisionX(brick);
-                    } else {
-                        handleObjectCollisionY(brick);
-                    }
-
-                    break;
+                    bricksCollided.add(brick);
                 }
+            }
+        }
+
+        for (Brick brickCollided : bricksCollided) {
+            if (checkX) {
+                handleObjectCollisionX(brickCollided);
+            } else {
+                handleObjectCollisionY(brickCollided);
             }
         }
     }
@@ -180,11 +186,11 @@ public class Ball extends MovableObject {
 
     private void checkBallState() {
 
-        if(y + height >= gameContext.getWindowHeight()) {
+        if (y + height >= gameContext.getWindowHeight()) {
             isBallLost = true;
         }
 
-        if(isIntersect(paddle)) {
+        if (isIntersect(paddle)) {
             y = paddle.getY() + paddle.getHeight() + 1;
             dy = Math.abs(dy);
         }
@@ -196,7 +202,7 @@ public class Ball extends MovableObject {
     }
 
     public boolean isLost() {
-        if(isBallLost) {
+        if (isBallLost) {
             isBallLost = false;
             return true;
         }

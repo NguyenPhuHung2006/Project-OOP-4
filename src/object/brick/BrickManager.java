@@ -233,6 +233,7 @@ public class BrickManager {
         strongBrickTextureSet.clear();
         powerUpBrickTextureSet.clear();
         framePerRow = 0;
+        destroyInterval = 0;
         destroyedBricksCount = 0;
         totalBricksCount = 0;
         isIncremented = false;

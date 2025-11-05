@@ -68,7 +68,8 @@
     "textureWidth": 11, "textureHeight": 10,
     "relativeSize": 0.1,
     "texturePath": "/textures/hearts.png",
-    "numberOfFrames": 7
+    "numberOfFrames": 7,
+    "liveInterval": 2
   },
 
   "normalBrickTextureIndices": [0, 1, 2, 3, 4, 5],

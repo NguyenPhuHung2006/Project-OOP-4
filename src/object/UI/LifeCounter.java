@@ -8,11 +8,16 @@ public class LifeCounter extends TexturedObject {
     private int lives;
     private final int totalLives;
 
+    private final int liveInterval;
+
     public LifeCounter(TexturedObject texturedObject) {
 
         super(texturedObject);
         lives = texturedObject.getNumberOfFrames();
         totalLives = texturedObject.getNumberOfFrames();
+
+        LifeCounter lifeCounter = (LifeCounter) texturedObject;
+        liveInterval = lifeCounter.liveInterval;
     }
 
     @Override
@@ -40,7 +45,7 @@ public class LifeCounter extends TexturedObject {
         if(isIncreasing) {
             lives++;
         } else {
-            lives--;
+            lives -= liveInterval;
         }
         updateFrames();
     }
@@ -65,4 +70,7 @@ public class LifeCounter extends TexturedObject {
         this.lives = lives;
     }
 
+    public int getLiveInterval() {
+        return liveInterval;
+    }
 }

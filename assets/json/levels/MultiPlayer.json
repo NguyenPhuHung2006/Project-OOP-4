@@ -78,6 +78,7 @@
   "framePerRow": 11,
 
   "destroyInterval": 1,
+  "liveInterval": 1,
 
   "brickLayout": [
     [110,110,110,121,121,121,121,132,132,132],

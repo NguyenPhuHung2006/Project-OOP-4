@@ -3,7 +3,7 @@
     "playButton": {
       "textureX": 16, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.1,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "title": {
@@ -14,7 +14,7 @@
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_start.png",
+      "texturePath": "/textures/background/bg_start.png",
       "numberOfFrames": 1
     }
   },
@@ -30,7 +30,7 @@
     "level1Button": {
       "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "level2Text": {
@@ -42,7 +42,7 @@
     "level2Button": {
       "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "level3Text": {
@@ -54,7 +54,7 @@
     "level3Button": {
       "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "multiPlayerText": {
@@ -67,25 +67,25 @@
     "multiPlayerButton": {
       "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
 
     "playerStatusButton": {
       "textureX": 64, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "escapeButton": {
       "textureX": 64, "textureY": 16, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
 },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_menu.png",
+      "texturePath": "/textures/background/bg_menu.png",
       "numberOfFrames": 1
     }
   },
@@ -106,7 +106,7 @@
     "pauseButton": {
       "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "numTimeText": {
@@ -116,8 +116,8 @@
       "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
     },
     "background": {
-      "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_level1.png",
+      "textureWidth": 600, "textureHeight": 600,
+      "texturePath": "/textures/background/bg_level1.png",
       "numberOfFrames": 1
     },
     "levelInitPath": "assets/json/levels/Level1.json",
@@ -140,7 +140,7 @@
     "pauseButton": {
       "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "numTimeText": {
@@ -150,8 +150,8 @@
       "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
     },
     "background": {
-      "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_level2.png",
+      "textureWidth": 600, "textureHeight": 600,
+      "texturePath": "/textures/background/bg_level2.png",
       "numberOfFrames": 1
     },
     "levelInitPath": "assets/json/levels/Level2.json",
@@ -174,7 +174,7 @@
     "pauseButton": {
       "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "numTimeText": {
@@ -184,8 +184,8 @@
       "fontData": {"fontPath":"/fonts/PixelOperator.ttf","style":"BOLD","size":24}
     },
     "background": {
-      "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_level1.png",
+      "textureWidth": 600, "textureHeight": 600,
+      "texturePath": "/textures/background/bg_level3.png",
       "numberOfFrames": 1
     },
     "levelInitPath": "assets/json/levels/Level3.json",
@@ -221,7 +221,7 @@
     "pauseButton": {
       "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "numTimeText": {
@@ -241,13 +241,13 @@
     "exitButton": {
       "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
 
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_level1.png",
+      "texturePath": "/textures/background/bg_multiplayer.png",
       "numberOfFrames": 1
     },
     "levelInitPath": "assets/json/levels/MultiPlayer.json"
@@ -263,24 +263,24 @@
     "resumeButton": {
       "textureX": 80, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "playAgainButton": {
       "textureX": 48, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "escapeButton": {
       "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.05,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_menu.png",
+      "texturePath": "/textures/background/bg_menu.png",
       "numberOfFrames": 1
     }
   },
@@ -295,18 +295,18 @@
     "escapeButton": {
       "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.1,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "playAgainButton": {
       "textureX": 48, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.1,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_over.png",
+      "texturePath": "/textures/background/bg_gameover.png",
       "numberOfFrames": 1
     },
     "playerStatusDataPath": "assets/json/PlayerStatus.json"
@@ -322,18 +322,18 @@
     "escapeButton": {
       "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.1,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "playAgainButton": {
       "textureX": 48, "textureY": 0, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.1,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_menu.png",
+      "texturePath": "/textures/background/bg_menu.png",
       "numberOfFrames": 1
     },
     "playerStatusDataPath": "assets/json/PlayerStatus.json"
@@ -392,13 +392,13 @@
     "returnButton": {
       "textureX": 0, "textureY": 32, "textureWidth": 16, "textureHeight": 16,
       "relativeSize": 0.1,
-      "texturePath": "/textures/buttons.png",
+      "texturePath": "/textures/UI/buttons.png",
       "numberOfFrames": 1
     },
 
     "background": {
       "textureWidth": 96, "textureHeight": 96,
-      "texturePath": "/textures/background_multi_player.png",
+      "texturePath": "/textures/background/bg_status.png",
       "numberOfFrames": 1
     },
 

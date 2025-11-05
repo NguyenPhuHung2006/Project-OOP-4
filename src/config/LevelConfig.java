@@ -27,6 +27,8 @@ public class LevelConfig {
 
     public int framePerRow;
 
+    public int destroyInterval;
+
     public SlowBallPowerUp slowPowerUp;
     public ExpandPaddlePowerUp expandPaddlePowerUp;
     public SpeedUpPaddlePowerUp speedUpPaddlePowerUp;

@@ -1,7 +1,5 @@
 package network;
 
-import screen.playscreen.PlayScreen;
-
 public class Network {
 
     public static final int TCP_PORT = 54555;
@@ -11,5 +9,6 @@ public class Network {
         kryo.register(String.class);
         kryo.register(PlayerState.class);
         kryo.register(Integer.class);
+        kryo.register(ConnectionResponse.class);
     }
 }

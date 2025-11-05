@@ -95,7 +95,6 @@ public class MultiPlayerPlayScreen extends PlayScreen {
 
             gameServer = new GameServer();
             gameServer.start();
-
             gameServer.bind();
 
             String hostIP = InetAddress.getLocalHost().getHostAddress();
@@ -121,11 +120,10 @@ public class MultiPlayerPlayScreen extends PlayScreen {
 
         try {
             gameClient = new GameClient();
+            gameClient.setHostIP(hostIP);
             gameClient.start();
 
-            gameClient.connect(hostIP);
-
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             JOptionPane.showMessageDialog(null,
                     "Failed to connect: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);

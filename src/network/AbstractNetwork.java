@@ -2,13 +2,15 @@ package network;
 
 import com.esotericsoftware.kryonet.Connection;
 
+import java.io.IOException;
+
 public abstract class AbstractNetwork {
 
     protected Integer opponentScore;
     protected PlayerState opponentState;
     protected volatile boolean connected;
 
-    public abstract void start();
+    public abstract void start() throws IOException, InterruptedException;
 
     public abstract void stop();
 
@@ -18,8 +20,10 @@ public abstract class AbstractNetwork {
 
         if (object instanceof Integer newOpponentScore) {
             setOpponentScore(newOpponentScore);
+
         } else if (object instanceof PlayerState newOpponentState) {
             setOpponentState(newOpponentState);
+
         }
     }
 

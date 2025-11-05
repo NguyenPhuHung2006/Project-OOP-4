@@ -44,6 +44,7 @@ public class LifeCounter extends TexturedObject {
     public void updateLives(boolean isIncreasing) {
         if(isIncreasing) {
             lives++;
+            lives = Math.min(lives, totalLives);
         } else {
             lives -= liveInterval;
         }

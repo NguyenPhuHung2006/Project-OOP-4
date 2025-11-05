@@ -64,6 +64,15 @@
     "speedUpMultiplier": 2
   },
 
+  "addLivePowerUp": {
+    "textureWidth": 20, "textureHeight": 18,
+    "texturePath": "/textures/powerup/add_live.png",
+    "relativeSize": 0.05,
+    "numberOfFrames": 1,
+    "speed": 3,
+    "durationMs": 5000
+  },
+
   "lifeCounter": {
     "textureWidth": 11, "textureHeight": 10,
     "relativeSize": 0.1,

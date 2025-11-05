@@ -8,7 +8,7 @@
 * Nguyễn Đức Bảo Trung
 
 **Mô tả dự án**
-Game Arkanoid (phiên bản đơn giản) được viết bằng **Java + Swing**. Đây là bài tập lớn môn Lập trình hướng đối tượng, yêu cầu áp dụng các nguyên lý OOP, thiết kế lớp, quản lý tài nguyên (âm thanh, ảnh), và (tùy chọn) tính năng nhiều người chơi.
+Game Arkanoid (phiên bản đơn giản) được viết bằng **Java + Swing**. Đây là bài tập lớn môn Lập trình hướng đối tượng, yêu cầu áp dụng các nguyên lý OOP, thiết kế lớp, quản lý tài nguyên (âm thanh, ảnh), và tính năng nhiều người chơi, lưu game.
 
 ## Yêu cầu
 

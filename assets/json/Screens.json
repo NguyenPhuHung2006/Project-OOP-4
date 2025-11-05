@@ -85,7 +85,7 @@
 },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_multi.png",
+      "texturePath": "/textures/background_menu.png",
       "numberOfFrames": 1
     }
   },
@@ -280,7 +280,7 @@
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_multi.png",
+      "texturePath": "/textures/background_menu.png",
       "numberOfFrames": 1
     }
   },
@@ -333,7 +333,7 @@
     },
     "background": {
       "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_multi.png",
+      "texturePath": "/textures/background_menu.png",
       "numberOfFrames": 1
     },
     "playerStatusDataPath": "assets/json/PlayerStatus.json"
@@ -397,8 +397,8 @@
     },
 
     "background": {
-      "textureWidth": 1000, "textureHeight": 1000,
-      "texturePath": "/textures/background_multi.png",
+      "textureWidth": 96, "textureHeight": 96,
+      "texturePath": "/textures/background_multi_player.png",
       "numberOfFrames": 1
     },
 

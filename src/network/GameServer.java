@@ -14,13 +14,19 @@ public class GameServer extends AbstractNetwork {
     }
 
     @Override
-    public void start() {
+    public void start() throws IOException {
         server.start();
 
         server.addListener(new Listener() {
 
             @Override
             public void connected(Connection connection) {
+                if (server.getConnections().length > 1) {
+                    connection.sendTCP(ConnectionResponse.REJECTED);
+                    connection.close();
+                    return;
+                }
+                connection.sendTCP(ConnectionResponse.ACCEPTED);
                 connected = true;
             }
 

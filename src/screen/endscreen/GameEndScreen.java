@@ -22,6 +22,7 @@ public abstract class GameEndScreen implements Screen {
     private final GameButton escapeButton;
     private final GameButton playAgainButton;
     private final Background background;
+    private final String playerStatusDataPath;
 
     public GameEndScreen(Screen screen) {
 
@@ -34,6 +35,7 @@ public abstract class GameEndScreen implements Screen {
         playAgainButton = new GameButton(gameEndScreen.playAgainButton);
         background = new Background(gameEndScreen.background);
 
+        playerStatusDataPath = gameEndScreen.playerStatusDataPath;
     }
 
     @Override
@@ -104,7 +106,7 @@ public abstract class GameEndScreen implements Screen {
 
     public void saveGameStatus() {
 
-        PlayerStatusData playerStatusData = JsonLoaderUtils.loadFromJson(JsonLoaderUtils.playerStatusDataPath, PlayerStatusData.class);
+        PlayerStatusData playerStatusData = JsonLoaderUtils.loadFromJson(playerStatusDataPath, PlayerStatusData.class);
 
         assert playerStatusData != null;
 
@@ -127,7 +129,7 @@ public abstract class GameEndScreen implements Screen {
 
         screenManager.push(currentGameEndScreen);
 
-        JsonLoaderUtils.saveToJson(JsonLoaderUtils.playerStatusDataPath, playerStatusData);
+        JsonLoaderUtils.saveToJson(playerStatusDataPath, playerStatusData);
 
     }
 

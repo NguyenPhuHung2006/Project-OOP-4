@@ -3,7 +3,7 @@
     "textureWidth": 96, "textureHeight": 24,
     "relativeSize": 0.2,
     "relativeY": 0.8,
-    "texturePath": "/textures/paddle.png",
+    "texturePath": "/textures/object/paddle.png",
     "speed": 5,
     "numberOfFrames": 1
   },
@@ -11,32 +11,32 @@
   "ball":   {
     "textureWidth": 24, "textureHeight": 24,
     "relativeSize": 0.05,
-    "texturePath": "/textures/ball.png",
+    "texturePath": "/textures/object/ball.png",
     "speed": 5,
     "numberOfFrames": 4
   },
 
   "normalBrick": {
     "textureWidth": 32, "textureHeight": 16,
-    "texturePath": "/textures/brick.png",
+    "texturePath": "/textures/object/brick.png",
     "numberOfFrames": 6
   },
 
   "strongBrick": {
     "textureWidth": 32, "textureHeight": 16,
-    "texturePath": "/textures/brick.png",
+    "texturePath": "/textures/object/brick.png",
     "numberOfFrames": 1
   },
 
   "powerUpBrick": {
     "textureWidth": 32, "textureHeight": 16,
-    "texturePath": "/textures/brick.png",
+    "texturePath": "/textures/object/brick.png",
     "numberOfFrames": 1
   },
 
   "slowPowerUp": {
     "textureWidth": 14, "textureHeight": 20,
-    "texturePath": "/textures/slow_ball.png",
+    "texturePath": "/textures/powerup/slow_ball.png",
     "relativeSize": 0.05,
     "numberOfFrames": 1,
     "speed": 3,
@@ -46,7 +46,7 @@
 
   "expandPaddlePowerUp": {
     "textureWidth": 25, "textureHeight": 6,
-    "texturePath": "/textures/expand_paddle.png",
+    "texturePath": "/textures/powerup/expand_paddle.png",
     "relativeSize": 0.1,
     "numberOfFrames": 1,
     "speed": 3,
@@ -56,7 +56,7 @@
 
   "speedUpPaddlePowerUp": {
     "textureWidth": 22, "textureHeight": 7,
-    "texturePath": "/textures/speedup_paddle.png",
+    "texturePath": "/textures/powerup/speedup_paddle.png",
     "relativeSize": 0.1,
     "numberOfFrames": 1,
     "speed": 3,
@@ -67,8 +67,18 @@
   "lifeCounter": {
     "textureWidth": 11, "textureHeight": 10,
     "relativeSize": 0.1,
-    "texturePath": "/textures/hearts.png",
-    "numberOfFrames": 7
+    "texturePath": "/textures/UI/hearts.png",
+    "numberOfFrames": 7,
+    "liveInterval": 2
+  },
+
+  "addLivePowerUp": {
+    "textureWidth": 20, "textureHeight": 18,
+    "texturePath": "/textures/powerup/add_live.png",
+    "relativeSize": 0.05,
+    "numberOfFrames": 1,
+    "speed": 3,
+    "durationMs": 5000
   },
 
   "normalBrickTextureIndices": [0, 1, 2, 3, 4, 5],
@@ -77,26 +87,28 @@
 
   "framePerRow": 11,
 
+  "destroyInterval": 2,
+
   "brickLayout": [
-    [110,110,110,121,121,121,121,132,132,132],
-    [110,110,110,110,121,165,154,132,132,154],
-    [165,165,165,165,165,165,154,165,154,154],
-    [165,165,165,132,132,132,176,165,132,176],
-    [165,165,132,132,110,132,176,143,132,176],
-    [-1,165,165,110,110,110,143,143,176,176],
-    [-1,165,165,132,132,110,143,143,176,176],
-    [-1,165,110,132,132,110,-1,143,-1,176],
-    [-1,121,121,132,121,121,-1,143,-1,176],
-    [-1,-1,121,121,121,121,-1,-1,-1,-1],
-    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-    [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [33, -1, -1, -1, -1, -1, -1, -1, -1, 0],
+    [121, 22, -1, -1, -1, -1, -1, -1, 55, 165],
+    [121, 132, 22, -1, -1, -1, -1, 55, 110, 165],
+    [121, 132, 176, 11, -1, -1, 44, 143, 110, 165],
+    [99, 99, 99, 99, -1, -1, 66, 66, 66, 66],
+    [121, 132, 176, 11, -1, -1, 44, 143, 110, 165],
+    [121, 132, 22, -1, -1, -1, -1, 55, 110, 165],
+    [121, 22, -1, -1, -1, -1, -1, -1, 55, 165],
+    [33, -1, -1, -1, -1, -1, -1, -1, -1, 0],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
   ]
 }

@@ -3,7 +3,7 @@
     "textureWidth": 96, "textureHeight": 24,
     "relativeSize": 0.2,
     "relativeY": 0.8,
-    "texturePath": "/textures/paddle.png",
+    "texturePath": "/textures/object/paddle.png",
     "speed": 5,
     "numberOfFrames": 1
   },
@@ -11,32 +11,32 @@
   "ball":   {
     "textureWidth": 24, "textureHeight": 24,
     "relativeSize": 0.05,
-    "texturePath": "/textures/ball.png",
+    "texturePath": "/textures/object/ball.png",
     "speed": 5,
     "numberOfFrames": 4
   },
 
   "normalBrick": {
     "textureWidth": 32, "textureHeight": 16,
-    "texturePath": "/textures/brick.png",
+    "texturePath": "/textures/object/brick.png",
     "numberOfFrames": 6
   },
 
   "strongBrick": {
     "textureWidth": 32, "textureHeight": 16,
-    "texturePath": "/textures/brick.png",
+    "texturePath": "/textures/object/brick.png",
     "numberOfFrames": 1
   },
 
   "powerUpBrick": {
     "textureWidth": 32, "textureHeight": 16,
-    "texturePath": "/textures/brick.png",
+    "texturePath": "/textures/object/brick.png",
     "numberOfFrames": 1
   },
 
   "slowPowerUp": {
     "textureWidth": 14, "textureHeight": 20,
-    "texturePath": "/textures/slow_ball.png",
+    "texturePath": "/textures/powerup/slow_ball.png",
     "relativeSize": 0.05,
     "numberOfFrames": 1,
     "speed": 3,
@@ -46,7 +46,7 @@
 
   "expandPaddlePowerUp": {
     "textureWidth": 25, "textureHeight": 6,
-    "texturePath": "/textures/expand_paddle.png",
+    "texturePath": "/textures/powerup/expand_paddle.png",
     "relativeSize": 0.1,
     "numberOfFrames": 1,
     "speed": 3,
@@ -56,7 +56,7 @@
 
   "speedUpPaddlePowerUp": {
     "textureWidth": 22, "textureHeight": 7,
-    "texturePath": "/textures/speedup_paddle.png",
+    "texturePath": "/textures/powerup/speedup_paddle.png",
     "relativeSize": 0.1,
     "numberOfFrames": 1,
     "speed": 3,
@@ -64,11 +64,21 @@
     "speedUpMultiplier": 2
   },
 
+  "addLivePowerUp": {
+    "textureWidth": 20, "textureHeight": 18,
+    "texturePath": "/textures/powerup/add_live.png",
+    "relativeSize": 0.05,
+    "numberOfFrames": 1,
+    "speed": 3,
+    "durationMs": 5000
+  },
+
   "lifeCounter": {
     "textureWidth": 11, "textureHeight": 10,
     "relativeSize": 0.1,
-    "texturePath": "/textures/hearts.png",
-    "numberOfFrames": 7
+    "texturePath": "/textures/UI/hearts.png",
+    "numberOfFrames": 7,
+    "liveInterval": 3
   },
 
   "normalBrickTextureIndices": [0, 1, 2, 3, 4, 5],
@@ -77,19 +87,21 @@
 
   "framePerRow": 11,
 
+  "destroyInterval": 1,
+
   "brickLayout": [
-    [0, 0, 0, 11, 11, 11, 11, 11, 11, 11],
-    [33, 0, 0, 0, 0, 0, 11, 11, 11, 11],
-    [33, 0, 11, 0, 0, 11, 11, 11, 11, 22],
-    [33, 0, 11, 22, 33, 33, 44, 44, 44, 22],
-    [33, 0, 0, 22, 55, 55, 44, 22, 44, 22],
-    [33, 0, 0, 33, 22, 33, 11, 11, 44, 44],
-    [33, 33, 33, 11, 11, 11, 11, 55, 55, 44],
-    [11, 11, 11, 11, 33, 11, 11, 11, 55, 55],
-    [11, 11, 11, 11, 11, 11, -1, -1, -1, -1],
-    [-1, -1, -1, 11, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+    [-1, -1, 0, 99, 121, 121, 99, 33, -1, -1],
+    [-1, 0, -1, -1, 121, 121, -1, -1, 33, -1],
+    [0, -1, -1, -1, -1, -1, -1, -1, -1, 33],
+    [0, -1, -1, -1, 66, 77, -1, -1, -1, 33],
+    [-1, 0, -1, -1, 88, 99, -1, -1, 33, -1],
+    [-1, -1, 55, -1, -1, -1, -1, 22, -1, -1],
+    [165, -1, -1, 55, -1, -1, 22, -1, -1, 132],
+    [66, 165, -1, -1, 44, 11, -1, -1, 132, 77],
+    [66, 110, -1, -1, -1, -1, -1, -1, 176, 77],
+    [110, -1, -1, -1, -1, -1, -1, -1, -1, 176],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],

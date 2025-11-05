@@ -29,6 +29,8 @@ public class BrickManager {
 
     private int framePerRow;
 
+    private int destroyInterval;
+
     private int destroyedBricksCount;
     private int totalBricksCount;
 
@@ -53,6 +55,7 @@ public class BrickManager {
     private void initBricks(LevelConfig levelConfig) {
 
         framePerRow = levelConfig.framePerRow;
+        destroyInterval = levelConfig.destroyInterval;
 
         for (int normalBrickTextureIndex : levelConfig.normalBrickTextureIndices) {
             normalBrickTextureSet.add(normalBrickTextureIndex);
@@ -150,6 +153,7 @@ public class BrickManager {
         destroyedBricksCount = brickManager.destroyedBricksCount;
         totalBricksCount = brickManager.totalBricksCount;
         isIncremented = brickManager.isIncremented;
+        destroyInterval = brickManager.destroyInterval;
 
         for (int y = 0; y < brickCountY; y++) {
             for (int x = 0; x < brickCountX; x++) {
@@ -229,6 +233,7 @@ public class BrickManager {
         strongBrickTextureSet.clear();
         powerUpBrickTextureSet.clear();
         framePerRow = 0;
+        destroyInterval = 0;
         destroyedBricksCount = 0;
         totalBricksCount = 0;
         isIncremented = false;
@@ -277,6 +282,10 @@ public class BrickManager {
     public int incrementDestroyedBricks() {
         isIncremented = true;
         return ++destroyedBricksCount;
+    }
+
+    public int getDestroyInterval() {
+        return destroyInterval;
     }
 
     public boolean isCleared() {

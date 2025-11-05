@@ -13,7 +13,6 @@ public class KeyboardManager implements KeyListener {
 
     private final Set<Integer> pressedKeys = new HashSet<>();
 
-    // Private constructor for singleton
     private KeyboardManager() {
     }
 

@@ -14,7 +14,7 @@ public class NormalBrick extends Brick {
         hit = false;
         soundManager.play(SoundType.NORMAL_BRICK);
 
-        indexFrame++;
+        indexFrame += brickManager.getDestroyInterval();
 
         if(indexFrame < frames.size()) {
             currentTexture = frames.get(indexFrame);

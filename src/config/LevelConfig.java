@@ -6,6 +6,7 @@ import object.brick.PowerUpBrick;
 import object.brick.StrongBrick;
 import object.movable.Ball;
 import object.movable.Paddle;
+import object.movable.powerup.AddLivePowerUp;
 import object.movable.powerup.ExpandPaddlePowerUp;
 import object.movable.powerup.SlowBallPowerUp;
 import object.movable.powerup.SpeedUpPaddlePowerUp;
@@ -27,7 +28,10 @@ public class LevelConfig {
 
     public int framePerRow;
 
+    public int destroyInterval;
+
     public SlowBallPowerUp slowPowerUp;
     public ExpandPaddlePowerUp expandPaddlePowerUp;
     public SpeedUpPaddlePowerUp speedUpPaddlePowerUp;
+    public AddLivePowerUp addLivePowerUp;
 }

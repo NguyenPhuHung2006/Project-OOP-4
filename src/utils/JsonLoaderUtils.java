@@ -11,7 +11,6 @@ import java.io.*;
 public class JsonLoaderUtils {
 
     public static String gameConfigPath = "assets/json/GameConfig.json";
-    public static String playerStatusDataPath = "assets/json/PlayerStatus.json";
 
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(Brick.class, new PolymorphicAdapter<>())

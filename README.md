@@ -18,26 +18,11 @@ Game Arkanoid (phiên bản đơn giản) được viết bằng **Java + Swing*
 
 ## Chạy game
 
-### 1) Chạy nhanh (Windows)
-
-* Mở thư mục gốc của project
 * Chạy `runGame.bat` (double-click hoặc từ terminal)
-
-### 2) Chạy trong IntelliJ
-
-* Nếu bạn dùng IntelliJ, trước tiên chuyển sang branch chứa cấu hình IntelliJ:
-
-```bash
-git switch intellij
-```
-
-* Mở project bằng IntelliJ (File → Open → chọn `project-root`)
-* Thiết lập cấu hình chạy (Run Configuration) nếu cần, rồi chạy.
 
 ## Ghi chú Git / Nhánh
 
-* **Nếu không dùng IDE**: làm việc trực tiếp trên `main` hoặc các feature branch.
-* **Nếu dùng IntelliJ**: team đã chuẩn bị 1 branch `intellij` (chứa cấu hình/IDE files). Khi làm việc trong IntelliJ, `git switch intellij` để khớp cấu hình (nhớ không đẩy file IDE cá nhân lên nếu không muốn).
+* Làm việc trực tiếp trên `main` hoặc các feature branch.
 * Quy ước đặt tên branch: `feature/<tên>`, `bugfix/<tên>`, `hotfix/<tên>`.
 
 ## Tính năng hiện tại
@@ -60,10 +45,6 @@ git switch intellij
 2. Thực hiện commit rõ ràng, test local
 3. Tạo Pull Request lên `main` — mô tả thay đổi và cách kiểm thử
 4. Người review sẽ comment / merge
-
-## Ghi chú thêm cho giảng viên
-
-* Thầy/cô kiểm tra code ở branch main, thầy/cô chạy code bằng cách 1 được nên ở trên. Branch intellij chỉ chứa thêm những file cấu hình dành cho những ai sử dụng intellij
 
 ---
 

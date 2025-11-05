@@ -8,7 +8,7 @@
     "numberOfFrames": 1
   },
 
-  "ball":   {
+  "ball": {
     "textureWidth": 24, "textureHeight": 24,
     "relativeSize": 0.05,
     "texturePath": "/textures/object/ball.png",

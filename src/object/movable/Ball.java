@@ -18,8 +18,6 @@ public class Ball extends MovableObject {
     private boolean isMoving;
     private boolean isBallLost;
 
-    private static final List<Brick> bricksCollided = new ArrayList<>();
-
     private Paddle paddle;
 
     public Ball(Ball ball) {
@@ -148,8 +146,6 @@ public class Ball extends MovableObject {
                 {bottomRightTileX, bottomRightTileY}
         };
 
-        bricksCollided.clear();
-
         for (int[] corner : corners) {
             int tileX = corner[0];
             int tileY = corner[1];
@@ -162,16 +158,14 @@ public class Ball extends MovableObject {
                         brick.takeHit();
                     }
 
-                    bricksCollided.add(brick);
-                }
-            }
-        }
+                    if (checkX) {
+                        handleObjectCollisionX(brick);
+                    } else {
+                        handleObjectCollisionY(brick);
+                    }
 
-        for (Brick brickCollided : bricksCollided) {
-            if (checkX) {
-                handleObjectCollisionX(brickCollided);
-            } else {
-                handleObjectCollisionY(brickCollided);
+                    break;
+                }
             }
         }
     }

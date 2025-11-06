@@ -4,6 +4,9 @@ import audio.SoundType;
 import object.movable.powerup.PowerUpType;
 import utils.RandomUtils;
 
+/**
+ * Represents a brick that releases a random power-up when destroyed.
+ */
 public class PowerUpBrick extends Brick {
 
     public PowerUpBrick(Brick brick) {

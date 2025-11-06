@@ -13,6 +13,12 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the ball in the Arkanoid game.
+ * <p>
+ * The ball moves, bounces off the paddle, bricks, and window walls.
+ * It also detects when it falls below the screen (i.e., is lost).
+ */
 public class Ball extends MovableObject {
 
     private boolean isMoving;
@@ -20,6 +26,11 @@ public class Ball extends MovableObject {
 
     private Paddle paddle;
 
+    /**
+     * Copy constructor for creating a new ball based on an existing one.
+     *
+     * @param ball the ball to copy from
+     */
     public Ball(Ball ball) {
         super(ball);
         isMoving = false;
@@ -31,6 +42,10 @@ public class Ball extends MovableObject {
         return (Ball) super.clone();
     }
 
+    /**
+     * Updates the ball's state each frame — handles movement, collisions,
+     * and checks for ball loss.
+     */
     @Override
     public void update() {
 
@@ -70,6 +85,11 @@ public class Ball extends MovableObject {
         this.y = baseBall.getY();
     }
 
+    /**
+     * Resets the ball to sit above the paddle and stops its movement.
+     *
+     * @param paddle the paddle to align with
+     */
     public void resetBallBound(Paddle paddle) {
         isMoving = false;
         stop();
@@ -79,6 +99,11 @@ public class Ball extends MovableObject {
         translateY(paddingY);
     }
 
+    /**
+     * Handles the initial launch of the ball when the UP key is pressed.
+     *
+     * @param paddle the paddle used as a reference point
+     */
     private void handleInitialMovement(Paddle paddle) {
         if (keyboardManager.isKeyPressed(KeyEvent.VK_UP)) {
             isMoving = true;
@@ -99,6 +124,9 @@ public class Ball extends MovableObject {
         }
     }
 
+    /**
+     * Moves the ball and handles collisions with the paddle and bricks.
+     */
     @Override
     public void moveAndCollide() {
 
@@ -178,6 +206,9 @@ public class Ball extends MovableObject {
         handleBricksCollision(bricks, tileWidth, tileHeight, false);
     }
 
+    /**
+     * Checks if the ball has been lost (fallen below the screen).
+     */
     private void checkBallState() {
 
         if (y + height >= gameContext.getWindowHeight()) {
@@ -195,6 +226,9 @@ public class Ball extends MovableObject {
         dy = 0;
     }
 
+    /**
+     * @return true if the ball is lost (and resets the flag)
+     */
     public boolean isLost() {
         if (isBallLost) {
             isBallLost = false;

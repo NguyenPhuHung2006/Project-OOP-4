@@ -4,8 +4,19 @@ import object.GameObject;
 
 import java.awt.event.KeyEvent;
 
+/**
+ * Represents the player's paddle in the Arkanoid game.
+ * <p>
+ * The paddle can move horizontally based on keyboard input
+ * and interacts with the ball during gameplay.
+ */
 public class Paddle extends MovableObject {
 
+    /**
+     * Copy constructor for creating a new paddle based on an existing one.
+     *
+     * @param paddle the paddle to copy data from
+     */
     public Paddle(Paddle paddle) {
 
         super(paddle);
@@ -37,6 +48,9 @@ public class Paddle extends MovableObject {
 
     }
 
+    /**
+     * Resets the paddle’s position and size based on relative configuration.
+     */
     public void resetPaddleBound() {
         applyRelativeSize();
         applyRelativePositionY();
@@ -49,6 +63,9 @@ public class Paddle extends MovableObject {
         return (Paddle) super.clone();
     }
 
+    /**
+     * Moves the paddle horizontally and handles collisions with window boundaries.
+     */
     @Override
     protected void moveAndCollide() {
 
@@ -56,6 +73,9 @@ public class Paddle extends MovableObject {
         handleWindowCollision();
     }
 
+    /**
+     * Handles keyboard input for moving the paddle.
+     */
     private void handleInput() {
 
         boolean leftKeyPressed = keyboardManager.isKeyPressed(KeyEvent.VK_LEFT);

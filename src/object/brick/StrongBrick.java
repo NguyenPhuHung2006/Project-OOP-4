@@ -2,6 +2,10 @@ package object.brick;
 
 import audio.SoundType;
 
+/**
+ * Represents a strong brick that only plays a sound when hit
+ * and is never destroyed.
+ */
 public class StrongBrick extends Brick{
 
     public StrongBrick(Brick brick) {

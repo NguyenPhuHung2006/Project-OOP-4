@@ -2,6 +2,10 @@ package object.brick;
 
 import audio.SoundType;
 
+/**
+ * Represents a normal brick that is destroyed after one or more hits,
+ * depending on its animation frame.
+ */
 public class NormalBrick extends Brick {
 
     public NormalBrick(Brick brick) {

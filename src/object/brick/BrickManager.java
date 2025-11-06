@@ -10,6 +10,13 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 
+/**
+ * Manages all brick objects in the game.
+ * <p>
+ * Responsible for loading bricks from level configuration,
+ * handling updates, rendering, serialization, and game logic.
+ * Implements a singleton pattern via {@link #getInstance()}.
+ */
 public class BrickManager {
 
     private static BrickManager brickManager;
@@ -39,6 +46,11 @@ public class BrickManager {
     private BrickManager() {
     }
 
+    /**
+     * Gets the singleton instance of {@code BrickManager}.
+     *
+     * @return the shared BrickManager instance
+     */
     public static BrickManager getInstance() {
         if (brickManager == null) {
             brickManager = new BrickManager();
@@ -46,12 +58,20 @@ public class BrickManager {
         return brickManager;
     }
 
+    /**
+     * Loads brick data from a JSON-based level configuration.
+     *
+     * @param levelConfig the level configuration to load from
+     */
     public void loadFromJson(LevelConfig levelConfig) {
         refresh();
         initBricks(levelConfig);
         loadBricks(levelConfig);
     }
 
+    /**
+     * Initializes brick textures and types based on configuration.
+     */
     private void initBricks(LevelConfig levelConfig) {
 
         framePerRow = levelConfig.framePerRow;
@@ -85,6 +105,9 @@ public class BrickManager {
         brickRegistry.put(BrickType.POWERUP_BRICK, levelConfig.powerUpBrick);
     }
 
+    /**
+     * Populates the game field with bricks based on layout configuration.
+     */
     private void loadBricks(LevelConfig levelConfig) {
 
         destroyedBricksCount = 0;
@@ -129,6 +152,9 @@ public class BrickManager {
         }
     }
 
+    /**
+     * Serializes all bricks to JSON.
+     */
     public void serializeBricks() {
 
         for (int y = 0; y < brickCountY; y++) {
@@ -140,6 +166,11 @@ public class BrickManager {
         }
     }
 
+    /**
+     * Deserializes bricks from another {@code BrickManager} instance loaded from JSON.
+     *
+     * @param brickManager a previously saved BrickManager state
+     */
     public void deserializeBricks(BrickManager brickManager) {
 
         bricks = brickManager.getBricks();
@@ -189,6 +220,10 @@ public class BrickManager {
         return null;
     }
 
+    /**
+     * Updates all active bricks.
+     * Handles hit detection and brick removal.
+     */
     public void updateBricks() {
 
         for (int y = 0; y < brickCountY; y++) {
@@ -205,6 +240,11 @@ public class BrickManager {
         }
     }
 
+    /**
+     * Renders all active bricks.
+     *
+     * @param graphics2D the graphics context
+     */
     public void renderBricks(Graphics2D graphics2D) {
 
         for (int y = 0; y < brickCountY; y++) {
@@ -288,6 +328,9 @@ public class BrickManager {
         return destroyInterval;
     }
 
+    /**
+     * @return true if all destructible bricks are cleared
+     */
     public boolean isCleared() {
         return destroyedBricksCount >= totalBricksCount;
     }

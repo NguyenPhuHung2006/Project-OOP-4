@@ -3,6 +3,13 @@ package object.UI;
 import object.GameObject;
 import object.TexturedObject;
 
+/**
+ * Displays and manages the player's remaining lives.
+ * <p>
+ * The {@code LifeCounter} tracks the number of lives left,
+ * updates visual frames accordingly, and provides logic for
+ * increasing or decreasing the life count.
+ */
 public class LifeCounter extends TexturedObject {
 
     private int lives;
@@ -10,6 +17,11 @@ public class LifeCounter extends TexturedObject {
 
     private final int liveInterval;
 
+    /**
+     * Constructs a {@code LifeCounter} from another textured object.
+     *
+     * @param texturedObject the source textured object to copy
+     */
     public LifeCounter(TexturedObject texturedObject) {
 
         super(texturedObject);
@@ -25,6 +37,11 @@ public class LifeCounter extends TexturedObject {
 
     }
 
+    /**
+     * Initializes the bounds of this life counter based on a reference object.
+     *
+     * @param gameObject the object used for position and size initialization
+     */
     @Override
     protected void initBounds(GameObject gameObject) {
 
@@ -41,6 +58,11 @@ public class LifeCounter extends TexturedObject {
         height = texturedObject.getHeight();
     }
 
+    /**
+     * Updates the number of lives and adjusts the display frame.
+     *
+     * @param isIncreasing {@code true} to add lives, {@code false} to decrease
+     */
     public void updateLives(boolean isIncreasing) {
         if(isIncreasing) {
             lives++;
@@ -51,6 +73,9 @@ public class LifeCounter extends TexturedObject {
         updateFrames();
     }
 
+    /**
+     * Updates the texture frame based on the current number of lives.
+     */
     private void updateFrames() {
 
         if (lives <= totalLives && lives >= 1) {
@@ -59,6 +84,11 @@ public class LifeCounter extends TexturedObject {
         }
     }
 
+    /**
+     * Checks whether the player has no remaining lives.
+     *
+     * @return {@code true} if lives are zero or less
+     */
     public boolean isOutOfLives() {
         return lives <= 0;
     }

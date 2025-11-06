@@ -11,6 +11,13 @@ import java.util.List;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * The {@code TexturedObject} class extends {@link GameObject} and represents
+ * an object that uses textures or sprite frames for visual rendering.
+ * <p>
+ * This class handles texture loading, scaling, and animated frame updates.
+ */
+
 public abstract class TexturedObject extends GameObject {
 
     private final String texturePath;
@@ -25,6 +32,11 @@ public abstract class TexturedObject extends GameObject {
     protected final int numberOfFrames;
     protected transient List<BufferedImage> frames;
 
+    /**
+     * Constructs a new {@code TexturedObject} by copying properties from another instance.
+     *
+     * @param texturedObject the object to copy
+     */
     public TexturedObject(TexturedObject texturedObject) {
 
         super(texturedObject);
@@ -37,6 +49,7 @@ public abstract class TexturedObject extends GameObject {
         loadFrames();
     }
 
+    /** Loads and scales all texture frames for rendering. */
     private void loadFrames() {
 
         frames = new ArrayList<>();
@@ -52,7 +65,8 @@ public abstract class TexturedObject extends GameObject {
                     height));
         }
         if (indexFrame >= frames.size() || indexFrame < 0) {
-            ExceptionHandler.handle(new InvalidGameStateException("The index frame " + indexFrame + " is not valid", null));
+            ExceptionHandler.handle(new InvalidGameStateException(
+                    "Invalid frame index: " + indexFrame, null));
         }
         currentTexture = frames.get(indexFrame);
     }
@@ -74,6 +88,11 @@ public abstract class TexturedObject extends GameObject {
         loadFrames();
     }
 
+    /**
+     * Copies texture bounds (sprite sheet coordinates) from another {@code GameObject}.
+     *
+     * @param gameObject the source object
+     */
     protected void initTextureBounds(GameObject gameObject) {
         TexturedObject texturedObject = (TexturedObject) gameObject;
 
@@ -83,6 +102,7 @@ public abstract class TexturedObject extends GameObject {
         textureWidth = texturedObject.getTextureWidth();
     }
 
+    /** Calculates actual display size based on relative scaling. */
     public void applyRelativeSize() {
 
         this.width = windowWidth * relativeSize;
@@ -105,6 +125,8 @@ public abstract class TexturedObject extends GameObject {
     public TexturedObject clone() {
         return (TexturedObject) super.clone();
     }
+
+    // --- Getters and setters ---
 
     public int getTextureX() {
         return textureX;

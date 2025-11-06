@@ -13,6 +13,12 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the ball in the Arkanoid game.
+ * <p>
+ * The ball moves, bounces off the paddle, bricks, and window walls.
+ * It also detects when it falls below the screen (i.e., is lost).
+ */
 public class Ball extends MovableObject {
 
     private boolean isMoving;
@@ -20,6 +26,11 @@ public class Ball extends MovableObject {
 
     private Paddle paddle;
 
+    /**
+     * Copy constructor for creating a new ball based on an existing one.
+     *
+     * @param ball the ball to copy from
+     */
     public Ball(Ball ball) {
         super(ball);
         isMoving = false;
@@ -31,6 +42,10 @@ public class Ball extends MovableObject {
         return (Ball) super.clone();
     }
 
+    /**
+     * Updates the ball's state each frame — handles movement, collisions,
+     * and checks for ball loss.
+     */
     @Override
     public void update() {
 
@@ -70,6 +85,11 @@ public class Ball extends MovableObject {
         this.y = baseBall.getY();
     }
 
+    /**
+     * Resets the ball to sit above the paddle and stops its movement.
+     *
+     * @param paddle the paddle to align with
+     */
     public void resetBallBound(Paddle paddle) {
         isMoving = false;
         stop();
@@ -79,6 +99,11 @@ public class Ball extends MovableObject {
         translateY(paddingY);
     }
 
+    /**
+     * Handles the initial launch of the ball when the UP key is pressed.
+     *
+     * @param paddle the paddle used as a reference point
+     */
     private void handleInitialMovement(Paddle paddle) {
         if (keyboardManager.isKeyPressed(KeyEvent.VK_UP)) {
             isMoving = true;
@@ -99,6 +124,9 @@ public class Ball extends MovableObject {
         }
     }
 
+    /**
+     * Moves the ball and handles collisions with the paddle and bricks.
+     */
     @Override
     public void moveAndCollide() {
 
@@ -129,6 +157,28 @@ public class Ball extends MovableObject {
         return tileX >= 0 && tileY >= 0 && tileX < tileBoundX && tileY < tileBoundY;
     }
 
+    /**
+     * Checks for potential collisions between the ball and nearby bricks.
+     * <p>
+     * The map is treated as a grid, where each cell corresponds to a brick with
+     * dimensions {@code tileWidth} × {@code tileHeight}. The ball’s position
+     * on the grid is determined by dividing its x and y coordinates by the tile
+     * dimensions. Using this, we calculate the four corner cells that the ball
+     * might overlap.
+     * </p>
+     * <p>
+     * These corner positions are used to identify candidate bricks that could
+     * collide with the ball. For each valid brick cell, a precise intersection
+     * check is then performed to confirm whether a collision actually occurs.
+     * This spatially localized approach is significantly more efficient than
+     * iterating through all existing bricks on the map.
+     * </p>
+     *
+     * @param bricks     the collection of bricks in the game grid
+     * @param tileWidth  the width of each brick cell
+     * @param tileHeight the height of each brick cell
+     * @param checkX     whether to check for collisions along the horizontal axis ({@code true}) or vertical axis ({@code false})
+     */
     private void handleBricksCollision(Brick[][] bricks, int tileWidth, int tileHeight, boolean checkX) {
         int topLeftTileX = (int) x / tileWidth;
         int topLeftTileY = (int) y / tileHeight;
@@ -178,6 +228,9 @@ public class Ball extends MovableObject {
         handleBricksCollision(bricks, tileWidth, tileHeight, false);
     }
 
+    /**
+     * Checks if the ball has been lost (fallen below the screen).
+     */
     private void checkBallState() {
 
         if (y + height >= gameContext.getWindowHeight()) {
@@ -195,6 +248,9 @@ public class Ball extends MovableObject {
         dy = 0;
     }
 
+    /**
+     * @return true if the ball is lost (and resets the flag)
+     */
     public boolean isLost() {
         if (isBallLost) {
             isBallLost = false;

@@ -12,13 +12,32 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * this class will help me load the texture
+ * The {@code TextureLoaderUtils} class provides static utility methods for loading and scaling
+ * textures used in the game.
+ * <p>
+ * It is responsible for reading texture files from the classpath, extracting sub-images,
+ * and generating scaled versions when needed.
+ * </p>
+ * <p>
+ * If an error occurs during texture loading or scaling, it is handled by {@link ExceptionHandler}
+ * through a {@link ResourceLoadException}.
+ * </p>
  */
 public class TextureLoaderUtils {
 
     private TextureLoaderUtils() {
     }
 
+    /**
+     * Loads a subtexture from an image resource based on the specified coordinates and dimensions.
+     *
+     * @param textureX      the x-coordinate of the texture region to extract
+     * @param textureY      the y-coordinate of the texture region to extract
+     * @param textureWidth  the width of the texture region
+     * @param textureHeight the height of the texture region
+     * @param texturePath   the path to the texture image resource, relative to {@link GameObject}'s classpath
+     * @return the loaded subtexture as a {@link BufferedImage}, or {@code null} if loading fails
+     */
     public static BufferedImage loadTexture(int textureX, int textureY, int textureWidth, int textureHeight,
                                             String texturePath) {
         try {
@@ -32,6 +51,22 @@ public class TextureLoaderUtils {
         }
     }
 
+    /**
+     * Loads and scales a subtexture from an image resource.
+     * <p>
+     * This method first extracts the specified subtexture from the full image, then scales it to
+     * the given dimensions using {@link Image#SCALE_SMOOTH}.
+     * </p>
+     *
+     * @param textureX       the x-coordinate of the texture region to extract
+     * @param textureY       the y-coordinate of the texture region to extract
+     * @param textureWidth   the width of the texture region
+     * @param textureHeight  the height of the texture region
+     * @param texturePath    the path to the texture image resource
+     * @param scaledWidth    the target width of the scaled texture
+     * @param scaledHeight   the target height of the scaled texture
+     * @return the scaled texture as a {@link BufferedImage}, or {@code null} if loading fails
+     */
     public static BufferedImage scaleTexture(int textureX, int textureY, int textureWidth, int textureHeight,
                                              String texturePath,
                                              float scaledWidth, float scaledHeight) {

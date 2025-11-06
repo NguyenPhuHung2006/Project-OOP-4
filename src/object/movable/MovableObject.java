@@ -4,6 +4,13 @@ import audio.SoundType;
 import object.GameObject;
 import object.TexturedObject;
 
+/**
+ * Represents an abstract game object that can move within the game world.
+ * Provides basic movement, collision handling, and speed scaling logic.
+ * <p>
+ * Classes extending this must implement {@link #moveAndCollide()} to define
+ * custom movement and collision behavior.
+ */
 public abstract class MovableObject extends TexturedObject {
 
     protected float dx;
@@ -21,6 +28,11 @@ public abstract class MovableObject extends TexturedObject {
         this.dy = dy;
     }
 
+    /**
+     * Copy constructor for creating a new MovableObject based on another instance.
+     *
+     * @param movableObject the object to copy data from
+     */
     protected MovableObject(MovableObject movableObject) {
         super(movableObject);
         this.speed = movableObject.speed;
@@ -28,6 +40,11 @@ public abstract class MovableObject extends TexturedObject {
         dy = 0;
     }
 
+    /**
+     * Handles horizontal collision with another {@link GameObject}.
+     *
+     * @param gameObject the object to check collision against
+     */
     protected void handleObjectCollisionX(GameObject gameObject) {
 
         if (gameObject == null) {
@@ -44,6 +61,11 @@ public abstract class MovableObject extends TexturedObject {
         }
     }
 
+    /**
+     * Handles vertical collision with another {@link GameObject}.
+     *
+     * @param gameObject the object to check collision against
+     */
     protected void handleObjectCollisionY(GameObject gameObject) {
 
         if (gameObject == null) {
@@ -60,6 +82,10 @@ public abstract class MovableObject extends TexturedObject {
         }
     }
 
+    /**
+     * Handles collision with the game window boundaries.
+     * Plays sound effects if applicable (for example, when bouncing a ball).
+     */
     protected void handleWindowCollision() {
 
         boolean isBall = this instanceof Ball;
@@ -89,6 +115,12 @@ public abstract class MovableObject extends TexturedObject {
         }
     }
 
+    /**
+     * Defines how this object moves and handles collisions.
+     * Must be implemented by subclasses.
+     */
+    protected abstract void moveAndCollide();
+
     @Override
     public MovableObject clone() {
         return (MovableObject) super.clone();
@@ -115,8 +147,6 @@ public abstract class MovableObject extends TexturedObject {
     public void setDy(float dy) {
         this.dy = dy;
     }
-
-    protected abstract void moveAndCollide();
 
     protected void moveX() {
         x += dx * (isSpeedScaled ? scaledSpeed : speed) * scaled;

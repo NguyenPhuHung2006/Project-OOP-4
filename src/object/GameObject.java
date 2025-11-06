@@ -8,7 +8,13 @@ import object.movable.powerup.PowerUpManager;
 import java.awt.*;
 
 /**
- * This class is so amazing
+ * The {@code GameObject} class defines the base structure and behavior
+ * of all renderable and updatable objects in the game.
+ * <p>
+ * It provides core properties like position, dimensions, alignment,
+ * collision detection, and references to shared managers.
+ * Subclasses must implement {@link #update()}, {@link #render(Graphics2D)},
+ * and {@link #initBounds(GameObject)}.
  */
 
 public abstract class GameObject implements Cloneable {
@@ -42,6 +48,15 @@ public abstract class GameObject implements Cloneable {
         updateStatics();
     }
 
+    /**
+     * Initializes static references for commonly used managers and global context values.
+     * <p>
+     * This method should be called whenever:
+     * <ul>
+     *   <li>the game window or global context is refreshed, or</li>
+     *   <li>an object is deserialized from JSON.</li>
+     * </ul>
+     */
     public static void updateStatics() {
         gameContext = GameContext.getInstance();
         windowWidth = gameContext.getWindowWidth();
@@ -56,16 +71,38 @@ public abstract class GameObject implements Cloneable {
         powerUpManager = PowerUpManager.getInstance();
     }
 
-    public abstract void update();
-
-    public abstract void render(Graphics2D graphics2D);
-
-    protected abstract void initBounds(GameObject gameObject);
-
+    /**
+     * Constructs a new {@code GameObject} by copying size-related data from another object.
+     *
+     * @param gameObject the object to copy data from
+     */
     public GameObject(GameObject gameObject) {
         relativeSize = gameObject.getRelativeSize();
     }
 
+    /** Updates the object logic each frame. */
+    public abstract void update();
+
+    /**
+     * Renders the object on the screen.
+     *
+     * @param graphics2D the graphics context
+     */
+    public abstract void render(Graphics2D graphics2D);
+
+    /**
+     * Initializes the bounding box and dimensions of this object based on an object loaded from JSON.
+     *
+     * @param gameObject the reference object
+     */
+    protected abstract void initBounds(GameObject gameObject);
+
+    /**
+     * Checks if this object intersects another.
+     *
+     * @param otherObject the object to check collision with
+     * @return {@code true} if the bounding boxes overlap, otherwise {@code false}
+     */
     public boolean isIntersect(GameObject otherObject) {
         float x1 = getX();
         float y1 = getY();
@@ -83,9 +120,13 @@ public abstract class GameObject implements Cloneable {
                 y1 + h1 > y2;
     }
 
+    /** Serializes this object’s relative position and properties to JSON. */
     public abstract void serializeToJson();
+
+    /** Restores this object’s properties from serialized JSON data. */
     public abstract void deserializeFromJson();
 
+    // --- Alignment and positioning utilities ---
     public void alignLeftOf(GameObject target) {
         this.x = target.x - this.width - paddingX;
         this.y = target.y;
@@ -178,6 +219,14 @@ public abstract class GameObject implements Cloneable {
         x = windowWidth - width - paddingX;
     }
 
+    public void translateX(float deltaX) {
+        this.x += deltaX;
+    }
+
+    public void translateY(float deltaY) {
+        this.y += deltaY;
+    }
+
 
     @Override
     public GameObject clone() {
@@ -187,6 +236,8 @@ public abstract class GameObject implements Cloneable {
             throw new AssertionError();
         }
     }
+
+    // --- Getters and setters ---
 
     public float getX() {
         return x;
@@ -242,22 +293,6 @@ public abstract class GameObject implements Cloneable {
 
     public void setRelativeY(float relativeY) {
         this.relativeY = relativeY;
-    }
-
-    public void translateX(float deltaX) {
-        this.x += deltaX;
-    }
-
-    public void translateY(float deltaY) {
-        this.y += deltaY;
-    }
-
-    public void addWidth(float deltaWidth) {
-        this.width += deltaWidth;
-    }
-
-    public void addHeight(float deltaHeight) {
-        this.height += deltaHeight;
     }
 
     public void setSizeScaled(boolean isScaled) {

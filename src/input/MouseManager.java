@@ -6,60 +6,62 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+/**
+ * Singleton class that handles mouse input events for the game.
+ *
+ * <p>The {@code MouseManager} implements multiple listener interfaces to track
+ * mouse position, button states, clicks, and wheel movement. It provides a simple
+ * polling-based interface so other parts of the game can easily query the
+ * current mouse state.</p>
+ *
+ * <p>This class follows the singleton pattern, ensuring only one instance manages
+ * mouse input across the entire application.</p>
+ *
+ * @see java.awt.event.MouseListener
+ * @see java.awt.event.MouseMotionListener
+ * @see java.awt.event.MouseWheelListener
+ */
 public class MouseManager implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     private int mouseX, mouseY;
     private int clickX, clickY;
     private boolean leftClicked;
     private boolean leftPressed, rightPressed, middlePressed;
-    private int wheelRotation;
 
     private static MouseManager mouseManager;
 
-    private MouseManager() {
-    }
+    /** Private constructor to enforce singleton pattern. */
+    private MouseManager() {}
 
+    /**
+     * Returns the singleton instance of the {@code MouseManager}.
+     *
+     * @return the global mouse manager instance
+     */
     public static MouseManager getInstance() {
         if (mouseManager == null)
             mouseManager = new MouseManager();
         return mouseManager;
     }
 
+    /** @return the current X coordinate of the mouse cursor. */
     public int getX() {
         return mouseX;
     }
 
+    /** @return the current Y coordinate of the mouse cursor. */
     public int getY() {
         return mouseY;
     }
 
+    /** @return the X coordinate of the last left click. */
     public int getClickX() {
         return clickX;
     }
 
+    /** @return the Y coordinate of the last left click. */
     public int getClickY() {
         return clickY;
-    }
-
-
-    public boolean isLeftPressed() {
-        return leftPressed;
-    }
-
-    public boolean isRightPressed() {
-        return rightPressed;
-    }
-
-    public boolean isMiddlePressed() {
-        return middlePressed;
-    }
-
-    public int getWheelRotation() {
-        return wheelRotation;
-    }
-
-    public void resetWheel() {
-        wheelRotation = 0;
     }
 
     @Override
@@ -85,6 +87,13 @@ public class MouseManager implements MouseListener, MouseMotionListener, MouseWh
         }
     }
 
+    /**
+     * Returns whether the left mouse button was clicked since the last check.
+     * <p>Calling this method resets the click flag, so it returns {@code true}
+     * only once per click event.</p>
+     *
+     * @return {@code true} if the left button was just clicked, {@code false} otherwise
+     */
     public boolean isLeftClicked() {
         if (leftClicked) {
             leftClicked = false;
@@ -105,20 +114,8 @@ public class MouseManager implements MouseListener, MouseMotionListener, MouseWh
         mouseY = e.getY();
     }
 
-    @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        wheelRotation = e.getWheelRotation();
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
+    @Override public void mouseClicked(MouseEvent e) {}
+    @Override public void mouseEntered(MouseEvent e) {}
+    @Override public void mouseExited(MouseEvent e) {}
+    @Override public void mouseWheelMoved(MouseWheelEvent e) {}
 }

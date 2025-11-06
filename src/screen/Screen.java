@@ -6,6 +6,14 @@ import object.GameContext;
 
 import java.awt.*;
 
+/**
+ * Represents a screen in the game
+ * <p>
+ * Each {@code Screen} is responsible for managing its own update, render,
+ * and transition logic. This interface defines the essential lifecycle
+ * methods and provides access to global game components such as
+ * {@link MouseManager}, {@link SoundManager}, and {@link ScreenManager}.
+ */
 public interface Screen {
 
     int windowWidth = GameContext.getInstance().getWindowWidth();

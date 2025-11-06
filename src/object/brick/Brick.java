@@ -4,14 +4,22 @@ import object.GameObject;
 import object.TexturedObject;
 
 /**
- * This class mean bricks
+ * Represents an abstract brick object in the game.
+ * <p>
+ * A brick has a texture, can be hit or destroyed, and is rendered
+ * as part of the game field. Concrete subclasses (e.g., {@link NormalBrick},
+ * {@link StrongBrick}, {@link PowerUpBrick}) define specific hit behavior.
  */
 public abstract class Brick extends TexturedObject {
 
     protected boolean destroyed;
     protected boolean hit;
-    private BrickType brickType;
 
+    /**
+     * Creates a new brick based on another brick's properties.
+     *
+     * @param brick the brick to copy from
+     */
     public Brick(Brick brick) {
 
         super(brick);
@@ -19,6 +27,10 @@ public abstract class Brick extends TexturedObject {
         hit = false;
     }
 
+    /**
+     * Handles logic that occurs when this brick is hit by the ball.
+     * Each brick type implements this differently.
+     */
     protected abstract void handleHit();
 
     @Override
@@ -41,15 +53,13 @@ public abstract class Brick extends TexturedObject {
         return destroyed;
     }
 
+    /** @return true if this brick was recently hit. */
     public boolean isHit() { return hit; }
 
+    /** Marks this brick as hit, triggering its update logic. */
     public void takeHit() { hit = true; }
 
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
-    }
-
-    public BrickType getBrickType() {
-        return brickType;
     }
 }

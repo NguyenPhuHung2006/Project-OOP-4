@@ -5,6 +5,18 @@ import object.TexturedObject;
 import object.brick.Brick;
 import object.movable.MovableObject;
 
+/**
+ * Base class for all power-up types.
+ * <p>
+ * A {@code PowerUp} is a movable object that falls from destroyed bricks.
+ * When it collides with the paddle, it applies a temporary game effect,
+ * such as slowing the ball or expanding the paddle.
+ * </p>
+ * <p>
+ * Subclasses define specific effects and their reversions
+ * (via {@link #applyEffect()} and {@link #revertEffect()}).
+ * </p>
+ */
 public abstract class PowerUp extends MovableObject {
 
     private boolean isFalling = false;
@@ -19,7 +31,16 @@ public abstract class PowerUp extends MovableObject {
         durationMs = powerUp.durationMs;
     }
 
+    /**
+     * Applies the specific effect of this power-up to the game state.
+     * The implementation is defined by subclasses.
+     */
     public abstract void applyEffect();
+
+    /**
+     * Reverts the effect of this power-up, restoring the game state
+     * to its original condition.
+     */
     public abstract void revertEffect();
 
     @Override
@@ -42,6 +63,11 @@ public abstract class PowerUp extends MovableObject {
 
     }
 
+    /**
+     * Sets the initial position of this power-up to fall from the specified brick.
+     *
+     * @param brick the brick from which the power-up originates
+     */
     public void setInitialPosition(Brick brick) {
         x = brick.getX() + (brick.getWidth() - width) / 2;
         y = brick.getY();
@@ -50,12 +76,20 @@ public abstract class PowerUp extends MovableObject {
         isFalling = true;
     }
 
+    /**
+     * Updates the falling movement of this power-up and checks for collisions
+     * with the paddle or screen boundaries.
+     */
     @Override
     protected void moveAndCollide() {
         moveY();
         handleCollide();
     }
 
+    /**
+     * Checks for collision with the paddle or falling out of bounds.
+     * If collected, applies the power-up effect; if missed, removes it.
+     */
     private void handleCollide() {
 
         boolean isIntersectWithPaddle = isIntersect(gameContext.getPaddle());

@@ -18,6 +18,18 @@ import utils.TextUtils;
 
 import java.awt.*;
 
+/**
+ * The {@code PlayScreen} class serves as an abstract base class for
+ * all gameplay screens (e.g., single-player and multiplayer modes).
+ * <p>
+ * It manages the common game logic, including initialization of
+ * UI elements, object updates, rendering, game state transitions,
+ * score tracking, and pause handling.
+ * </p>
+ *
+ * <p>This class implements {@link Screen} and provides a foundation
+ * for extending specialized gameplay screens with unique behaviors.</p>
+ */
 public abstract class PlayScreen implements Screen {
 
     protected final GameContext gameContext;
@@ -51,6 +63,13 @@ public abstract class PlayScreen implements Screen {
     protected abstract void handleScore();
     protected abstract void handleGameEnd();
 
+    /**
+     * Constructs a {@code PlayScreen} using a base screen and screen type.
+     * Initializes common gameplay elements, timers, and level data.
+     *
+     * @param screen      the base screen used as a template for UI layout
+     * @param screenType  the type or level identifier for this screen
+     */
     public PlayScreen(Screen screen, ScreenType screenType) {
 
         PlayScreen playScreen = (PlayScreen) screen;
@@ -84,6 +103,12 @@ public abstract class PlayScreen implements Screen {
 
     }
 
+    /**
+     * Initializes layout and positions of UI elements such as
+     * score text, pause button, and time display.
+     *
+     * @param screen the source screen used for layout reference
+     */
     @Override
     public void init(Screen screen) {
 
@@ -112,6 +137,12 @@ public abstract class PlayScreen implements Screen {
         baseNumTimeText.translateX(spacingX);
     }
 
+    /**
+     * Initializes all in-game objects such as bricks and power-ups
+     * based on the given level configuration file.
+     *
+     * @param levelPath path to the JSON configuration file
+     */
     private void initObjects(String levelPath) {
 
         LevelConfig levelConfig = JsonLoaderUtils.loadFromJson(levelPath, LevelConfig.class);
@@ -128,6 +159,10 @@ public abstract class PlayScreen implements Screen {
         numScoreText.setContent(String.valueOf(0));
     }
 
+    /**
+     * Updates the game logic, including player input, pause handling,
+     * score updates, and checking for end-game conditions.
+     */
     @Override
     public void update() {
 
@@ -167,6 +202,12 @@ public abstract class PlayScreen implements Screen {
         handleGameEnd();
     }
 
+    /**
+     * Renders all gameplay elements including the background,
+     * bricks, power-ups, and UI elements such as score and timer.
+     *
+     * @param graphics2D the graphics context to render onto
+     */
     @Override
     public void render(Graphics2D graphics2D) {
 

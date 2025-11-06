@@ -6,12 +6,18 @@ import screen.menuscreen.MenuScreen;
 import screen.menuscreen.PlayerStatusScreen;
 import screen.menuscreen.StartScreen;
 import screen.pausescreen.MultiPlayerPauseScreen;
-import screen.pausescreen.PauseScreen;
 import screen.pausescreen.SinglePlayerPauseScreen;
 import screen.playscreen.MultiPlayerPlayScreen;
-import screen.playscreen.PlayScreen;
 import screen.playscreen.SinglePlayerPlayScreen;
 
+/**
+ * Enumerates all possible game screen types.
+ * <p>
+ * Each {@code ScreenType} can create a corresponding {@link Screen}
+ * instance through the {@link #create(Screen)} factory method.
+ * This allows the {@link ScreenManager} to dynamically switch between
+ * different game states such as menus, gameplay, and pause screens.
+ */
 public enum ScreenType {
     START {
         @Override

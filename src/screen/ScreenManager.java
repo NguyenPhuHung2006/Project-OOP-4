@@ -11,7 +11,18 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Stack;
 
+/**
+ * Manages all game screens and transitions between them.
+ * <p>
+ * The {@code ScreenManager} maintains a stack of active screens and
+ * provides methods to push, pop, or replace them. It also handles
+ * initialization of all available screens from a {@link ScreenConfig}.
+ * <p>
+ * This class is implemented as a singleton, accessible via {@link #getInstance()}.
+ */
 public class ScreenManager {
+
+    /** Stack of active screens (top is the current screen). */
     private final Stack<Screen> screens = new Stack<>();
     Map<ScreenType, Screen> screenRegistry = new EnumMap<>(ScreenType.class);
 
@@ -20,6 +31,11 @@ public class ScreenManager {
     private ScreenManager() {
     }
 
+    /**
+     * Returns the singleton instance of the {@code ScreenManager}.
+     *
+     * @return the global screen manager instance
+     */
     public static ScreenManager getInstance() {
         if (screenManager == null) {
             screenManager = new ScreenManager();
@@ -27,6 +43,13 @@ public class ScreenManager {
         return screenManager;
     }
 
+    /**
+     * Loads screen configurations from a {@link ScreenConfig} object.
+     * <p>
+     * Registers all predefined screens in the {@link #screenRegistry}.
+     *
+     * @param screenConfig the screen configuration loaded from JSON
+     */
     public void loadFromJson(ScreenConfig screenConfig) {
 
         screenRegistry.put(ScreenType.START, screenConfig.startScreen);
@@ -45,6 +68,13 @@ public class ScreenManager {
         screenRegistry.put(ScreenType.PLAYER_STATUS, screenConfig.playerStatusScreen);
     }
 
+    /**
+     * Pushes a new screen of the given type onto the stack.
+     * <p>
+     * The current screen’s {@link Screen#onExit()} method is called before pushing the new screen.
+     *
+     * @param screenType the type of screen to activate
+     */
     public void push(ScreenType screenType) {
         if (!screens.isEmpty()) {
             screens.peek().onExit();
@@ -68,10 +98,21 @@ public class ScreenManager {
         newScreen.onEnter();
     }
 
+    /**
+     * Pushes an already constructed screen instance onto the stack.
+     *
+     * @param screen the screen to push
+     */
     public void push(Screen screen) {
         screens.push(screen);
     }
 
+    /**
+     * Pops the top screen from the stack.
+     * <p>
+     * Calls {@link Screen#onExit()} on the removed screen and
+     * {@link Screen#onEnter()} on the new top screen.
+     */
     public void pop() {
         if (!screens.isEmpty()) {
             screens.pop().onExit();
@@ -81,6 +122,11 @@ public class ScreenManager {
         }
     }
 
+    /**
+     * Returns the currently active screen (top of the stack).
+     *
+     * @return the top screen, or {@code null} if no screens exist
+     */
     public Screen top() {
         if (screens.isEmpty()) {
             return null;
@@ -88,18 +134,31 @@ public class ScreenManager {
         return screens.peek();
     }
 
+    /**
+     * Updates the active screen by calling its {@link Screen#update()} method.
+     */
     public void update() {
         if (!screens.isEmpty()) {
             screens.peek().update();
         }
     }
 
+    /**
+     * Renders the active screen using the provided graphics context.
+     *
+     * @param graphics2D the {@link Graphics2D} context for rendering
+     */
     public void render(Graphics2D graphics2D) {
         if (!screens.isEmpty()) {
             screens.peek().render(graphics2D);
         }
     }
 
+    /**
+     * Checks whether there are no active screens.
+     *
+     * @return {@code true} if the stack is empty; otherwise {@code false}
+     */
     public boolean isEmpty() {
         return screens.isEmpty();
     }

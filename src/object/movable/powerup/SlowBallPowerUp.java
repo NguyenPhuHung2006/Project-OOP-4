@@ -2,6 +2,12 @@ package object.movable.powerup;
 
 import object.movable.Ball;
 
+/**
+ * A {@link PowerUp} that temporarily reduces the ball’s movement speed.
+ * <p>
+ * This allows the player more time to react to the ball’s trajectory.
+ * </p>
+ */
 public class SlowBallPowerUp extends PowerUp {
 
     private final float slowMultiplier;
@@ -14,6 +20,10 @@ public class SlowBallPowerUp extends PowerUp {
         this.slowMultiplier = slowBallPowerUp.slowMultiplier;
     }
 
+    /**
+     * Scales the ball’s speed by a slow multiplier.
+     * Has no effect if the ball’s speed is already scaled.
+     */
     @Override
     public void applyEffect() {
 
@@ -29,6 +39,9 @@ public class SlowBallPowerUp extends PowerUp {
         ball.setSpeedScaled(true);
     }
 
+    /**
+     * Restores the ball’s original speed when the power-up expires.
+     */
     @Override
     public void revertEffect() {
         Ball ball = gameContext.getBall();

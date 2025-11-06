@@ -157,6 +157,28 @@ public class Ball extends MovableObject {
         return tileX >= 0 && tileY >= 0 && tileX < tileBoundX && tileY < tileBoundY;
     }
 
+    /**
+     * Checks for potential collisions between the ball and nearby bricks.
+     * <p>
+     * The map is treated as a grid, where each cell corresponds to a brick with
+     * dimensions {@code tileWidth} × {@code tileHeight}. The ball’s position
+     * on the grid is determined by dividing its x and y coordinates by the tile
+     * dimensions. Using this, we calculate the four corner cells that the ball
+     * might overlap.
+     * </p>
+     * <p>
+     * These corner positions are used to identify candidate bricks that could
+     * collide with the ball. For each valid brick cell, a precise intersection
+     * check is then performed to confirm whether a collision actually occurs.
+     * This spatially localized approach is significantly more efficient than
+     * iterating through all existing bricks on the map.
+     * </p>
+     *
+     * @param bricks     the collection of bricks in the game grid
+     * @param tileWidth  the width of each brick cell
+     * @param tileHeight the height of each brick cell
+     * @param checkX     whether to check for collisions along the horizontal axis ({@code true}) or vertical axis ({@code false})
+     */
     private void handleBricksCollision(Brick[][] bricks, int tileWidth, int tileHeight, boolean checkX) {
         int topLeftTileX = (int) x / tileWidth;
         int topLeftTileY = (int) y / tileHeight;

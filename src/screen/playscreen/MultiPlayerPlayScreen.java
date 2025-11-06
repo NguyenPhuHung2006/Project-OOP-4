@@ -13,6 +13,15 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.InetAddress;
 
+/**
+ * Represents the multiplayer play screen of the game.
+ * <p>
+ * This class extends {@link PlayScreen} and manages multiplayer gameplay logic
+ * using a client-server network model. It handles both hosting and joining a multiplayer session,
+ * synchronizes player scores, manages connection states, and coordinates game end conditions
+ * between two connected players.
+ * </p>
+ */
 public class MultiPlayerPlayScreen extends PlayScreen {
 
     private transient GameServer gameServer;
@@ -28,6 +37,12 @@ public class MultiPlayerPlayScreen extends PlayScreen {
     private boolean hasSentEndState = false;
     private boolean connected = false;
 
+    /**
+     * Constructs a new {@code MultiPlayerPlayScreen}.
+     *
+     * @param screen      the previous screen used to initialize base UI components.
+     * @param screenType  the type of the current screen (e.g., MULTI_PLAYER_LEVEL_1).
+     */
     public MultiPlayerPlayScreen(Screen screen, ScreenType screenType) {
         super(screen, screenType);
 
@@ -44,6 +59,11 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         handleMultiplayerOption();
     }
 
+    /**
+     * Initializes and positions UI components related to the opponent’s display area and the wait screen.
+     *
+     * @param multiPlayerPlayScreen the screen used as a template for positioning and alignment.
+     */
     private void initOpponentObjects(MultiPlayerPlayScreen multiPlayerPlayScreen) {
 
         GameText baseOpponentScoreText = multiPlayerPlayScreen.opponentScoreText;
@@ -67,6 +87,13 @@ public class MultiPlayerPlayScreen extends PlayScreen {
 
     }
 
+    /**
+     * Handles the player’s choice to either host or join a multiplayer session.
+     * <p>
+     * Displays a dialog box allowing the player to create a new game, join an existing one,
+     * or cancel the multiplayer setup.
+     * </p>
+     */
     private void handleMultiplayerOption() {
         String[] options = {"Create Game", "Join Game", "Cancel"};
         int choice = JOptionPane.showOptionDialog(
@@ -89,6 +116,12 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         }
     }
 
+    /**
+     * Creates a new multiplayer session and starts a {@link GameServer}.
+     * <p>
+     * Displays the host’s IP address so that another player can connect using it.
+     * </p>
+     */
     private void createGameSession() {
         try {
             isHost = true;
@@ -111,6 +144,12 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         }
     }
 
+    /**
+     * Joins an existing multiplayer session as a {@link GameClient}.
+     * <p>
+     * Prompts the player to enter the host’s IP address and attempts to connect to it.
+     * </p>
+     */
     private void joinGameSession() {
         String hostIP = JOptionPane.showInputDialog(null, "Enter Host IP Address:");
         if (hostIP == null || hostIP.isEmpty()) {
@@ -131,6 +170,9 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         }
     }
 
+    /**
+     * Handles pause events by pushing the multiplayer pause screen onto the screen stack.
+     */
     @Override
     protected void handlePauseGame() {
         screenManager.push(ScreenType.MULTIPLE_PLAYER_PAUSE);
@@ -141,6 +183,13 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         return false;
     }
 
+    /**
+     * Updates and synchronizes the player and opponent scores.
+     * <p>
+     * Sends score updates to the connected player using TCP communication
+     * and receives the opponent’s score for display.
+     * </p>
+     */
     @Override
     protected void handleScore() {
 
@@ -162,6 +211,13 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         );
     }
 
+    /**
+     * Handles the game’s end conditions and synchronizes win/loss states between players.
+     * <p>
+     * Sends the player’s end state to the opponent and listens for the opponent’s result.
+     * Displays the corresponding end screen when the game concludes.
+     * </p>
+     */
     @Override
     public void handleGameEnd() {
 
@@ -202,6 +258,13 @@ public class MultiPlayerPlayScreen extends PlayScreen {
 
     }
 
+    /**
+     * Updates the multiplayer play screen each frame.
+     * <p>
+     * If not yet connected, updates the waiting screen logic.
+     * Otherwise, continues the standard {@link PlayScreen#update()} cycle.
+     * </p>
+     */
     @Override
     public void update() {
 
@@ -215,6 +278,15 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         super.update();
     }
 
+    /**
+     * Renders the multiplayer play screen.
+     * <p>
+     * Displays a waiting screen if the connection is not established,
+     * otherwise renders all gameplay elements including the opponent’s score.
+     * </p>
+     *
+     * @param graphics2D the {@link Graphics2D} object used for rendering.
+     */
     @Override
     public void render(Graphics2D graphics2D) {
 
@@ -231,6 +303,12 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         opponentNumScoreText.render(graphics2D);
     }
 
+    /**
+     * Handles updates while waiting for a connection.
+     * <p>
+     * Allows the player to exit back to the main menu using the exit button.
+     * </p>
+     */
     public void updateWaiting() {
 
         if (mouseManager.isLeftClicked()) {
@@ -242,6 +320,11 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         }
     }
 
+    /**
+     * Renders the waiting screen shown before connection establishment.
+     *
+     * @param graphics2D the {@link Graphics2D} context used for rendering.
+     */
     private void renderWaiting(Graphics2D graphics2D) {
 
         background.render(graphics2D);
@@ -249,6 +332,12 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         exitButton.render(graphics2D);
     }
 
+    /**
+     * Checks and updates the connection status between players.
+     * <p>
+     * Records the start time once a connection is successfully established.
+     * </p>
+     */
     private void checkConnected() {
         boolean previouslyConnected = connected;
 
@@ -259,6 +348,9 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         }
     }
 
+    /**
+     * Stops and closes the network connections for both server and client.
+     */
     private void stopConnection() {
         if (gameServer != null) {
             gameServer.stop();
@@ -268,6 +360,10 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         }
     }
 
+    /**
+     * Returns the player to the main menu screen by closing the multiplayer session
+     * and navigating through the screen stack.
+     */
     private void goToMenu() {
         exited = true;
         while (!(screenManager.top() instanceof MenuScreen)) {
@@ -275,6 +371,12 @@ public class MultiPlayerPlayScreen extends PlayScreen {
         }
     }
 
+    /**
+     * Called when the screen is exited.
+     * <p>
+     * Ensures that network connections are closed when the game ends.
+     * </p>
+     */
     @Override
     public void onExit() {
         super.onExit();

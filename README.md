@@ -10,6 +10,15 @@
 **Mô tả dự án**
 Game Arkanoid (phiên bản đơn giản) được viết bằng **Java + Swing**. Đây là bài tập lớn môn Lập trình hướng đối tượng, yêu cầu áp dụng các nguyên lý OOP, thiết kế lớp, quản lý tài nguyên (âm thanh, ảnh), và tính năng nhiều người chơi, lưu game.
 
+---
+
+# 🎮 Demo Video
+
+> 📌 **Xem video demo gameplay tại đây:**  
+> [![Watch the video](https://img.youtube.com/vi/yJBSvpXpkB0/hqdefault.jpg)](https://www.youtube.com/watch?v=yJBSvpXpkB0)
+
+---
+
 ## Yêu cầu
 
 * Java 24+ (JDK 24 hoặc mới hơn)
